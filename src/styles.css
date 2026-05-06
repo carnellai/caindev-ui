@@ -356,6 +356,20 @@
   animation: cd-run-status-pulse 1.5s ease-in-out infinite;
 }
 
+.cd-progress-indeterminate {
+  animation: cd-progress-indeterminate 1.5s ease-in-out infinite;
+  width: 40% !important;
+}
+
+@keyframes cd-progress-indeterminate {
+  0% {
+    transform: translateX(-250%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
 @keyframes cd-button-spin {
   to {
     transform: rotate(360deg);
@@ -443,5 +457,10 @@
   .cd-thinking-block-chevron {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+
+  .cd-progress-indeterminate {
+    animation: none !important;
+    width: 100% !important;
   }
 }
