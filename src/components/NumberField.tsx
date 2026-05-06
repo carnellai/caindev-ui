@@ -101,13 +101,13 @@ export function NumberField({
         </BaseNumberField.ScrubArea>
       )}
 
-      <BaseNumberField.Group className='inline-flex flex-row'>
+      <BaseNumberField.Group className='inline-flex w-fit flex-row'>
         <BaseNumberField.Decrement className=' -ml-px flex h-9 w-9 shrink-0 cursor-pointer select-none items-center justify-center rounded-l-[8px] border border-border-strong bg-surface-control text-foreground-muted outline-none transition-[background,color] duration-[80ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
           <MinusIcon />
         </BaseNumberField.Decrement>
         <BaseNumberField.Input
-          placeholder={placeholder}
-          className='h-9 w-24 border-y border-border-strong bg-surface-control text-center text-sm tabular-nums text-foreground outline-none transition-[border-color] duration-150 placeholder:text-foreground-subtle focus:z-10 focus:border-accent focus:outline-2 focus:outline-offset-[-1px] focus:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50'
+          style={{ width: '64px' }}
+          className='h-9 shrink-0 border-y border-border-strong bg-surface-control text-center text-sm tabular-nums text-foreground outline-none transition-[border-color] duration-150 placeholder:text-foreground-subtle focus:z-10 focus:border-accent focus:outline-2 focus:outline-offset-[-1px] focus:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50'
         />
         <BaseNumberField.Increment className='-ml-px flex h-9 w-9 shrink-0 cursor-pointer select-none items-center justify-center rounded-r-[8px] border border-border-strong bg-surface-control text-foreground-muted outline-none transition-[background,color] duration-[80ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
           <PlusIcon />

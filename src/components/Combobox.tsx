@@ -73,16 +73,27 @@ export function Combobox({
         defaultValue={defaultValue}
         onValueChange={onValueChange}
         disabled={disabled}>
-        {/* Trigger is the outer container, Input sits inside it */}
-        <BaseCombobox.Trigger className='relative flex h-9 w-64 items-center rounded-[8px] border border-border-strong bg-surface-control shadow-highlight-inset transition-[border-color] duration-150 focus-within:border-accent data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[popup-open]:border-accent'>
+        {/*
+          InputGroup renders a <div> that is `position: relative` internally.
+          Use `box-content` so the h-9 height is the content height, not total height.
+          The icon div is absolute, anchored to bottom-0, with the same height as InputGroup.
+          Input uses w-full + box-border + pr to make room for the icon on the right.
+        */}
+        <BaseCombobox.InputGroup
+          className='relative h-9 w-64 rounded-[8px] border border-border-strong bg-surface-control shadow-highlight-inset focus-within:border-accent focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50'
+          style={{ display: 'grid', gridTemplateColumns: '1fr 2.25rem' }}>
           <BaseCombobox.Input
             placeholder={placeholder}
-            className='h-full flex-1 border-0 bg-transparent py-0 pl-3 pr-8 text-sm text-foreground outline-none placeholder:text-foreground-subtle'
+            className='h-full min-w-0 border-0 bg-transparent pl-3 text-sm text-foreground outline-none placeholder:text-foreground-subtle'
           />
-          <span className='pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-foreground-muted'>
-            <ChevronIcon />
-          </span>
-        </BaseCombobox.Trigger>
+          <div className='flex items-center justify-center text-foreground-muted'>
+            <BaseCombobox.Trigger
+              aria-label='Open'
+              className='flex h-9 w-9 cursor-pointer items-center justify-center border-0 bg-transparent p-0 outline-none hover:text-foreground'>
+              <ChevronIcon />
+            </BaseCombobox.Trigger>
+          </div>
+        </BaseCombobox.InputGroup>
 
         <BaseCombobox.Portal>
           <BaseCombobox.Positioner sideOffset={6} className='outline-none'>
