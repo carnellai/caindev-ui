@@ -41,7 +41,7 @@ export function Menu({
         <BaseMenu.Positioner sideOffset={6}>
           <BaseMenu.Popup
             className={[
-              'min-w-[180px] rounded-[8px] border border-border-strong bg-background-elevated p-1 shadow-[0_8px_24px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3)] outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
+              'min-w-[180px] rounded-[8px] border border-border-strong bg-background-elevated p-1 shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
               className,
             ].filter(Boolean).join(' ')}
             style={{
@@ -63,7 +63,7 @@ export function Menu({
                     disabled={item.disabled}
                     onClick={item.onSelect}
                     className={[
-                      'flex cursor-default select-none items-center rounded-sm px-2.5 py-[7px] text-sm outline-none transition-[background,color] duration-[80ms] data-[disabled]:opacity-40 data-[highlighted]:bg-background-subtle data-[highlighted]:text-foreground',
+                      'flex cursor-default select-none items-center rounded-sm px-2.5 py-[7px] text-sm outline-none transition-[background,color] duration-[80ms] data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground',
                       item.destructive ? 'text-destructive' : 'text-foreground-muted',
                     ].join(' ')}
                   >

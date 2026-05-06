@@ -16,8 +16,8 @@ const sizeClasses: Record<ButtonSize, string> = {
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
-  solid: 'border border-black/20 bg-accent text-accent-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]',
-  outline: 'border border-border-strong bg-white/5 text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]',
+  solid: 'border border-black/20 bg-accent text-accent-foreground shadow-highlight-inset',
+  outline: 'border border-border-strong bg-surface-control text-foreground shadow-highlight-inset',
   ghost: 'border-0 bg-transparent text-foreground-muted shadow-none',
 };
 

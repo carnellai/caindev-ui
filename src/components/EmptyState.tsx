@@ -47,7 +47,7 @@ export function EmptyState({
       ].filter(Boolean).join(' ')}
       style={style}
     >
-      <span className={[isError ? 'text-red-400' : 'text-foreground-subtle', 'opacity-60'].join(' ')}>
+      <span className={[isError ? 'text-error' : 'text-foreground-subtle', 'opacity-60'].join(' ')}>
         {icon ?? (isError ? <ErrorIcon /> : <DefaultIcon />)}
       </span>
       <div className="flex flex-col gap-1.5">

@@ -65,7 +65,7 @@ export function Input({
         style={typeof style === 'object' ? style : undefined}
         className={mergeClassName(
           [
-            'box-border h-9 w-full rounded-[8px] bg-white/[0.04] px-3 text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-[border-color] duration-150 placeholder:text-foreground-subtle focus:border-accent focus:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-white/[0.025] disabled:text-foreground-subtle disabled:opacity-[0.65]',
+            'box-border h-9 w-full rounded-[8px] bg-surface-control px-3 text-sm text-foreground shadow-highlight-inset outline-none transition-[border-color] duration-150 placeholder:text-foreground-subtle focus:border-accent focus:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-surface-control-disabled disabled:text-foreground-subtle disabled:opacity-[0.65]',
             error ? 'border border-destructive' : 'border border-border-strong',
           ].join(' '),
           className,

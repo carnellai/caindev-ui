@@ -17,10 +17,10 @@ export type BadgeProps = {
 
 const variantClasses: Partial<Record<BadgeVariant, string>> = {
   default: 'border border-border bg-background-subtle text-foreground-muted',
-  success: 'border border-emerald-400/20 bg-emerald-400/10 text-emerald-400',
-  warning: 'border border-amber-400/20 bg-amber-400/10 text-amber-400',
-  error: 'border border-red-400/20 bg-red-400/10 text-red-400',
-  info: 'border border-violet-400/20 bg-violet-400/10 text-violet-400',
+  success: 'border border-success-border bg-success-muted text-success',
+  warning: 'border border-warning-border bg-warning-muted text-warning',
+  error: 'border border-error-border bg-error-muted text-error',
+  info: 'border border-info-border bg-info-muted text-info',
   outline: 'border border-border-strong bg-transparent text-foreground-muted',
 };
 

@@ -15,9 +15,9 @@ export type ToolCallCardProps = {
 
 const statusConfig: Record<ToolStatus, { label: string; color: string; bg: string }> = {
   pending: { label: 'Pending', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
-  running: { label: 'Running', color: '#a78bfa', bg: 'rgba(124,58,237,0.12)' },
-  success: { label: 'Done', color: '#34d399', bg: 'rgba(52,211,153,0.1)' },
-  error: { label: 'Error', color: '#f87171', bg: 'rgba(248,113,113,0.1)' },
+  running: { label: 'Running', color: 'var(--color-info)', bg: 'var(--color-info-muted)' },
+  success: { label: 'Done', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
+  error: { label: 'Error', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
 };
 
 function WrenchIcon() {

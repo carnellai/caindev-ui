@@ -22,7 +22,7 @@ export function ScoreBar({
   const clampedScore = Math.min(Math.max(score, 0), 1);
   const pct = clampedScore * 100;
   const passing = threshold !== undefined ? score >= threshold : true;
-  const barColor = passing ? '#34d399' : '#f87171';
+  const barColor = passing ? 'var(--color-success)' : 'var(--color-error)';
   const height = size === 'sm' ? '4px' : '6px';
   const meterLabel = label ?? 'Score';
 

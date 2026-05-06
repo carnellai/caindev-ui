@@ -86,7 +86,7 @@ export function Select({
         <BaseSelect.Trigger
           aria-label={label ? undefined : placeholder}
           className={mergeClassName(
-            'flex h-9 min-w-40 cursor-pointer select-none items-center justify-between gap-2 rounded-[8px] border border-border-strong bg-white/[0.04] py-0 pl-3 pr-2.5 text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[popup-open]:border-accent focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+            'flex h-9 min-w-40 cursor-pointer select-none items-center justify-between gap-2 rounded-[8px] border border-border-strong bg-surface-control py-0 pl-3 pr-2.5 text-sm text-foreground shadow-highlight-inset outline-none data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-50 data-[popup-open]:border-accent focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
             triggerClassName,
           )}
           style={triggerStyle}
@@ -105,7 +105,7 @@ export function Select({
         <BaseSelect.Portal>
           <BaseSelect.Positioner sideOffset={6}>
             <BaseSelect.Popup
-              className="rounded-[8px] border border-border-strong bg-background-elevated p-1 shadow-[0_8px_24px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.3)] outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
+              className="rounded-[8px] border border-border-strong bg-background-elevated p-1 shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
               style={{
                 minWidth: 'max(var(--anchor-width), 180px)',
                 transformOrigin: 'var(--transform-origin)',
@@ -127,7 +127,7 @@ export function Select({
                       key={optValue}
                       value={optValue}
                       disabled={optDisabled}
-                      className="grid cursor-default select-none grid-cols-[16px_1fr] items-center gap-2 whitespace-nowrap rounded-sm px-2.5 py-[7px] text-sm text-foreground-muted outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-background-subtle data-[highlighted]:text-foreground"
+                      className="grid cursor-default select-none grid-cols-[16px_1fr] items-center gap-2 whitespace-nowrap rounded-sm px-2.5 py-[7px] text-sm text-foreground-muted outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground"
                     >
                       <BaseSelect.ItemIndicator
                         className="flex text-accent"

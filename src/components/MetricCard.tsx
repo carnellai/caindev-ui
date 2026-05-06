@@ -24,7 +24,7 @@ export function MetricCard({
   className,
 }: MetricCardProps) {
   const isGood = trend === 'neutral' ? null : trendPositive ? trend === 'up' : trend === 'down';
-  const trendColor = isGood === null ? 'var(--color-foreground-subtle)' : isGood ? '#34d399' : '#f87171';
+  const trendColor = isGood === null ? 'var(--color-foreground-subtle)' : isGood ? 'var(--color-success)' : 'var(--color-error)';
 
   return (
     <div

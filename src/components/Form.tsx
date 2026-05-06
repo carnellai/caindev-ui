@@ -59,7 +59,7 @@ export function FormField({
     >
       <Field.Label className="flex items-center gap-1 text-[0.8125rem] font-medium text-foreground">
         {label}
-        {required && <span aria-hidden="true" className="text-red-400">*</span>}
+        {required && <span aria-hidden="true" className="text-error">*</span>}
       </Field.Label>
 
       {children}
@@ -70,7 +70,7 @@ export function FormField({
         </Field.Description>
       )}
 
-      <Field.Error match={hasError || undefined} className="text-xs text-red-400">
+      <Field.Error match={hasError || undefined} className="text-xs text-error">
         {error}
       </Field.Error>
     </Field.Root>

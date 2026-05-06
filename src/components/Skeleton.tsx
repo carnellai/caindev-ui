@@ -18,7 +18,7 @@ export function Skeleton({
       className={['relative overflow-hidden bg-background-subtle', className].filter(Boolean).join(' ')}
       style={{ width, height, borderRadius, ...style }}
     >
-      <div className="cd-skeleton-shimmer absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.04)_50%,transparent_100%)]" />
+      <div className="cd-skeleton-shimmer absolute inset-0" />
     </div>
   );
 }

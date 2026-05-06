@@ -9,12 +9,12 @@ export type RunStatusBadgeProps = {
 };
 
 const runConfig: Record<RunStatus, { label: string; color: string; bg: string; pulse?: boolean }> = {
-  running: { label: 'Running', color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', pulse: true },
-  completed: { label: 'Completed', color: '#34d399', bg: 'rgba(52,211,153,0.12)' },
-  failed: { label: 'Failed', color: '#f87171', bg: 'rgba(248,113,113,0.12)' },
-  error: { label: 'Error', color: '#f87171', bg: 'rgba(248,113,113,0.12)' },
-  queued: { label: 'Queued', color: '#fbbf24', bg: 'rgba(251,191,36,0.12)' },
-  cancelled: { label: 'Cancelled', color: '#94a3b8', bg: 'rgba(148,163,184,0.1)' },
+  running: { label: 'Running', color: 'var(--color-info)', bg: 'var(--color-info-muted)', pulse: true },
+  completed: { label: 'Completed', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
+  failed: { label: 'Failed', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
+  error: { label: 'Error', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
+  queued: { label: 'Queued', color: 'var(--color-warning)', bg: 'var(--color-warning-muted)' },
+  cancelled: { label: 'Cancelled', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
 };
 
 export function RunStatusBadge({ status, size = 'md', style, className }: RunStatusBadgeProps) {

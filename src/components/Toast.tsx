@@ -21,15 +21,15 @@ const variantConfig: Record<ToastVariant, { color: string; icon: React.ReactNode
     icon: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="8" cy="8" r="6" /><path d="M8 7v4M8 5.5v.5" /></svg>,
   },
   success: {
-    color: '#34d399',
+    color: 'var(--color-success)',
     icon: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="8" r="6" /><path d="M5 8l2 2 4-4" /></svg>,
   },
   error: {
-    color: '#f87171',
+    color: 'var(--color-error)',
     icon: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="8" cy="8" r="6" /><path d="M6 6l4 4M10 6l-4 4" /></svg>,
   },
   warning: {
-    color: '#fbbf24',
+    color: 'var(--color-warning)',
     icon: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2L1 14h14L8 2z" /><path d="M8 7v3M8 12v.5" /></svg>,
   },
 };
@@ -53,7 +53,7 @@ function ToastList() {
             role={role}
             aria-atomic="true"
             className={[
-              'absolute bottom-0 left-auto right-0 flex w-full select-none items-start gap-2.5 rounded-md border border-border-strong bg-background-elevated px-3.5 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.4)] transition-all duration-200 data-[starting-style]:translate-y-full data-[starting-style]:opacity-0 data-[ending-style]:translate-y-full data-[ending-style]:opacity-0',
+              'absolute bottom-0 left-auto right-0 flex w-full select-none items-start gap-2.5 rounded-md border border-border-strong bg-background-elevated px-3.5 py-3 shadow-toast transition-all duration-200 data-[starting-style]:translate-y-full data-[starting-style]:opacity-0 data-[ending-style]:translate-y-full data-[ending-style]:opacity-0',
               className,
             ].filter(Boolean).join(' ')}
             style={style}

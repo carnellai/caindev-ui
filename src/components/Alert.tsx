@@ -14,9 +14,9 @@ const alertConfig: Record<
   { color: string; bg: string; border: string; icon: React.ReactNode }
 > = {
   info: {
-    color: '#a78bfa',
-    bg: 'rgba(167,139,250,0.08)',
-    border: 'rgba(167,139,250,0.2)',
+    color: 'var(--color-info)',
+    bg: 'var(--color-info-muted)',
+    border: 'var(--color-info-border)',
     icon: (
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
         <circle cx="8" cy="8" r="6" />
@@ -25,9 +25,9 @@ const alertConfig: Record<
     ),
   },
   success: {
-    color: '#34d399',
-    bg: 'rgba(52,211,153,0.08)',
-    border: 'rgba(52,211,153,0.2)',
+    color: 'var(--color-success)',
+    bg: 'var(--color-success-muted)',
+    border: 'var(--color-success-border)',
     icon: (
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="8" cy="8" r="6" />
@@ -36,9 +36,9 @@ const alertConfig: Record<
     ),
   },
   warning: {
-    color: '#fbbf24',
-    bg: 'rgba(251,191,36,0.08)',
-    border: 'rgba(251,191,36,0.2)',
+    color: 'var(--color-warning)',
+    bg: 'var(--color-warning-muted)',
+    border: 'var(--color-warning-border)',
     icon: (
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M8 2L1 14h14L8 2z" />
@@ -47,9 +47,9 @@ const alertConfig: Record<
     ),
   },
   error: {
-    color: '#f87171',
-    bg: 'rgba(248,113,113,0.08)',
-    border: 'rgba(248,113,113,0.2)',
+    color: 'var(--color-error)',
+    bg: 'var(--color-error-muted)',
+    border: 'var(--color-error-border)',
     icon: (
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
         <circle cx="8" cy="8" r="6" />

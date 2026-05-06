@@ -24,7 +24,7 @@ export function StatDelta({
   const delta = current - previous;
   const deltaPercent = previous !== 0 ? (delta / previous) * 100 : 0;
   const isImproved = higherIsBetter ? delta > 0 : delta < 0;
-  const color = delta === 0 ? 'var(--color-foreground-subtle)' : isImproved ? '#34d399' : '#f87171';
+  const color = delta === 0 ? 'var(--color-foreground-subtle)' : isImproved ? 'var(--color-success)' : 'var(--color-error)';
   const arrow = delta > 0 ? '↑' : delta < 0 ? '↓' : '→';
 
   const fmt = (v: number) => {

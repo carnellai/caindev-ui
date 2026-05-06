@@ -182,6 +182,14 @@ export {
   type TabsProps,
 } from './components/Tabs';
 export {
+  ThemeProvider,
+  type ThemeAccent,
+  type ThemeAppearance,
+  type ThemeProviderProps,
+  type ThemeRadius,
+  type ThemeScope,
+} from './components/ThemeProvider';
+export {
   Table,
   type Column,
   type TableProps,

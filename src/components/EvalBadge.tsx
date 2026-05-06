@@ -10,11 +10,11 @@ export type EvalBadgeProps = {
   className?: string;
 };
 
-const evalConfig: Record<EvalVerdict, { label: string; color: string; bg: string }> = {
-  pass: { label: 'Pass', color: '#34d399', bg: 'rgba(52,211,153,0.12)' },
-  fail: { label: 'Fail', color: '#f87171', bg: 'rgba(248,113,113,0.12)' },
-  review: { label: 'Review', color: '#fbbf24', bg: 'rgba(251,191,36,0.12)' },
-  insufficient: { label: 'Insufficient', color: '#94a3b8', bg: 'rgba(148,163,184,0.1)' },
+const evalConfig: Record<EvalVerdict, { label: string; color: string; bg: string; border: string }> = {
+  pass: { label: 'Pass', color: 'var(--color-success)', bg: 'var(--color-success-muted)', border: 'var(--color-success-border)' },
+  fail: { label: 'Fail', color: 'var(--color-error)', bg: 'var(--color-error-muted)', border: 'var(--color-error-border)' },
+  review: { label: 'Review', color: 'var(--color-warning)', bg: 'var(--color-warning-muted)', border: 'var(--color-warning-border)' },
+  insufficient: { label: 'Insufficient', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)', border: 'var(--color-neutral-border)' },
 };
 
 export function EvalBadge({ verdict, score, label, size = 'md', style, className }: EvalBadgeProps) {
@@ -29,7 +29,7 @@ export function EvalBadge({ verdict, score, label, size = 'md', style, className
         className,
       ].filter(Boolean).join(' ')}
       style={{
-        border: `1px solid ${cfg.color}22`,
+        border: `1px solid ${cfg.border}`,
         background: cfg.bg,
         color: cfg.color,
         ...style,

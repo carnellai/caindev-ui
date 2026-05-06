@@ -75,7 +75,7 @@ export function CodeBlock({
           onClick={handleCopy}
           className={[
             'flex cursor-pointer items-center gap-[5px] rounded-[5px] border border-border bg-transparent px-2 py-[3px] text-[0.6875rem] transition-colors duration-150',
-            copied ? 'text-emerald-400' : 'text-foreground-muted',
+            copied ? 'text-success' : 'text-foreground-muted',
           ].join(' ')}
         >
           {copied ? <CheckIcon /> : <CopyIcon />}
