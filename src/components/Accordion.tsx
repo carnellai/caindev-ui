@@ -1,9 +1,11 @@
 import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 
 export type AccordionItem = {
   value: string;
-  trigger: React.ReactNode;
-  content: React.ReactNode;
+  trigger: ReactNode;
+  content: ReactNode;
   disabled?: boolean;
 };
 
@@ -17,7 +19,7 @@ export type AccordionProps = {
   onValueChange?: (value: AccordionValue) => void;
   disabled?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 function PlusIcon() {
@@ -45,7 +47,7 @@ export function Accordion({
       defaultValue={defaultValue}
       onValueChange={onValueChange}
       disabled={disabled}
-      className={['flex w-full flex-col', className].filter(Boolean).join(' ')}
+      className={cn('flex w-full flex-col', className)}
       style={style}
     >
       {items.map((item) => (

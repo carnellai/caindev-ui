@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react';
 
 export type ThemeAppearance = 'dark' | 'light'
 export type ThemeAccent =
@@ -11,15 +12,20 @@ export type ThemeAccent =
 export type ThemeRadius = 'sm' | 'md' | 'lg'
 export type ThemeScope = 'subtree' | 'global'
 
-export type ThemeProviderProps = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  'children'
-> & {
+/**
+ * HTML div passthrough props are applied only when scope is "subtree".
+ * Global scope renders children without a wrapper and applies attributes to <html>.
+ */
+export type ThemeProviderProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
+  /** Where theme attributes are written. Global scope renders no wrapper. */
   scope?: ThemeScope
+  /** Theme color mode written to data-appearance. */
   appearance?: ThemeAppearance
+  /** Accent palette written to data-accent. */
   accent?: ThemeAccent
+  /** Radius scale written to data-radius. */
   radius?: ThemeRadius
-  children: React.ReactNode
+  children: ReactNode
 }
 
 const themeAttributeNames = [
@@ -158,6 +164,10 @@ export function ThemeProvider({
     entry.values = themeAttributes
     syncGlobalThemeAttributes(document.documentElement)
   }, [scope, appearance, accent, radius])
+
+  if (scope === 'global') {
+    return <>{children}</>
+  }
 
   return (
     <div

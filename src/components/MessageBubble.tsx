@@ -1,4 +1,6 @@
 import { StreamingText } from './StreamingText';
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 
 export type MessageRole = 'user' | 'assistant' | 'system';
 
@@ -6,17 +8,18 @@ export type MessageBubbleProps = {
   role: MessageRole;
   content: string;
   streaming?: boolean;
-  avatar?: React.ReactNode;
+  avatar?: ReactNode;
   timestamp?: string;
-  actions?: React.ReactNode;
+  actions?: ReactNode;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
+// Chat bubbles use asymmetric radii for the tail shape; this intentionally does not follow the global radius scale.
 const roleClasses: Record<MessageRole, string> = {
   user: 'self-end max-w-[80%] rounded-[12px_12px_2px_12px] border border-border bg-background-subtle px-3.5 py-2.5',
   assistant: 'self-start max-w-[85%] rounded-none border-0 bg-transparent p-0',
-  system: 'self-center max-w-[90%] rounded-[8px] border border-accent/20 bg-accent-muted px-3.5 py-2.5',
+  system: 'self-center max-w-[90%] rounded-md border border-accent/20 bg-accent-muted px-3.5 py-2.5',
 };
 
 function UserAvatar() {
@@ -31,7 +34,7 @@ function UserAvatar() {
 
 function AssistantAvatar() {
   return (
-    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] bg-accent">
+    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accent">
       <svg width="14" height="14" viewBox="0 0 22 22" fill="none">
         <path d="M2 17 L8 7 L14 17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M10 17 L15 10 L20 17" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.65" />
@@ -55,7 +58,7 @@ export function MessageBubble({
 
   return (
     <div
-      className={['flex w-full items-start gap-2.5', isUser ? 'flex-row-reverse' : 'flex-row', className].filter(Boolean).join(' ')}
+      className={cn('flex w-full items-start gap-2.5', isUser ? 'flex-row-reverse' : 'flex-row', className)}
       style={style}
     >
       {isUser && (avatar ?? <UserAvatar />)}
@@ -71,7 +74,7 @@ export function MessageBubble({
         </div>
 
         {(timestamp || actions) && (
-          <div className={['flex items-center gap-2', isUser ? 'justify-end pl-0' : 'justify-start pl-0.5'].join(' ')}>
+          <div className={cn('flex items-center gap-2', isUser ? 'justify-end pl-0' : 'justify-start pl-0.5')}>
             {timestamp && (
               <span className="text-[0.6875rem] text-foreground-subtle tabular-nums">
                 {timestamp}

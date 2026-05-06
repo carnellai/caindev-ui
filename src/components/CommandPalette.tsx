@@ -1,24 +1,32 @@
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { KeyboardEvent as ReactKeyboardEvent, ReactElement, ReactNode } from 'react';
+import { cn } from '../lib/cn';
 
 export type CommandItem = {
   id: string;
   label: string;
   description?: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
+  /** Optional section label used to group filtered results. */
   group?: string;
+  /** Extra searchable terms that are not displayed. */
   keywords?: string[];
+  /** Runs when the item is clicked or selected with Enter. */
   onSelect: () => void;
 };
 
 export type CommandPaletteProps = {
+  /** Command items are filtered by label, description, and keywords. */
   items: CommandItem[];
+  /** Controlled open state. */
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   placeholder?: string;
   emptyText?: string;
-  trigger?: React.ReactElement;
+  /** Element rendered as the Base UI dialog trigger. */
+  trigger?: ReactElement;
 };
 
 function SearchIcon() {
@@ -90,7 +98,7 @@ export function CommandPalette({
     setActiveIndex((i) => Math.min(i, Math.max(0, flatFiltered.length - 1)));
   }, [flatFiltered.length]);
 
-  function handleKeyDown(e: React.KeyboardEvent) {
+  function handleKeyDown(e: ReactKeyboardEvent) {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setActiveIndex((i) => Math.min(i + 1, flatFiltered.length - 1));
@@ -122,7 +130,7 @@ export function CommandPalette({
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className="fixed inset-0 min-h-dvh bg-overlay-backdrop backdrop-blur-[4px] transition-opacity duration-150 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 supports-[-webkit-touch-callout:none]:absolute" />
         <BaseDialog.Popup
-          className="fixed left-1/2 top-[20vh] w-[560px] max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-[12px] border border-border-strong bg-background-elevated shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
+          className="fixed left-1/2 top-[20vh] w-[560px] max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-lg border border-border-strong bg-background-elevated shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
           onKeyDown={handleKeyDown}
         >
           <BaseDialog.Title className="sr-only">Command palette</BaseDialog.Title>
@@ -186,12 +194,12 @@ export function CommandPalette({
                         data-active={isActive}
                         onMouseEnter={() => setActiveIndex(globalIndex)}
                         onClick={() => item.onSelect()}
-                        className={[
-                          'flex cursor-default select-none items-center gap-3 rounded-[6px] px-2.5 py-2 text-sm outline-none transition-[background,color] duration-[60ms]',
+                        className={cn(
+                          'flex cursor-default select-none items-center gap-3 rounded-sm px-2.5 py-2 text-sm outline-none transition-[background,color] duration-[60ms]',
                           isActive
                             ? 'bg-surface-hover text-foreground'
                             : 'text-foreground-muted',
-                        ].join(' ')}
+                        )}
                       >
                         {item.icon && (
                           <span className="flex h-5 w-5 shrink-0 items-center justify-center text-foreground-subtle">
@@ -239,7 +247,7 @@ export function useCommandPalette() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
+    function handleKeyDown(e: globalThis.KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         setOpen((prev) => !prev);

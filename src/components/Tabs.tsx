@@ -1,9 +1,11 @@
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 
 export type Tab = {
   value: string;
   label: string;
-  content: React.ReactNode;
+  content: ReactNode;
   disabled?: boolean;
 };
 
@@ -13,7 +15,7 @@ export type TabsProps = {
   value?: string | null;
   onValueChange?: (value: string | null) => void;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 export function Tabs({ tabs, defaultValue, value, onValueChange, className, style }: TabsProps) {
@@ -22,7 +24,7 @@ export function Tabs({ tabs, defaultValue, value, onValueChange, className, styl
       defaultValue={defaultValue ?? tabs[0]?.value}
       value={value}
       onValueChange={(nextValue) => onValueChange?.(nextValue)}
-      className={['flex flex-col gap-0', className].filter(Boolean).join(' ')}
+      className={cn('flex flex-col gap-0', className)}
       style={style}
     >
       <BaseTabs.List
@@ -39,7 +41,7 @@ export function Tabs({ tabs, defaultValue, value, onValueChange, className, styl
           </BaseTabs.Tab>
         ))}
         <BaseTabs.Indicator
-          className="absolute bottom-[-1px] left-0 h-0.5 rounded-[1px] bg-accent transition-[width,transform] duration-200"
+          className="absolute bottom-[-1px] left-0 h-0.5 rounded-sm bg-accent transition-[width,transform] duration-200"
           style={{
             width: 'var(--active-tab-width)',
             transform: 'translateX(var(--active-tab-left))',

@@ -16,15 +16,28 @@ export default defineConfig({
     }),
     dts({
       entryRoot: 'src',
-      include: ['src'],
+      include: ['src/**/*.ts', 'src/**/*.tsx'],
       insertTypesEntry: true,
+      beforeWriteFile(filePath) {
+        if (filePath.endsWith('/styles.d.ts')) return false;
+      },
     }),
+    {
+      name: 'caindev-ui-remove-styles-entry-js',
+      generateBundle(_options, bundle) {
+        delete bundle['styles.js'];
+        delete bundle['styles.js.map'];
+      },
+    },
   ],
   build: {
     lib: {
-      entry: 'src/index.ts',
+      entry: {
+        index: 'src/index.ts',
+        styles: 'src/styles.css',
+      },
       formats: ['es'],
-      fileName: 'index',
+      fileName: (_format, entryName) => `${entryName}.js`,
       cssFileName: 'styles',
     },
     rollupOptions: {
@@ -38,6 +51,7 @@ export default defineConfig({
       ),
     },
     sourcemap: true,
+    cssCodeSplit: true,
     emptyOutDir: true,
   },
 });

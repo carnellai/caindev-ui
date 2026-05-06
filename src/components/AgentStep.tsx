@@ -1,3 +1,5 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 export type StepStatus = 'pending' | 'running' | 'complete' | 'failed' | 'skipped';
 
 export type AgentStepItem = {
@@ -11,9 +13,10 @@ export type AgentStepItem = {
 export type AgentStepProps = {
   steps: AgentStepItem[];
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
+// Component-private palette — not part of the public token surface in v1.
 function RunningIcon() {
   return (
     <svg
@@ -27,7 +30,7 @@ function RunningIcon() {
   );
 }
 
-const statusConfig: Record<StepStatus, { icon: React.ReactNode; color: string }> = {
+const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
   pending: {
     icon: (
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -70,7 +73,7 @@ const statusConfig: Record<StepStatus, { icon: React.ReactNode; color: string }>
 
 export function AgentStep({ steps, className, style }: AgentStepProps) {
   return (
-    <div className={['flex flex-col gap-0', className].filter(Boolean).join(' ')} style={style}>
+    <div className={cn('flex flex-col gap-0', className)} style={style}>
       {steps.map((step, i) => {
         const cfg = statusConfig[step.status];
         const isLast = i === steps.length - 1;

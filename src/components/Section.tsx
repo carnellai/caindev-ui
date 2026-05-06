@@ -1,9 +1,11 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 export type SectionSize = 'sm' | 'md' | 'lg';
 
 export type SectionProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   size?: SectionSize;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
   id?: string;
 };
@@ -24,7 +26,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={[paddingMap[size], className].filter(Boolean).join(' ')}
+      className={cn(paddingMap[size], className)}
       style={style}
     >
       {children}

@@ -1,4 +1,6 @@
 import { Progress as BaseProgress } from '@base-ui/react/progress'
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 
 export type ProgressSize = 'sm' | 'md' | 'lg'
 export type ProgressVariant = 'default' | 'success' | 'warning' | 'error'
@@ -12,7 +14,7 @@ export type ProgressProps = {
   size?: ProgressSize
   variant?: ProgressVariant
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 const sizeClasses: Record<ProgressSize, string> = {
@@ -44,9 +46,7 @@ export function Progress({
       value={value}
       min={min}
       max={max}
-      className={['flex w-full flex-col gap-1.5', className]
-        .filter(Boolean)
-        .join(' ')}
+      className={cn('flex w-full flex-col gap-1.5', className)}
       style={style}>
       {(label || showValue) && (
         <div className='flex items-center justify-between gap-2'>
@@ -61,15 +61,15 @@ export function Progress({
         </div>
       )}
       <BaseProgress.Track
-        className={[
+        className={cn(
           'w-full overflow-hidden rounded-full bg-background-subtle',
           sizeClasses[size],
-        ].join(' ')}>
+        )}>
         <BaseProgress.Indicator
-          className={[
+          className={cn(
             'h-full rounded-full transition-[width] duration-500 data-[indeterminate]:cd-progress-indeterminate',
             variantClasses[variant],
-          ].join(' ')}
+          )}
           style={
             value !== null
               ? { width: `${((value - min) / (max - min)) * 100}%` }

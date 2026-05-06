@@ -1,12 +1,14 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 export type EmptyStateVariant = 'default' | 'error';
 
 export type EmptyStateProps = {
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   title: string;
   description?: string;
-  action?: React.ReactNode;
+  action?: ReactNode;
   variant?: EmptyStateVariant;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -41,13 +43,13 @@ export function EmptyState({
 
   return (
     <div
-      className={[
+      className={cn(
         'flex flex-col items-center justify-center gap-3 px-6 py-12 text-center',
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={style}
     >
-      <span className={[isError ? 'text-error' : 'text-foreground-subtle', 'opacity-60'].join(' ')}>
+      <span className={cn(isError ? 'text-error' : 'text-foreground-subtle', 'opacity-60')}>
         {icon ?? (isError ? <ErrorIcon /> : <DefaultIcon />)}
       </span>
       <div className="flex flex-col gap-1.5">

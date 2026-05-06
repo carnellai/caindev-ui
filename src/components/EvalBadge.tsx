@@ -1,3 +1,5 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 export type EvalVerdict = 'pass' | 'fail' | 'review' | 'insufficient';
 export type EvalBadgeSize = 'sm' | 'md';
 
@@ -6,7 +8,7 @@ export type EvalBadgeProps = {
   score?: number;
   label?: string;
   size?: EvalBadgeSize;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -23,11 +25,11 @@ export function EvalBadge({ verdict, score, label, size = 'md', style, className
 
   return (
     <span
-      className={[
-        'inline-flex items-center gap-[5px] whitespace-nowrap rounded-[4px] font-semibold tracking-[0.04em]',
+      className={cn(
+        'inline-flex items-center gap-[5px] whitespace-nowrap rounded-sm font-semibold tracking-[0.04em]',
         isSmall ? 'px-1.5 py-0.5 text-[0.625rem]' : 'px-[9px] py-[3px] text-[0.6875rem]',
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={{
         border: `1px solid ${cfg.border}`,
         background: cfg.bg,
@@ -36,7 +38,7 @@ export function EvalBadge({ verdict, score, label, size = 'md', style, className
       }}
     >
       <span
-        className={['shrink-0 rounded-full', isSmall ? 'h-[5px] w-[5px]' : 'h-1.5 w-1.5'].join(' ')}
+        className={cn('shrink-0 rounded-full', isSmall ? 'h-[5px] w-[5px]' : 'h-1.5 w-1.5')}
         style={{ background: cfg.color }}
       />
       {label ?? cfg.label}

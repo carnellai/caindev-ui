@@ -1,9 +1,11 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
 export type Column<T> = {
   key: string;
   header: string;
   width?: string;
   align?: 'left' | 'center' | 'right';
-  render?: (row: T) => React.ReactNode;
+  render?: (row: T) => ReactNode;
 };
 
 export type TableProps<T extends Record<string, unknown>> = {
@@ -13,9 +15,9 @@ export type TableProps<T extends Record<string, unknown>> = {
   onRowClick?: (row: T) => void;
   emptyMessage?: string;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   tableClassName?: string;
-  tableStyle?: React.CSSProperties;
+  tableStyle?: CSSProperties;
 };
 
 export function Table<T extends Record<string, unknown>>({
@@ -29,7 +31,7 @@ export function Table<T extends Record<string, unknown>>({
   tableClassName,
   tableStyle,
 }: TableProps<T>) {
-  const handleRowKeyDown = (event: React.KeyboardEvent<HTMLTableRowElement>, row: T) => {
+  const handleRowKeyDown = (event: KeyboardEvent<HTMLTableRowElement>, row: T) => {
     if (!onRowClick) return;
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -39,11 +41,11 @@ export function Table<T extends Record<string, unknown>>({
 
   return (
     <div
-      className={['w-full overflow-x-auto rounded-[8px] border border-border', className].filter(Boolean).join(' ')}
+      className={cn('w-full overflow-x-auto rounded-md border border-border', className)}
       style={style}
     >
       <table
-        className={['w-full border-collapse text-sm', tableClassName].filter(Boolean).join(' ')}
+        className={cn('w-full border-collapse text-sm', tableClassName)}
         style={tableStyle}
       >
         <thead>
@@ -80,11 +82,11 @@ export function Table<T extends Record<string, unknown>>({
                 aria-label={onRowClick ? `Open row ${String(row[keyField] ?? i + 1)}` : undefined}
                 onClick={() => onRowClick?.(row)}
                 onKeyDown={(event) => handleRowKeyDown(event, row)}
-                className={[
+                className={cn(
                   'bg-background-elevated outline-none transition-[background,outline-color] duration-100',
                   onRowClick ? 'cursor-pointer hover:bg-background-subtle focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]' : 'cursor-default',
                   i < rows.length - 1 ? 'border-b border-border' : undefined,
-                ].filter(Boolean).join(' ') || undefined}
+                ) || undefined}
               >
                 {columns.map((col) => (
                   <td

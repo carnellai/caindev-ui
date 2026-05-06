@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
+import { cn } from '../lib/cn';
 
 export type StreamingTextProps = {
+  /** Already-accumulated text to render; this component does not append chunks. */
   text: string;
+  /** Shows the streaming caret after the current text. */
   streaming?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 export type SimulatedStreamState = {
@@ -20,10 +24,10 @@ export function StreamingText({
 }: StreamingTextProps) {
   return (
     <span
-      className={[
+      className={cn(
         'whitespace-pre-wrap break-words font-[inherit] leading-[inherit] text-inherit',
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={style}
     >
       {text}
@@ -37,6 +41,9 @@ export function StreamingText({
   );
 }
 
+/**
+ * Reveals fullText over time in small chunks; speed is the interval in ms.
+ */
 export function useSimulatedStream(fullText: string, speed = 18): SimulatedStreamState {
   const [text, setText] = useState('');
   const [streaming, setStreaming] = useState(true);

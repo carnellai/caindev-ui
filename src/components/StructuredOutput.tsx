@@ -1,11 +1,13 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 export type StructuredOutputProps = {
   data: Record<string, unknown>;
   title?: string;
-  collapsible?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
+// Component-private palette — not part of the public token surface in v1.
 function ValueDisplay({ value, depth = 0 }: { value: unknown; depth?: number }) {
   if (value === null) return <span className="italic text-foreground-subtle">null</span>;
   if (value === undefined) return <span className="italic text-foreground-subtle">undefined</span>;
@@ -13,7 +15,7 @@ function ValueDisplay({ value, depth = 0 }: { value: unknown; depth?: number }) 
   if (typeof value === 'number') return <span style={{ color: '#34d399' }}>{value}</span>;
   if (typeof value === 'string') {
     if (value.length > 120) {
-      return <span style={{ color: 'var(--color-foreground-muted)' }}>"{value.slice(0, 120)}…"</span>;
+      return <span className="text-foreground-muted">"{value.slice(0, 120)}…"</span>;
     }
     return <span style={{ color: '#fbbf24' }}>"{value}"</span>;
   }
@@ -71,7 +73,7 @@ function StructuredOutputInner({ data, depth = 0 }: { data: Record<string, unkno
 export function StructuredOutput({ data, title, className, style }: StructuredOutputProps) {
   return (
     <div
-      className={['overflow-hidden rounded-[8px] border border-border bg-background-elevated', className].filter(Boolean).join(' ')}
+      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated', className)}
       style={style}
     >
       {title && (

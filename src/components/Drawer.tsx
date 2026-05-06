@@ -1,20 +1,22 @@
 import { Drawer as BaseDrawer } from '@base-ui/react/drawer'
 import { Button } from './Button'
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
 export type DrawerSide = 'bottom' | 'right' | 'left'
 
 export type DrawerProps = {
-  trigger: React.ReactElement
+  trigger: ReactElement
   title: string
   description?: string
-  children?: React.ReactNode
-  actions?: React.ReactNode
+  children?: ReactNode
+  actions?: ReactNode
   side?: DrawerSide
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 function CloseIcon() {
@@ -88,7 +90,7 @@ export function Drawer({
         <BaseDrawer.Backdrop className='fixed inset-0 min-h-dvh bg-overlay-backdrop backdrop-blur-[4px] opacity-[calc(1*(1-var(--drawer-swipe-progress)))] transition-opacity duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:duration-0 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)] supports-[-webkit-touch-callout:none]:absolute' />
         <BaseDrawer.Viewport className={cfg.viewportClass}>
           <BaseDrawer.Popup
-            className={[cfg.popupClass, className].filter(Boolean).join(' ')}
+            className={cn(cfg.popupClass, className)}
             style={style}>
             {cfg.handleClass && <div className={cfg.handleClass} aria-hidden />}
             <BaseDrawer.Content className='mx-auto w-full max-w-[32rem]'>
@@ -116,10 +118,10 @@ export function Drawer({
               {children && <div className='mb-6'>{children}</div>}
 
               <div
-                className={[
+                className={cn(
                   'flex gap-2',
                   side === 'bottom' ? 'justify-center' : 'justify-end',
-                ].join(' ')}>
+                )}>
                 {actions ?? (
                   <BaseDrawer.Close
                     render={<Button type='button' variant='outline' />}>

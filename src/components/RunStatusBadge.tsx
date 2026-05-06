@@ -1,10 +1,12 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 export type RunStatus = 'running' | 'completed' | 'failed' | 'error' | 'queued' | 'cancelled';
 export type RunStatusBadgeSize = 'sm' | 'md';
 
 export type RunStatusBadgeProps = {
   status: RunStatus;
   size?: RunStatusBadgeSize;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -23,11 +25,11 @@ export function RunStatusBadge({ status, size = 'md', style, className }: RunSta
 
   return (
     <span
-      className={[
-        'inline-flex items-center gap-[5px] whitespace-nowrap rounded-[4px] font-semibold tracking-[0.04em]',
+      className={cn(
+        'inline-flex items-center gap-[5px] whitespace-nowrap rounded-sm font-semibold tracking-[0.04em]',
         isSmall ? 'px-1.5 py-0.5 text-[0.625rem]' : 'px-[9px] py-[3px] text-[0.6875rem]',
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={{
         background: cfg.bg,
         color: cfg.color,
@@ -35,7 +37,7 @@ export function RunStatusBadge({ status, size = 'md', style, className }: RunSta
       }}
     >
       <span
-        className={['cd-run-status-dot shrink-0 rounded-full', isSmall ? 'h-[5px] w-[5px]' : 'h-1.5 w-1.5', cfg.pulse ? 'cd-run-status-dot-pulse' : ''].filter(Boolean).join(' ')}
+        className={cn('cd-run-status-dot shrink-0 rounded-full', isSmall ? 'h-[5px] w-[5px]' : 'h-1.5 w-1.5', cfg.pulse ? 'cd-run-status-dot-pulse' : '')}
         style={{
           background: cfg.color,
         }}

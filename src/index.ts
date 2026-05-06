@@ -1,5 +1,3 @@
-import './styles.css'
-
 export {
   Accordion,
   type AccordionItem,

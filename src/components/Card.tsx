@@ -1,11 +1,13 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
 export type CardProps = {
-  children: React.ReactNode;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
+  children: ReactNode;
+  header?: ReactNode;
+  footer?: ReactNode;
   padding?: CardPadding;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -33,18 +35,18 @@ export function Card({
 }: CardProps) {
   return (
     <div
-      className={[
-        'overflow-hidden rounded-[8px] border border-border bg-background-elevated shadow-[0_1px_3px_rgba(0,0,0,0.2)]',
+      className={cn(
+        'overflow-hidden rounded-md border border-border bg-background-elevated shadow-card',
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={style}
     >
       {header && (
         <div
-          className={[
+          className={cn(
             'flex items-center justify-between border-b border-border',
             chromePaddingClasses[padding],
-          ].join(' ')}
+          )}
         >
           {header}
         </div>
@@ -52,10 +54,10 @@ export function Card({
       <div className={bodyPaddingClasses[padding]}>{children}</div>
       {footer && (
         <div
-          className={[
+          className={cn(
             'border-t border-border bg-background',
             chromePaddingClasses[padding],
-          ].join(' ')}
+          )}
         >
           {footer}
         </div>

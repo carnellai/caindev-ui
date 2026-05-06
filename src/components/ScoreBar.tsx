@@ -1,3 +1,5 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 export type ScoreBarSize = 'sm' | 'md';
 
 export type ScoreBarProps = {
@@ -6,7 +8,7 @@ export type ScoreBarProps = {
   label?: string;
   showValue?: boolean;
   size?: ScoreBarSize;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -27,7 +29,7 @@ export function ScoreBar({
   const meterLabel = label ?? 'Score';
 
   return (
-    <div className={['flex w-full flex-col gap-1.5', className].filter(Boolean).join(' ')} style={style}>
+    <div className={cn('flex w-full flex-col gap-1.5', className)} style={style}>
       {(label || showValue) && (
         <div className="flex items-center justify-between">
           {label && <span className="text-xs text-foreground-muted">{label}</span>}
@@ -56,7 +58,7 @@ export function ScoreBar({
         />
         {threshold !== undefined && (
           <div
-            className="absolute top-[-3px] w-0.5 -translate-x-1/2 rounded-[1px] bg-foreground-subtle"
+            className="absolute top-[-3px] w-0.5 -translate-x-1/2 rounded-sm bg-foreground-subtle"
             style={{
               left: `${threshold * 100}%`,
               height: `calc(${height} + 6px)`,

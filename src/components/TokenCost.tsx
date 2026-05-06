@@ -1,3 +1,5 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 export type TokenCostLayout = 'row' | 'stack';
 
 export type TokenCostProps = {
@@ -7,7 +9,7 @@ export type TokenCostProps = {
   cost?: number;
   model?: string;
   layout?: TokenCostLayout;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -30,11 +32,11 @@ export function TokenCost({
 
   return (
     <div
-      className={[
+      className={cn(
         'flex flex-wrap',
         isRow ? 'flex-row items-center gap-3' : 'flex-col items-start gap-1',
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={style}
     >
       {model && (

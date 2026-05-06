@@ -1,4 +1,6 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 
 export type SelectOption = {
   label: string;
@@ -14,9 +16,9 @@ export type SelectProps = {
   defaultValue?: string | null;
   onValueChange?: (value: string | null) => void;
   disabled?: boolean;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
-  triggerStyle?: React.CSSProperties;
+  triggerStyle?: CSSProperties;
   triggerClassName?: string;
 };
 
@@ -45,7 +47,7 @@ function CheckIcon() {
 }
 
 function mergeClassName(base: string, className?: string) {
-  return [base, className].filter(Boolean).join(' ');
+  return cn(base, className);
 }
 
 export function Select({
@@ -68,7 +70,7 @@ export function Select({
   };
 
   return (
-    <div className={['flex flex-col gap-1.5', className].filter(Boolean).join(' ')} style={style}>
+    <div className={cn('flex flex-col gap-1.5', className)} style={style}>
       <BaseSelect.Root
         items={options}
         value={value}
@@ -78,7 +80,7 @@ export function Select({
       >
         {label && (
           <BaseSelect.Label
-            className={['text-[0.8125rem] font-medium', isDisabled ? 'text-foreground-subtle' : 'text-foreground'].join(' ')}
+            className={cn('text-[0.8125rem] font-medium', isDisabled ? 'text-foreground-subtle' : 'text-foreground')}
           >
             {label}
           </BaseSelect.Label>
@@ -86,7 +88,7 @@ export function Select({
         <BaseSelect.Trigger
           aria-label={label ? undefined : placeholder}
           className={mergeClassName(
-            'flex h-9 min-w-40 cursor-pointer select-none items-center justify-between gap-2 rounded-[8px] border border-border-strong bg-surface-control py-0 pl-3 pr-2.5 text-sm text-foreground shadow-highlight-inset outline-none data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-50 data-[popup-open]:border-accent focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+            'flex h-9 min-w-40 cursor-pointer select-none items-center justify-between gap-2 rounded-md border border-border-strong bg-surface-control py-0 pl-3 pr-2.5 text-sm text-foreground shadow-highlight-inset outline-none data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-50 data-[popup-open]:border-accent focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
             triggerClassName,
           )}
           style={triggerStyle}
@@ -105,7 +107,7 @@ export function Select({
         <BaseSelect.Portal>
           <BaseSelect.Positioner sideOffset={6}>
             <BaseSelect.Popup
-              className="rounded-[8px] border border-border-strong bg-background-elevated p-1 shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
+              className="rounded-md border border-border-strong bg-background-elevated p-1 shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
               style={{
                 minWidth: 'max(var(--anchor-width), 180px)',
                 transformOrigin: 'var(--transform-origin)',

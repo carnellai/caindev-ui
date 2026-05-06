@@ -1,3 +1,5 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 export type StatDeltaFormat = 'number' | 'percent' | 'currency' | 'duration';
 
 export type StatDeltaProps = {
@@ -7,7 +9,7 @@ export type StatDeltaProps = {
   unit?: string;
   format?: StatDeltaFormat;
   higherIsBetter?: boolean;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -35,7 +37,7 @@ export function StatDelta({
   };
 
   return (
-    <div className={['flex flex-col gap-1', className].filter(Boolean).join(' ')} style={style}>
+    <div className={cn('flex flex-col gap-1', className)} style={style}>
       <span className="text-[0.6875rem] font-medium uppercase tracking-[0.08em] text-foreground-subtle">
         {label}
       </span>

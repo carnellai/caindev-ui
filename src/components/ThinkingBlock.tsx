@@ -1,5 +1,7 @@
 import { useId, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { StreamingText } from './StreamingText';
+import { cn } from '../lib/cn';
 
 export type ThinkingBlockProps = {
   content: string;
@@ -7,7 +9,7 @@ export type ThinkingBlockProps = {
   defaultOpen?: boolean;
   label?: string;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 function ChevronIcon({ open }: { open: boolean }) {
@@ -53,7 +55,7 @@ export function ThinkingBlock({
 
   return (
     <div
-      className={['overflow-hidden rounded-[8px] border border-border bg-background-subtle', className].filter(Boolean).join(' ')}
+      className={cn('overflow-hidden rounded-md border border-border bg-background-subtle', className)}
       style={style}
     >
       <button

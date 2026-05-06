@@ -1,10 +1,12 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 export type ContainerSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 export type ContainerProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   size?: ContainerSize;
   center?: boolean;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -25,12 +27,12 @@ export function Container({
 }: ContainerProps) {
   return (
     <div
-      className={[
+      className={cn(
         'w-full',
         sizeClasses[size],
         center ? 'mx-auto' : undefined,
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={style}
     >
       {children}

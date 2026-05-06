@@ -1,3 +1,5 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 export type ApprovalRisk = 'low' | 'medium' | 'high';
 
 export type ApprovalCardProps = {
@@ -10,9 +12,10 @@ export type ApprovalCardProps = {
   onReject: () => void;
   loading?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
+// Component-private palette — not part of the public token surface in v1.
 const riskConfig = {
   low: { label: 'Low risk', color: '#34d399', bg: 'rgba(52,211,153,0.1)' },
   medium: { label: 'Medium risk', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)' },
@@ -43,7 +46,7 @@ export function ApprovalCard({
 
   return (
     <div
-      className={['overflow-hidden rounded-md border border-border-strong bg-background-elevated shadow-[0_4px_16px_rgba(0,0,0,0.2)]', className].filter(Boolean).join(' ')}
+      className={cn('overflow-hidden rounded-md border border-border-strong bg-background-elevated shadow-card', className)}
       style={style}
     >
       <div className="flex items-center justify-between border-b border-border bg-background px-4 py-3">
@@ -54,7 +57,7 @@ export function ApprovalCard({
           </span>
         </div>
         <span
-          className="rounded-[4px] px-2 py-0.5 text-[0.6875rem] font-medium"
+          className="rounded-sm px-2 py-0.5 text-[0.6875rem] font-medium"
           style={{
             color: rc.color,
             background: rc.bg,
@@ -71,7 +74,7 @@ export function ApprovalCard({
           </p>
         )}
 
-        <div className="rounded-[7px] border border-border bg-background px-3 py-2.5">
+        <div className="rounded-md border border-border bg-background px-3 py-2.5">
           <span className="mb-1.5 block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
             Proposed action
           </span>
@@ -81,7 +84,7 @@ export function ApprovalCard({
         </div>
 
         {reasoning && (
-          <div className="rounded-[7px] border-l-2 border-border-strong bg-background-subtle px-3 py-2.5">
+          <div className="rounded-md border-l-2 border-border-strong bg-background-subtle px-3 py-2.5">
             <span className="mb-1 block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
               Agent reasoning
             </span>
@@ -96,7 +99,7 @@ export function ApprovalCard({
             type="button"
             onClick={onApprove}
             disabled={loading}
-            className="flex-1 cursor-pointer rounded-[7px] border-0 bg-emerald-400 px-4 py-2 text-sm font-semibold text-green-950 opacity-100 transition-opacity duration-150 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 cursor-pointer rounded-md border-0 bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground opacity-100 transition-opacity duration-150 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? 'Processing…' : 'Approve'}
           </button>
@@ -104,7 +107,7 @@ export function ApprovalCard({
             type="button"
             onClick={onReject}
             disabled={loading}
-            className="flex-1 cursor-pointer rounded-[7px] border border-border-strong bg-transparent px-4 py-2 text-sm font-medium text-foreground-muted disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 cursor-pointer rounded-md border border-border-strong bg-transparent px-4 py-2 text-sm font-medium text-foreground-muted disabled:cursor-not-allowed disabled:opacity-60"
           >
             Reject
           </button>

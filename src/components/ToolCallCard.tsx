@@ -1,4 +1,7 @@
 import { useId, useState } from 'react';
+import type { CSSProperties } from 'react';
+import { cn } from '../lib/cn';
+import { safeJsonStringify } from '../lib/safeJsonStringify';
 
 export type ToolStatus = 'pending' | 'running' | 'success' | 'error';
 
@@ -10,7 +13,7 @@ export type ToolCallCardProps = {
   duration?: number;
   defaultOpen?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 const statusConfig: Record<ToolStatus, { label: string; color: string; bg: string }> = {
@@ -63,27 +66,6 @@ function JsonDisplay({ value }: { value: unknown }) {
   );
 }
 
-function safeJsonStringify(value: unknown) {
-  const seen = new WeakSet<object>();
-
-  try {
-    const json = JSON.stringify(value, (_key, nestedValue) => {
-      if (typeof nestedValue === 'bigint') return `${nestedValue.toString()}n`;
-      if (typeof nestedValue === 'function') return '[Function]';
-      if (typeof nestedValue === 'symbol') return nestedValue.toString();
-      if (typeof nestedValue === 'object' && nestedValue !== null) {
-        if (seen.has(nestedValue)) return '[Circular]';
-        seen.add(nestedValue);
-      }
-      return nestedValue;
-    }, 2);
-
-    return json ?? String(value);
-  } catch {
-    return String(value);
-  }
-}
-
 export function ToolCallCard({
   name,
   status,
@@ -101,7 +83,7 @@ export function ToolCallCard({
 
   return (
     <div
-      className={['overflow-hidden rounded-[8px] border border-border bg-background-elevated', className].filter(Boolean).join(' ')}
+      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated', className)}
       style={style}
     >
       <button
@@ -110,7 +92,7 @@ export function ToolCallCard({
         aria-controls={hasContent ? contentId : undefined}
         disabled={!hasContent}
         onClick={() => hasContent && setOpen((o) => !o)}
-        className={['flex w-full items-center gap-2 border-0 bg-transparent px-3 py-2.5 text-left', hasContent ? 'cursor-pointer' : 'cursor-default'].join(' ')}
+        className={cn('flex w-full items-center gap-2 border-0 bg-transparent px-3 py-2.5 text-left', hasContent ? 'cursor-pointer' : 'cursor-default')}
       >
         {hasContent && <ChevronIcon open={open} />}
         <span className="flex text-foreground-muted">
@@ -123,7 +105,7 @@ export function ToolCallCard({
         <span className="ml-auto flex items-center gap-1.5">
           {status === 'running' && <RunningDots />}
           <span
-            className="rounded-[4px] px-[7px] py-0.5 text-[0.6875rem] font-medium"
+            className="rounded-sm px-[7px] py-0.5 text-[0.6875rem] font-medium"
             style={{
               color: cfg.color,
               background: cfg.bg,

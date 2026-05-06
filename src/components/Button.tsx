@@ -1,9 +1,11 @@
 import { Button as BaseButton } from '@base-ui/react/button';
+import { cn } from '../lib/cn';
+import type { ComponentProps } from 'react';
 
 export type ButtonVariant = 'solid' | 'outline' | 'ghost';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
-export type ButtonProps = React.ComponentProps<typeof BaseButton> & {
+export type ButtonProps = ComponentProps<typeof BaseButton> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
@@ -16,7 +18,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
-  solid: 'border border-black/20 bg-accent text-accent-foreground shadow-highlight-inset',
+  solid: 'border border-border-strong bg-accent text-accent-foreground shadow-highlight-inset',
   outline: 'border border-border-strong bg-surface-control text-foreground shadow-highlight-inset',
   ghost: 'border-0 bg-transparent text-foreground-muted shadow-none',
 };
@@ -26,10 +28,10 @@ function mergeClassName(
   className: ButtonProps['className'],
 ): ButtonProps['className'] {
   if (typeof className === 'function') {
-    return (state) => [base, className(state)].filter(Boolean).join(' ');
+    return (state) => cn(base, className(state));
   }
 
-  return [base, className].filter(Boolean).join(' ');
+  return cn(base, className);
 }
 
 export function Button({
@@ -49,13 +51,13 @@ export function Button({
       aria-busy={loading || undefined}
       disabled={isDisabled}
       className={mergeClassName(
-        [
-          'cd-button inline-flex select-none items-center justify-center rounded-[8px] font-medium tracking-[-0.01em] outline-none transition-[background,border-color,color,opacity,box-shadow] duration-[120ms]',
+        cn(
+          'cd-button inline-flex select-none items-center justify-center rounded-md font-medium tracking-[-0.01em] outline-none transition-[background,border-color,color,opacity,box-shadow] duration-[120ms]',
           `cd-button-${variant}`,
           variantClasses[variant],
           sizeClasses[size],
           isDisabled ? 'cursor-not-allowed opacity-[0.56]' : 'cursor-pointer',
-        ].join(' '),
+        ),
         className,
       )}
       style={typeof style === 'object' ? style : undefined}

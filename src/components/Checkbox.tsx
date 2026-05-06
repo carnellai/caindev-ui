@@ -1,8 +1,14 @@
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import { useId } from 'react';
+import type { ComponentProps } from 'react';
+import { cn } from '../lib/cn';
 
-export type CheckboxProps = React.ComponentProps<typeof BaseCheckbox.Root> & {
+export type CheckboxProps = ComponentProps<typeof BaseCheckbox.Root> & {
   label?: string;
+  /** Targets the Base UI checkbox root/control; the outer label owns layout. */
+  className?: ComponentProps<typeof BaseCheckbox.Root>['className'];
+  /** Targets the Base UI checkbox root/control; the outer label owns layout. */
+  style?: ComponentProps<typeof BaseCheckbox.Root>['style'];
 };
 
 function CheckIcon() {
@@ -26,10 +32,10 @@ function mergeClassName(
   className: CheckboxProps['className'],
 ): CheckboxProps['className'] {
   if (typeof className === 'function') {
-    return (state) => [base, className(state)].filter(Boolean).join(' ');
+    return (state) => cn(base, className(state));
   }
 
-  return [base, className].filter(Boolean).join(' ');
+  return cn(base, className);
 }
 
 export function Checkbox({
@@ -47,7 +53,7 @@ export function Checkbox({
   return (
     <label
       htmlFor={checkboxId}
-      className={['inline-flex select-none items-center gap-2.5', disabled ? 'cursor-not-allowed' : 'cursor-pointer'].join(' ')}
+      className={cn('inline-flex select-none items-center gap-2.5', disabled ? 'cursor-not-allowed' : 'cursor-pointer')}
       style={{ opacity: disabled ? 0.5 : 1 }}
     >
       <BaseCheckbox.Root
@@ -56,13 +62,13 @@ export function Checkbox({
         indeterminate={indeterminate}
         style={typeof style === 'object' ? style : undefined}
         className={mergeClassName(
-          'flex h-[18px] w-[18px] shrink-0 cursor-inherit items-center justify-center rounded-[5px] border border-white/[0.12] bg-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] outline-none transition-[background,border-color] duration-[120ms] data-[checked]:border-accent data-[checked]:bg-accent data-[indeterminate]:border-accent data-[indeterminate]:bg-accent data-[disabled]:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          'flex h-[18px] w-[18px] shrink-0 cursor-inherit items-center justify-center rounded-sm border border-border-strong bg-surface-control shadow-highlight-inset outline-none transition-[background,border-color] duration-[120ms] data-[checked]:border-accent data-[checked]:bg-accent data-[indeterminate]:border-accent data-[indeterminate]:bg-accent data-[disabled]:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
           className,
         )}
         {...props}
       >
         <BaseCheckbox.Indicator
-          className="flex text-white data-[unchecked]:hidden"
+          className="flex text-accent-foreground data-[unchecked]:hidden"
         >
           {indeterminate ? <MinusIcon /> : <CheckIcon />}
         </BaseCheckbox.Indicator>

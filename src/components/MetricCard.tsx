@@ -1,3 +1,5 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 export type MetricTrend = 'up' | 'down' | 'neutral';
 
 export type MetricCardProps = {
@@ -8,7 +10,7 @@ export type MetricCardProps = {
   trendValue?: string;
   trendPositive?: boolean;
   sublabel?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -28,10 +30,10 @@ export function MetricCard({
 
   return (
     <div
-      className={[
-        'flex flex-col gap-1.5 rounded-[8px] border border-border bg-background-elevated px-4 py-3.5',
+      className={cn(
+        'flex flex-col gap-1.5 rounded-md border border-border bg-background-elevated px-4 py-3.5',
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={style}
     >
       <span className="text-[0.6875rem] font-medium uppercase tracking-[0.08em] text-foreground-subtle">

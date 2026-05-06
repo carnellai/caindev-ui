@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
+import type { CSSProperties } from 'react';
 import { MessageBubble, type MessageRole } from './MessageBubble';
+import { cn } from '../lib/cn';
 
 export type MessageThreadMessage = {
   id: string;
@@ -14,7 +16,7 @@ export type MessageThreadProps = {
   autoScroll?: boolean;
   maxHeight?: string | number;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 export function MessageThread({
@@ -34,7 +36,7 @@ export function MessageThread({
 
   return (
     <div
-      className={['flex flex-col gap-5 overflow-y-auto p-4', className].filter(Boolean).join(' ')}
+      className={cn('flex flex-col gap-5 overflow-y-auto p-4', className)}
       style={{
         maxHeight,
         scrollbarWidth: 'thin',

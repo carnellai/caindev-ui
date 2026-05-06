@@ -1,4 +1,6 @@
 import { Slider as BaseSlider } from '@base-ui/react/slider';
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 
 export type SliderValue = number | number[];
 
@@ -12,11 +14,11 @@ export type SliderProps = {
   onValueChange?: (value: SliderValue) => void;
   disabled?: boolean;
   ariaLabel?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
-const thumbClassName = 'h-4 w-4 cursor-pointer rounded-full border border-border-strong bg-white shadow-[0_1px_4px_rgba(0,0,0,0.4)] outline-none data-[disabled]:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background';
+const thumbClassName = 'h-4 w-4 cursor-pointer rounded-full border border-border-strong bg-accent-foreground shadow-card outline-none data-[disabled]:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 
 export function Slider({
   label,
@@ -43,12 +45,12 @@ export function Slider({
       value={value}
       onValueChange={onValueChange}
       disabled={disabled}
-      className={['flex w-full flex-col gap-2.5', className].filter(Boolean).join(' ')}
+      className={cn('flex w-full flex-col gap-2.5', className)}
       style={{ opacity: disabled ? 0.5 : 1, ...style }}
     >
       <div className="flex items-center justify-between">
         {label ? (
-          <BaseSlider.Label className={['text-[0.8125rem] font-medium', disabled ? 'text-foreground-subtle' : 'text-foreground'].join(' ')}>
+          <BaseSlider.Label className={cn('text-[0.8125rem] font-medium', disabled ? 'text-foreground-subtle' : 'text-foreground')}>
             {label}
           </BaseSlider.Label>
         ) : <span />}
@@ -59,13 +61,13 @@ export function Slider({
 
       <div>
         <BaseSlider.Control
-          className={['flex w-full select-none items-center py-2.5 touch-none', disabled ? 'cursor-not-allowed' : undefined].filter(Boolean).join(' ')}
+          className={cn('flex w-full select-none items-center py-2.5 touch-none', disabled ? 'cursor-not-allowed' : undefined)}
         >
           <BaseSlider.Track
-            className="relative h-1 w-full rounded-[2px] border border-border bg-background-subtle"
+            className="relative h-1 w-full rounded-sm border border-border bg-background-subtle"
           >
             <BaseSlider.Indicator
-              className="rounded-[2px] bg-accent"
+              className="rounded-sm bg-accent"
             />
             {isRange ? (
               <>

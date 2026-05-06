@@ -1,11 +1,13 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 export type GridProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   cols?: number | string;
   gap?: string | number;
   rowGap?: string | number;
   colGap?: string | number;
   minColWidth?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -27,7 +29,7 @@ export function Grid({
 
   return (
     <div
-      className={['grid', className].filter(Boolean).join(' ')}
+      className={cn('grid', className)}
       style={{
         // Intentional inline styles: all values below are prop-driven at
         // runtime. gridTemplateColumns is computed from cols/minColWidth and

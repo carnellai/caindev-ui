@@ -1,10 +1,16 @@
 import { Input as BaseInput } from '@base-ui/react/input';
 import { useId } from 'react';
+import type { ComponentProps } from 'react';
+import { cn } from '../lib/cn';
 
-export type InputProps = React.ComponentProps<typeof BaseInput> & {
+export type InputProps = ComponentProps<typeof BaseInput> & {
   label?: string;
   hint?: string;
   error?: string;
+  /** Targets the inner input control, not the label/hint/error wrapper. */
+  className?: ComponentProps<typeof BaseInput>['className'];
+  /** Targets the inner input control, not the label/hint/error wrapper. */
+  style?: ComponentProps<typeof BaseInput>['style'];
 };
 
 function mergeIds(...ids: Array<string | undefined>) {
@@ -16,10 +22,10 @@ function mergeClassName(
   className: InputProps['className'],
 ): InputProps['className'] {
   if (typeof className === 'function') {
-    return (state) => [base, className(state)].filter(Boolean).join(' ');
+    return (state) => cn(base, className(state));
   }
 
-  return [base, className].filter(Boolean).join(' ');
+  return cn(base, className);
 }
 
 export function Input({
@@ -64,10 +70,10 @@ export function Input({
         aria-labelledby={ariaLabelledBy}
         style={typeof style === 'object' ? style : undefined}
         className={mergeClassName(
-          [
-            'box-border h-9 w-full rounded-[8px] bg-surface-control px-3 text-sm text-foreground shadow-highlight-inset outline-none transition-[border-color] duration-150 placeholder:text-foreground-subtle focus:border-accent focus:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-surface-control-disabled disabled:text-foreground-subtle disabled:opacity-[0.65]',
+          cn(
+            'box-border h-9 w-full rounded-md bg-surface-control px-3 text-sm text-foreground shadow-highlight-inset outline-none transition-[border-color] duration-150 placeholder:text-foreground-subtle focus:border-accent focus:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-surface-control-disabled disabled:text-foreground-subtle disabled:opacity-[0.65]',
             error ? 'border border-destructive' : 'border border-border-strong',
-          ].join(' '),
+          ),
           className,
         )}
         {...props}

@@ -1,19 +1,21 @@
 import { Field } from '@base-ui/react/field';
 import { Form as BaseForm } from '@base-ui/react/form';
 import { Input } from './Input';
+import { cn } from '../lib/cn';
+import type { CSSProperties, FormEvent, ReactNode } from 'react';
 
 export type FormProps = {
-  children: React.ReactNode;
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  children: ReactNode;
+  onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
   gap?: number;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
 export function Form({ children, onSubmit, gap = 16, style, className }: FormProps) {
   return (
     <BaseForm
-      className={['flex flex-col', className].filter(Boolean).join(' ')}
+      className={cn('flex flex-col', className)}
       onSubmit={onSubmit}
       style={{ gap, ...style }}
     >
@@ -26,12 +28,12 @@ export type FormFieldProps = {
   name: string;
   label: string;
   hint?: string;
-  error?: React.ReactNode;
+  error?: ReactNode;
   required?: boolean;
   disabled?: boolean;
   invalid?: boolean;
-  children: React.ReactNode;
-  style?: React.CSSProperties;
+  children: ReactNode;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -54,7 +56,7 @@ export function FormField({
       name={name}
       disabled={disabled}
       invalid={invalid || hasError || undefined}
-      className={['flex flex-col gap-1.5', className].filter(Boolean).join(' ')}
+      className={cn('flex flex-col gap-1.5', className)}
       style={style}
     >
       <Field.Label className="flex items-center gap-1 text-[0.8125rem] font-medium text-foreground">
@@ -86,7 +88,9 @@ export type FormInputProps = {
   disabled?: boolean;
   placeholder?: string;
   type?: string;
-  style?: React.CSSProperties;
+  /** Forwarded to Input; targets the input control, not FormField. */
+  style?: CSSProperties;
+  /** Forwarded to Input; targets the input control, not FormField. */
   className?: string;
 };
 

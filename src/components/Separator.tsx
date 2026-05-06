@@ -1,11 +1,13 @@
 import { Separator as BaseSeparator } from '@base-ui/react/separator';
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 
 export type SeparatorOrientation = 'horizontal' | 'vertical';
 
 export type SeparatorProps = {
   orientation?: SeparatorOrientation;
   label?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -18,7 +20,7 @@ export function Separator({
   if (orientation === 'vertical') {
     return (
       <BaseSeparator
-        className={['w-px self-stretch bg-border', className].filter(Boolean).join(' ')}
+        className={cn('w-px self-stretch bg-border', className)}
         orientation="vertical"
         style={style}
       />
@@ -28,7 +30,7 @@ export function Separator({
   if (label) {
     return (
       <div
-        className={['flex items-center gap-3', className].filter(Boolean).join(' ')}
+        className={cn('flex items-center gap-3', className)}
         style={style}
       >
         <BaseSeparator className="h-px flex-1 bg-border" />
@@ -42,7 +44,7 @@ export function Separator({
 
   return (
     <BaseSeparator
-      className={['h-px bg-border', className].filter(Boolean).join(' ')}
+      className={cn('h-px bg-border', className)}
       style={style}
     />
   );

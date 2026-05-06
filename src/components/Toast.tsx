@@ -1,4 +1,6 @@
 import { Toast as BaseToast } from '@base-ui/react/toast';
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 
 export type ToastVariant = 'default' | 'success' | 'error' | 'warning';
 
@@ -6,16 +8,16 @@ export type ToastOptions = {
   description?: string;
   variant?: ToastVariant;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 export type ToastProviderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
-const variantConfig: Record<ToastVariant, { color: string; icon: React.ReactNode }> = {
+const variantConfig: Record<ToastVariant, { color: string; icon: ReactNode }> = {
   default: {
     color: 'var(--color-foreground-muted)',
     icon: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="8" cy="8" r="6" /><path d="M8 7v4M8 5.5v.5" /></svg>,
@@ -42,7 +44,7 @@ function ToastList() {
       {toasts.map((toast) => {
         const variant = (toast.data?.variant as ToastVariant) ?? 'default';
         const className = toast.data?.className as string | undefined;
-        const style = toast.data?.style as React.CSSProperties | undefined;
+        const style = toast.data?.style as CSSProperties | undefined;
         const cfg = variantConfig[variant];
         const role = variant === 'error' || variant === 'warning' ? 'alert' : 'status';
 
@@ -52,10 +54,10 @@ function ToastList() {
             toast={toast}
             role={role}
             aria-atomic="true"
-            className={[
+            className={cn(
               'absolute bottom-0 left-auto right-0 flex w-full select-none items-start gap-2.5 rounded-md border border-border-strong bg-background-elevated px-3.5 py-3 shadow-toast transition-all duration-200 data-[starting-style]:translate-y-full data-[starting-style]:opacity-0 data-[ending-style]:translate-y-full data-[ending-style]:opacity-0',
               className,
-            ].filter(Boolean).join(' ')}
+            )}
             style={style}
           >
             <span aria-hidden="true" className="mt-px shrink-0" style={{ color: cfg.color }}>{cfg.icon}</span>
@@ -85,7 +87,7 @@ export function ToastProvider({ children, className, style }: ToastProviderProps
       {children}
       <BaseToast.Portal>
         <BaseToast.Viewport
-          className={['fixed bottom-6 right-6 z-[9999] w-80', className].filter(Boolean).join(' ')}
+          className={cn('fixed bottom-6 right-6 z-[9999] w-80', className)}
           style={style}
         >
           <ToastList />

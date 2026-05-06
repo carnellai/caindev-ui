@@ -1,11 +1,17 @@
+import type { CSSProperties } from 'react';
+import { cn } from '../lib/cn';
+
 export type PaginationProps = {
+  /** Current 1-based page. */
   page: number
+  /** Total number of pages available. */
   totalPages: number
+  /** Called with the next 1-based page when a page control is pressed. */
   onPageChange: (page: number) => void
+  /** Number of neighbor pages to show on each side of the current page. */
   siblings?: number
-  showEdges?: boolean
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 function ChevronLeftIcon() {
@@ -77,23 +83,21 @@ export function Pagination({
   const pages = getPages(page, totalPages, siblings)
 
   const itemBase =
-    'flex h-[30px] min-w-[30px] cursor-pointer select-none items-center justify-center rounded-[6px] border px-2 text-xs font-medium outline-none transition-[background,border-color,color] duration-[80ms] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40'
+    'flex h-[30px] min-w-[30px] cursor-pointer select-none items-center justify-center rounded-sm border px-2 text-xs font-medium outline-none transition-[background,border-color,color] duration-[80ms] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40'
 
   return (
     <nav
       aria-label='Pagination'
-      className={['flex items-center gap-1', className]
-        .filter(Boolean)
-        .join(' ')}
+      className={cn('flex items-center gap-1', className)}
       style={style}>
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
         aria-label='Previous page'
-        className={[
+        className={cn(
           itemBase,
           'border-border-strong bg-surface-control text-foreground-muted hover:bg-surface-hover hover:text-foreground',
-        ].join(' ')}>
+        )}>
         <ChevronLeftIcon />
       </button>
 
@@ -110,12 +114,12 @@ export function Pagination({
             onClick={() => onPageChange(p)}
             aria-label={`Page ${p}`}
             aria-current={p === page ? 'page' : undefined}
-            className={[
+            className={cn(
               itemBase,
               p === page
                 ? 'border-accent bg-accent text-accent-foreground'
                 : 'border-border-strong bg-surface-control text-foreground-muted hover:bg-surface-hover hover:text-foreground',
-            ].join(' ')}>
+            )}>
             {p}
           </button>
         ),
@@ -125,10 +129,10 @@ export function Pagination({
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
         aria-label='Next page'
-        className={[
+        className={cn(
           itemBase,
           'border-border-strong bg-surface-control text-foreground-muted hover:bg-surface-hover hover:text-foreground',
-        ].join(' ')}>
+        )}>
         <ChevronRightIcon />
       </button>
     </nav>

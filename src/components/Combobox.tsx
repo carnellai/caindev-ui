@@ -1,4 +1,6 @@
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox'
+import { cn } from '../lib/cn';
+import type { CSSProperties } from 'react';
 
 export type ComboboxOption = {
   label: string
@@ -16,7 +18,7 @@ export type ComboboxProps = {
   emptyText?: string
   disabled?: boolean
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 function CheckIcon() {
@@ -56,14 +58,14 @@ export function Combobox({
 }: ComboboxProps) {
   return (
     <div
-      className={['flex flex-col gap-1.5', className].filter(Boolean).join(' ')}
+      className={cn('flex flex-col gap-1.5', className)}
       style={style}>
       {label && (
         <label
-          className={[
+          className={cn(
             'text-[0.8125rem] font-medium',
             disabled ? 'text-foreground-subtle' : 'text-foreground',
-          ].join(' ')}>
+          )}>
           {label}
         </label>
       )}
@@ -80,7 +82,7 @@ export function Combobox({
           Input uses w-full + box-border + pr to make room for the icon on the right.
         */}
         <BaseCombobox.InputGroup
-          className='relative h-9 w-64 rounded-[8px] border border-border-strong bg-surface-control shadow-highlight-inset focus-within:border-accent focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50'
+          className='relative h-9 w-64 rounded-md border border-border-strong bg-surface-control shadow-highlight-inset focus-within:border-accent focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50'
           style={{ display: 'grid', gridTemplateColumns: '1fr 2.25rem' }}>
           <BaseCombobox.Input
             placeholder={placeholder}
@@ -98,7 +100,7 @@ export function Combobox({
         <BaseCombobox.Portal>
           <BaseCombobox.Positioner sideOffset={6} className='outline-none'>
             <BaseCombobox.Popup
-              className='min-w-[260px] w-[var(--anchor-width)] rounded-[8px] border border-border-strong bg-background-elevated p-1 shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0'
+              className='min-w-[260px] w-[var(--anchor-width)] rounded-md border border-border-strong bg-background-elevated p-1 shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0'
               style={{ transformOrigin: 'var(--transform-origin)' }}>
               <BaseCombobox.Empty className='px-2.5 py-6 text-center text-sm text-foreground-subtle'>
                 {emptyText}

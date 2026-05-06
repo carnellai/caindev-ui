@@ -1,4 +1,7 @@
 import { useId, useState } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import { cn } from '../lib/cn';
+import { safeJsonStringify } from '../lib/safeJsonStringify';
 
 export type SpanKind = 'llm' | 'tool' | 'retrieval' | 'agent' | 'span' | 'embedding' | 'guardrail';
 export type SpanStatus = 'running' | 'success' | 'error' | 'pending';
@@ -6,22 +9,31 @@ export type SpanStatus = 'running' | 'success' | 'error' | 'pending';
 export type SpanNode = {
   id: string;
   name: string;
+  /** Controls the span badge treatment. */
   kind: SpanKind;
+  /** Controls the status dot color. */
   status: SpanStatus;
+  /** Duration displayed in milliseconds. */
   duration?: number;
-  startOffset?: number;
+  /** Model name shown in the span summary and details. */
   model?: string;
   inputTokens?: number;
   outputTokens?: number;
+  /** Cost in dollars. */
   cost?: number;
+  /** Retrieval query shown in the span details. */
   query?: string;
   resultCount?: number;
+  /** JSON-like value rendered in the details panel. */
   input?: unknown;
+  /** JSON-like value rendered in the details panel. */
   output?: unknown;
+  /** Nested child spans rendered under this span. */
   children?: SpanNode[];
 };
 
-const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; icon: React.ReactNode }> = {
+// Component-private palette — not part of the public token surface in v1.
+const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; icon: ReactNode }> = {
   llm: {
     label: 'LLM',
     color: '#a78bfa',
@@ -107,34 +119,13 @@ function JsonBlock({ value }: { value: unknown }) {
   const json = safeJsonStringify(value);
 
   return (
-    <pre className="m-0 overflow-x-auto whitespace-pre-wrap break-words rounded-[5px] border border-border bg-background px-2.5 py-2 font-mono text-[0.6875rem] leading-[1.55] text-foreground-muted">
+    <pre className="m-0 overflow-x-auto whitespace-pre-wrap break-words rounded-sm border border-border bg-background px-2.5 py-2 font-mono text-[0.6875rem] leading-[1.55] text-foreground-muted">
       {json}
     </pre>
   );
 }
 
-function safeJsonStringify(value: unknown) {
-  const seen = new WeakSet<object>();
-
-  try {
-    const json = JSON.stringify(value, (_key, nestedValue) => {
-      if (typeof nestedValue === 'bigint') return `${nestedValue.toString()}n`;
-      if (typeof nestedValue === 'function') return '[Function]';
-      if (typeof nestedValue === 'symbol') return nestedValue.toString();
-      if (typeof nestedValue === 'object' && nestedValue !== null) {
-        if (seen.has(nestedValue)) return '[Circular]';
-        seen.add(nestedValue);
-      }
-      return nestedValue;
-    }, 2);
-
-    return json ?? String(value);
-  } catch {
-    return String(value);
-  }
-}
-
-function MetaRow({ label, value }: { label: string; value: React.ReactNode }) {
+function MetaRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex items-center gap-2">
       <span className="min-w-20 text-[0.6875rem] text-foreground-subtle">
@@ -147,7 +138,7 @@ function MetaRow({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children }: { children: ReactNode }) {
   return (
     <span className="mb-1 block text-[0.5625rem] font-semibold uppercase tracking-[0.1em] text-foreground-subtle">
       {children}
@@ -158,9 +149,8 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export type SpanCardProps = {
   span: SpanNode;
   defaultOpen?: boolean;
-  depth?: number;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 export function SpanCard({ span, defaultOpen = false, className, style }: SpanCardProps) {
@@ -171,7 +161,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
 
   return (
     <div
-      className={['overflow-hidden rounded-[7px] border border-border bg-background-elevated', className].filter(Boolean).join(' ')}
+      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated', className)}
       style={style}
     >
       <button
@@ -181,7 +171,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
         aria-controls={hasDetails ? detailId : undefined}
         disabled={!hasDetails}
         onClick={() => hasDetails && setOpen((o) => !o)}
-        className={['flex w-full items-center gap-2 border-0 bg-transparent px-2.5 py-[9px] text-left', hasDetails ? 'cursor-pointer' : 'cursor-default'].join(' ')}
+        className={cn('flex w-full items-center gap-2 border-0 bg-transparent px-2.5 py-[9px] text-left', hasDetails ? 'cursor-pointer' : 'cursor-default')}
       >
         {hasDetails && (
           <svg
@@ -200,7 +190,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
         <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: statusDot[span.status] }} />
 
         <span
-          className="flex shrink-0 items-center gap-[3px] rounded-[3px] px-[5px] py-px text-[0.5625rem] font-bold tracking-[0.08em]"
+          className="flex shrink-0 items-center gap-[3px] rounded-sm px-[5px] py-px text-[0.5625rem] font-bold tracking-[0.08em]"
           style={{
             color: cfg.color,
             background: cfg.bg,
@@ -287,20 +277,23 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
 }
 
 export type TraceTreeProps = {
+  /** Root spans for the trace tree. Child spans come from SpanNode.children. */
   spans: SpanNode[];
   traceName?: string;
   traceId?: string;
+  /** Total trace duration displayed in milliseconds. */
   totalDuration?: number;
+  /** Opens top-level span detail panels by default. */
   defaultOpen?: boolean;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 function SpanTreeNode({ span, depth, defaultOpen }: { span: SpanNode; depth: number; defaultOpen: boolean }) {
   return (
     <div>
       <div style={{ paddingLeft: `${depth * 20}px` }}>
-        <SpanCard span={span} defaultOpen={defaultOpen && depth === 0} depth={depth} />
+        <SpanCard span={span} defaultOpen={defaultOpen && depth === 0} />
       </div>
       {span.children && span.children.length > 0 && (
         <div
@@ -329,7 +322,7 @@ export function TraceTree({
 }: TraceTreeProps) {
   return (
     <div
-      className={['overflow-hidden rounded-md border border-border-strong bg-background', className].filter(Boolean).join(' ')}
+      className={cn('overflow-hidden rounded-md border border-border-strong bg-background', className)}
       style={style}
     >
       {(traceName || traceId || totalDuration) && (

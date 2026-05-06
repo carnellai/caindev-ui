@@ -1,17 +1,19 @@
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
 import { Button } from './Button';
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
 export type DialogProps = {
-  trigger: React.ReactElement;
+  trigger: ReactElement;
   title: string;
   description?: string;
-  children?: React.ReactNode;
-  actions?: React.ReactNode;
+  children?: ReactNode;
+  actions?: ReactNode;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 function CloseIcon() {
@@ -48,10 +50,10 @@ export function Dialog({
         />
 
         <BaseDialog.Popup
-          className={[
-            'fixed left-1/2 top-1/2 w-[420px] max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-[12px] border border-border-strong bg-background-elevated p-6 shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
+          className={cn(
+            'fixed left-1/2 top-1/2 w-[420px] max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border-strong bg-background-elevated p-6 shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
             className,
-          ].filter(Boolean).join(' ')}
+          )}
           style={style}
         >
           <BaseDialog.Close

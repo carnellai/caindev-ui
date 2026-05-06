@@ -1,17 +1,19 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
 
 export type AlertProps = {
   variant?: AlertVariant;
   title?: string;
-  children: React.ReactNode;
+  children: ReactNode;
   onDismiss?: () => void;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
 const alertConfig: Record<
   AlertVariant,
-  { color: string; bg: string; border: string; icon: React.ReactNode }
+  { color: string; bg: string; border: string; icon: ReactNode }
 > = {
   info: {
     color: 'var(--color-info)',
@@ -65,7 +67,7 @@ export function Alert({ variant = 'info', title, children, onDismiss, style, cla
 
   return (
     <div
-      className={['flex gap-3 rounded-[8px] px-3.5 py-3', className].filter(Boolean).join(' ')}
+      className={cn('flex gap-3 rounded-md px-3.5 py-3', className)}
       role={role}
       aria-atomic="true"
       style={{

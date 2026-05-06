@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import type { CSSProperties } from 'react';
+import { cn } from '../lib/cn';
 
 export type CodeBlockProps = {
   code: string;
   language?: string;
   filename?: string;
   showLineNumbers?: boolean;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -52,7 +54,7 @@ export function CodeBlock({
 
   return (
     <div
-      className={['overflow-hidden rounded-[8px] border border-border bg-background', className].filter(Boolean).join(' ')}
+      className={cn('overflow-hidden rounded-md border border-border bg-background', className)}
       style={style}
     >
       <div className="flex items-center justify-between border-b border-border bg-background-elevated px-3 py-2">
@@ -73,10 +75,10 @@ export function CodeBlock({
           type="button"
           aria-label={copied ? 'Code copied' : 'Copy code'}
           onClick={handleCopy}
-          className={[
-            'flex cursor-pointer items-center gap-[5px] rounded-[5px] border border-border bg-transparent px-2 py-[3px] text-[0.6875rem] transition-colors duration-150',
+          className={cn(
+            'flex cursor-pointer items-center gap-[5px] rounded-sm border border-border bg-transparent px-2 py-[3px] text-[0.6875rem] transition-colors duration-150',
             copied ? 'text-success' : 'text-foreground-muted',
-          ].join(' ')}
+          )}
         >
           {copied ? <CheckIcon /> : <CopyIcon />}
           {copied ? 'Copied' : 'Copy'}

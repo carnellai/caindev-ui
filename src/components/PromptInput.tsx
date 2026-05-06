@@ -1,17 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties, ChangeEvent, KeyboardEvent, ReactNode } from 'react';
+import { cn } from '../lib/cn';
 
 export type PromptInputProps = {
+  /** Controlled prompt text. Uncontrolled inputs clear themselves after submit. */
   value?: string;
   onValueChange?: (value: string) => void;
+  /** Receives trimmed text when Enter or the send button submits. */
   onSubmit?: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
+  /** Shows the stop action and disables editing while generation is active. */
   loading?: boolean;
+  /** Called by the stop button while loading. */
   onStop?: () => void;
   maxRows?: number;
-  actions?: React.ReactNode;
+  /** Custom action controls rendered on the left side of the footer. */
+  actions?: ReactNode;
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 function SendIcon() {
@@ -58,13 +65,13 @@ export function PromptInput({
     el.style.overflowY = el.scrollHeight > maxHeight ? 'auto' : 'hidden';
   }, [value, maxRows]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const v = e.target.value;
     if (controlledValue === undefined) setInternalValue(v);
     onValueChange?.(v);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       if (value.trim() && !disabled && !loading) {
@@ -85,10 +92,10 @@ export function PromptInput({
 
   return (
     <div
-      className={[
-        'flex flex-col rounded-md border border-border-strong bg-background-elevated shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[border-color] duration-150',
+      className={cn(
+        'flex flex-col rounded-md border border-border-strong bg-background-elevated shadow-highlight-inset transition-[border-color] duration-150',
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={style}
     >
       <textarea
@@ -119,7 +126,7 @@ export function PromptInput({
               aria-label="Stop generation"
               onClick={onStop}
               disabled={disabled || !onStop}
-              className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[7px] border-0 bg-foreground text-background disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-md border-0 bg-foreground text-background disabled:cursor-not-allowed disabled:opacity-60"
             >
               <StopIcon />
             </button>
@@ -129,10 +136,10 @@ export function PromptInput({
               aria-label="Send prompt"
               onClick={handleSubmit}
               disabled={!canSubmit}
-              className={[
-                'flex h-[30px] w-[30px] items-center justify-center rounded-[7px] border-0 transition-[background,color] duration-150',
-                canSubmit ? 'cursor-pointer bg-accent text-white' : 'cursor-not-allowed bg-background-subtle text-foreground-subtle',
-              ].join(' ')}
+              className={cn(
+                'flex h-[30px] w-[30px] items-center justify-center rounded-md border-0 transition-[background,color] duration-150',
+                canSubmit ? 'cursor-pointer bg-accent text-accent-foreground' : 'cursor-not-allowed bg-background-subtle text-foreground-subtle',
+              )}
             >
               <SendIcon />
             </button>

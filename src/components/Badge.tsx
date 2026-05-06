@@ -1,3 +1,5 @@
+import { cn } from '../lib/cn';
+import type { CSSProperties, ReactNode } from 'react';
 export type BadgeVariant =
   | 'default'
   | 'success'
@@ -8,10 +10,10 @@ export type BadgeVariant =
 export type BadgeSize = 'sm' | 'md';
 
 export type BadgeProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   variant?: BadgeVariant;
   size?: BadgeSize;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
 };
 
@@ -25,8 +27,8 @@ const variantClasses: Partial<Record<BadgeVariant, string>> = {
 };
 
 const sizeClasses: Record<BadgeSize, string> = {
-  sm: 'gap-1 rounded-[4px] px-1.5 py-px text-[0.625rem]',
-  md: 'gap-1 rounded-[4px] px-2 py-0.5 text-[0.6875rem]',
+  sm: 'gap-1 rounded-sm px-1.5 py-px text-[0.625rem]',
+  md: 'gap-1 rounded-sm px-2 py-0.5 text-[0.6875rem]',
 };
 
 export function Badge({
@@ -38,12 +40,12 @@ export function Badge({
 }: BadgeProps) {
   return (
     <span
-      className={[
+      className={cn(
         'inline-flex items-center whitespace-nowrap font-medium tracking-[0.02em]',
         variantClasses[variant],
         sizeClasses[size],
         className,
-      ].filter(Boolean).join(' ')}
+      )}
       style={style}
     >
       {children}
