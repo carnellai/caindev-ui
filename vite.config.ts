@@ -1,10 +1,12 @@
 import babel from '@rolldown/plugin-babel';
+import tailwindcss from '@tailwindcss/vite';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     react(),
     babel({
       presets: [reactCompilerPreset()],
@@ -23,7 +25,14 @@ export default defineConfig({
       cssFileName: 'styles',
     },
     rollupOptions: {
-      external: ['@base-ui/react', 'react', 'react-dom', 'react/jsx-runtime'],
+      external: (id) => (
+        id === '@base-ui/react'
+        || id.startsWith('@base-ui/react/')
+        || id === 'react'
+        || id === 'react-dom'
+        || id === 'react/compiler-runtime'
+        || id === 'react/jsx-runtime'
+      ),
     },
     sourcemap: true,
     emptyOutDir: true,

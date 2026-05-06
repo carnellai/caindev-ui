@@ -1,3 +1,7 @@
+@config "../tailwind.config.ts";
+@import "tailwindcss/utilities";
+@source "./components/**/*.{ts,tsx}";
+
 :root {
   color-scheme: dark;
 
@@ -37,4 +41,162 @@
   --color-accent-foreground: #fafafa;
   --color-destructive: #ef4444;
   --color-ring: #52525b;
+}
+
+.cd-button:not([data-disabled]):not(:disabled):focus-visible {
+  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-accent);
+}
+
+.cd-button-solid:not([data-disabled]):not(:disabled):hover {
+  background: var(--color-accent-hover) !important;
+}
+
+.cd-button-outline:not([data-disabled]):not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.cd-button-ghost:not([data-disabled]):not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--color-foreground) !important;
+}
+
+.cd-button-spinner {
+  width: 0.9em;
+  height: 0.9em;
+  border-radius: 999px;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  animation: cd-button-spin 700ms linear infinite;
+}
+
+.cd-skeleton-shimmer {
+  animation: cd-skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.cd-agent-step-spinner {
+  animation: cd-agent-step-spin 1s linear infinite;
+}
+
+.cd-tool-call-dot {
+  background: #a78bfa;
+  animation: cd-tool-call-dot 1s ease-in-out infinite;
+}
+
+.cd-tool-call-dot:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.cd-tool-call-dot:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+.cd-streaming-text-caret {
+  animation: cd-streaming-text-caret 1s step-end infinite;
+}
+
+.cd-thinking-block-dot {
+  animation: cd-thinking-block-dot 1.2s ease-in-out infinite;
+}
+
+.cd-thinking-block-dot:nth-child(2) {
+  animation-delay: 200ms;
+}
+
+.cd-thinking-block-dot:nth-child(3) {
+  animation-delay: 400ms;
+}
+
+.cd-run-status-dot-pulse {
+  animation: cd-run-status-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes cd-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cd-skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes cd-agent-step-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cd-tool-call-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+    transform: scaleY(0.7);
+  }
+
+  40% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes cd-streaming-text-caret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes cd-thinking-block-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cd-run-status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cd-button-spinner,
+  .cd-skeleton-shimmer,
+  .cd-agent-step-spinner,
+  .cd-tool-call-dot,
+  .cd-streaming-text-caret,
+  .cd-thinking-block-dot,
+  .cd-run-status-dot-pulse {
+    animation: none !important;
+  }
+
+  .cd-tool-call-chevron,
+  .cd-thinking-block-chevron {
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
