@@ -13,6 +13,11 @@ export {
   type StepStatus,
 } from './components/AgentStep';
 export {
+  Alert,
+  type AlertProps,
+  type AlertVariant,
+} from './components/Alert';
+export {
   ApprovalCard,
   type ApprovalCardProps,
   type ApprovalRisk,
@@ -162,8 +167,10 @@ export {
   type StructuredOutputProps,
 } from './components/StructuredOutput';
 export {
+  type SimulatedStreamState,
   StreamingText,
   type StreamingTextProps,
+  useSimulatedStream,
 } from './components/StreamingText';
 export {
   Switch,
