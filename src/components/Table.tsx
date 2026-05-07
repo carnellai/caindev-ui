@@ -41,19 +41,19 @@ export function Table<T extends Record<string, unknown>>({
 
   return (
     <div
-      className={cn('w-full overflow-x-auto rounded-md border border-border', className)}
+      className={cn('w-full overflow-x-auto rounded-md border border-border-strong bg-background-elevated shadow-card', className)}
       style={style}
     >
       <table
-        className={cn('w-full border-collapse text-sm', tableClassName)}
+        className={cn('w-full border-collapse text-sm leading-[1.5] text-foreground', tableClassName)}
         style={tableStyle}
       >
         <thead>
-          <tr className="border-b border-border bg-background">
+          <tr className="border-b border-border bg-background-subtle">
             {columns.map((col) => (
               <th
                 key={col.key}
-                className="whitespace-nowrap px-3.5 py-2.5 text-[0.6875rem] font-semibold uppercase tracking-[0.06em] text-foreground-subtle"
+                className="whitespace-nowrap px-[16px] py-[10px] text-[0.6875rem] font-semibold uppercase tracking-[0.06em] text-foreground-subtle"
                 style={{
                   textAlign: col.align ?? 'left',
                   width: col.width,
@@ -69,7 +69,7 @@ export function Table<T extends Record<string, unknown>>({
             <tr>
               <td
                 colSpan={columns.length}
-                className="p-8 text-center text-sm text-foreground-subtle"
+                className="p-[32px] text-center text-sm text-foreground-subtle"
               >
                 {emptyMessage}
               </td>
@@ -91,7 +91,7 @@ export function Table<T extends Record<string, unknown>>({
                 {columns.map((col) => (
                   <td
                     key={col.key}
-                    className="px-3.5 py-[11px] align-middle text-foreground-muted"
+                    className="px-[16px] py-[12px] align-middle text-foreground-muted"
                     style={{
                       textAlign: col.align ?? 'left',
                     }}

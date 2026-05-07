@@ -78,14 +78,14 @@ export function NumberField({
       disabled={disabled}
       readOnly={readOnly}
       format={format}
-      className={cn('flex flex-col gap-1.5', className)}
+      className={cn('flex flex-col gap-[6px]', className)}
       style={style}>
       {label && (
         <BaseNumberField.ScrubArea className='cursor-ew-resize select-none'>
           <label
             htmlFor={id}
             className={cn(
-              'cursor-ew-resize text-[0.8125rem] font-medium',
+              'cursor-ew-resize text-sm font-medium leading-normal',
               disabled ? 'text-foreground-subtle' : 'text-foreground',
             )}>
             {label}
@@ -103,15 +103,15 @@ export function NumberField({
         </BaseNumberField.ScrubArea>
       )}
 
-      <BaseNumberField.Group className='inline-flex w-fit flex-row'>
-        <BaseNumberField.Decrement className=' -ml-px flex h-9 w-9 shrink-0 cursor-pointer select-none items-center justify-center rounded-l-md border border-border-strong bg-surface-control text-foreground-muted outline-none transition-[background,color] duration-[80ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
+      <BaseNumberField.Group className='inline-flex w-fit flex-row rounded-md shadow-highlight-inset'>
+        <BaseNumberField.Decrement className='-ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-l-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
           <MinusIcon />
         </BaseNumberField.Decrement>
         <BaseNumberField.Input
           style={{ width: '64px' }}
-          className='h-9 shrink-0 border-y border-border-strong bg-surface-control text-center text-sm tabular-nums text-foreground outline-none transition-[border-color] duration-150 placeholder:text-foreground-subtle focus:z-10 focus:border-accent focus:outline-2 focus:outline-offset-[-1px] focus:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50'
+          className='h-[36px] shrink-0 border-y border-border bg-surface-control text-center text-sm tabular-nums text-foreground outline-none transition-[background,border-color] duration-150 placeholder:text-foreground-subtle hover:bg-surface-hover focus:z-10 focus:border-accent focus:bg-surface-control focus:outline-2 focus:outline-offset-[-1px] focus:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60'
         />
-        <BaseNumberField.Increment className='-ml-px flex h-9 w-9 shrink-0 cursor-pointer select-none items-center justify-center rounded-r-md border border-border-strong bg-surface-control text-foreground-muted outline-none transition-[background,color] duration-[80ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
+        <BaseNumberField.Increment className='-ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-r-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
           <PlusIcon />
         </BaseNumberField.Increment>
       </BaseNumberField.Group>

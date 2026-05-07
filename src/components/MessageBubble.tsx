@@ -17,9 +17,9 @@ export type MessageBubbleProps = {
 
 // Chat bubbles use asymmetric radii for the tail shape; this intentionally does not follow the global radius scale.
 const roleClasses: Record<MessageRole, string> = {
-  user: 'self-end max-w-[80%] rounded-[12px_12px_2px_12px] border border-border bg-background-subtle px-3.5 py-2.5',
-  assistant: 'self-start max-w-[85%] rounded-none border-0 bg-transparent p-0',
-  system: 'self-center max-w-[90%] rounded-md border border-accent/20 bg-accent-muted px-3.5 py-2.5',
+  user: 'self-end max-w-[80%] rounded-[12px_12px_2px_12px] border border-border bg-background-subtle px-[16px] py-[12px] shadow-highlight-inset',
+  assistant: 'self-start max-w-[85%] rounded-none border-0 bg-transparent px-[2px] py-[2px]',
+  system: 'self-center max-w-[90%] rounded-md border border-accent/20 bg-accent-muted px-[16px] py-[12px] shadow-highlight-inset',
 };
 
 function UserAvatar() {
@@ -58,13 +58,13 @@ export function MessageBubble({
 
   return (
     <div
-      className={cn('flex w-full items-start gap-2.5', isUser ? 'flex-row-reverse' : 'flex-row', className)}
+      className={cn('flex w-full items-start gap-[12px]', isUser ? 'flex-row-reverse' : 'flex-row', className)}
       style={style}
     >
       {isUser && (avatar ?? <UserAvatar />)}
       {isAssistant && (avatar ?? <AssistantAvatar />)}
 
-      <div className="flex min-w-0 flex-col gap-1.5">
+      <div className="flex min-w-[0] flex-col gap-[6px]">
         <div className={roleClasses[role]}>
           <p className="m-0 whitespace-pre-wrap break-words text-[0.9375rem] leading-[1.65] text-foreground">
             {streaming ? (
@@ -74,7 +74,7 @@ export function MessageBubble({
         </div>
 
         {(timestamp || actions) && (
-          <div className={cn('flex items-center gap-2', isUser ? 'justify-end pl-0' : 'justify-start pl-0.5')}>
+          <div className={cn('flex items-center gap-[8px]', isUser ? 'justify-end pl-[0px]' : 'justify-start pl-[2px]')}>
             {timestamp && (
               <span className="text-[0.6875rem] text-foreground-subtle tabular-nums">
                 {timestamp}

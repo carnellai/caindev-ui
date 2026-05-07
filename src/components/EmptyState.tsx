@@ -44,25 +44,25 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center gap-3 px-6 py-12 text-center',
+        'flex flex-col items-center justify-center gap-[14px] px-[24px] py-[48px] text-center',
         className,
       )}
       style={style}
     >
-      <span className={cn(isError ? 'text-error' : 'text-foreground-subtle', 'opacity-60')}>
+      <span className={cn(isError ? 'text-error' : 'text-foreground-subtle', 'flex h-[44px] w-[44px] items-center justify-center rounded-md border border-border bg-background-subtle opacity-80 shadow-highlight-inset')}>
         {icon ?? (isError ? <ErrorIcon /> : <DefaultIcon />)}
       </span>
-      <div className="flex flex-col gap-1.5">
-        <span className="text-[0.9375rem] font-semibold text-foreground">
+      <div className="flex max-w-[320px] flex-col gap-[6px]">
+        <span className="text-base font-semibold leading-normal text-foreground">
           {title}
         </span>
         {description && (
-          <p className="m-0 max-w-xs text-sm leading-[1.55] text-foreground-muted">
+          <p className="m-0 text-sm leading-[1.55] text-foreground-muted">
             {description}
           </p>
         )}
       </div>
-      {action && <div className="mt-1">{action}</div>}
+      {action && <div className="mt-[2px]">{action}</div>}
     </div>
   );
 }

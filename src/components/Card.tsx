@@ -12,17 +12,17 @@ export type CardProps = {
 };
 
 const bodyPaddingClasses: Record<CardPadding, string> = {
-  none: 'p-0',
-  sm: 'p-3',
-  md: 'p-5',
-  lg: 'p-7',
+  none: 'p-[0px]',
+  sm: 'p-[16px]',
+  md: 'p-[20px]',
+  lg: 'p-[24px]',
 };
 
 const chromePaddingClasses: Record<CardPadding, string> = {
-  none: 'px-0 py-3',
-  sm: 'px-3 py-3',
-  md: 'px-5 py-3',
-  lg: 'px-7 py-3',
+  none: 'px-[0px] py-[14px]',
+  sm: 'px-[16px] py-[14px]',
+  md: 'px-[20px] py-[16px]',
+  lg: 'px-[24px] py-[16px]',
 };
 
 export function Card({
@@ -36,7 +36,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'overflow-hidden rounded-md border border-border bg-background-elevated shadow-card',
+        'overflow-hidden rounded-md border border-border bg-background-elevated text-foreground shadow-card',
         className,
       )}
       style={style}
@@ -44,18 +44,20 @@ export function Card({
       {header && (
         <div
           className={cn(
-            'flex items-center justify-between border-b border-border',
+            'cd-card-slot cd-card-header flex items-center justify-between gap-[16px] border-b border-border bg-background-elevated',
             chromePaddingClasses[padding],
           )}
         >
           {header}
         </div>
       )}
-      <div className={bodyPaddingClasses[padding]}>{children}</div>
+      <div className={cn('cd-card-slot cd-card-body', bodyPaddingClasses[padding])}>
+        {children}
+      </div>
       {footer && (
         <div
           className={cn(
-            'border-t border-border bg-background',
+            'cd-card-slot cd-card-footer flex items-center justify-end gap-[8px] border-t border-border bg-background-subtle',
             chromePaddingClasses[padding],
           )}
         >

@@ -93,7 +93,7 @@ export function PromptInput({
   return (
     <div
       className={cn(
-        'flex flex-col rounded-md border border-border-strong bg-background-elevated shadow-highlight-inset transition-[border-color] duration-150',
+        'flex flex-col overflow-hidden rounded-md border border-border bg-background-elevated shadow-card transition-[border-color,box-shadow] duration-150 focus-within:border-accent focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent',
         className,
       )}
       style={style}
@@ -107,15 +107,15 @@ export function PromptInput({
         placeholder={placeholder}
         disabled={disabled || loading}
         rows={1}
-        className="box-border w-full resize-none overflow-y-hidden border-0 bg-transparent px-3.5 pb-1 pt-3 text-[0.9375rem] leading-6 text-foreground outline-none"
+        className="box-border w-full resize-none overflow-y-hidden border-0 bg-transparent px-[16px] pb-[8px] pt-[14px] text-[0.9375rem] leading-[1.6] text-foreground outline-none placeholder:text-foreground-subtle disabled:cursor-not-allowed disabled:text-foreground-subtle"
       />
 
-      <div className="flex items-center justify-between px-2.5 pb-2.5 pt-1.5">
-        <div className="flex items-center gap-1">
+      <div className="flex items-center justify-between gap-[12px] border-t border-border bg-background-subtle px-[10px] py-[10px]">
+        <div className="flex min-w-[0] items-center gap-[6px]">
           {actions}
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex shrink-0 items-center gap-[8px]">
           <span className="text-[0.6875rem] text-foreground-subtle">
             {loading ? '' : 'Enter to send · Shift+Enter for newline'}
           </span>
@@ -126,7 +126,7 @@ export function PromptInput({
               aria-label="Stop generation"
               onClick={onStop}
               disabled={disabled || !onStop}
-              className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-md border-0 bg-foreground text-background disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-md border border-transparent bg-foreground text-background shadow-none outline-none disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               <StopIcon />
             </button>
@@ -137,8 +137,8 @@ export function PromptInput({
               onClick={handleSubmit}
               disabled={!canSubmit}
               className={cn(
-                'flex h-[30px] w-[30px] items-center justify-center rounded-md border-0 transition-[background,color] duration-150',
-                canSubmit ? 'cursor-pointer bg-accent text-accent-foreground' : 'cursor-not-allowed bg-background-subtle text-foreground-subtle',
+                'flex h-[32px] w-[32px] items-center justify-center rounded-md border outline-none transition-[background,border-color,color] duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                canSubmit ? 'cursor-pointer border-transparent bg-accent text-accent-foreground shadow-none hover:bg-accent-hover' : 'cursor-not-allowed border-border bg-surface-control-disabled text-foreground-subtle',
               )}
             >
               <SendIcon />

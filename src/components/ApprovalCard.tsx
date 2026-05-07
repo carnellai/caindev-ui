@@ -17,9 +17,9 @@ export type ApprovalCardProps = {
 
 // Component-private palette — not part of the public token surface in v1.
 const riskConfig = {
-  low: { label: 'Low risk', color: '#34d399', bg: 'rgba(52,211,153,0.1)' },
-  medium: { label: 'Medium risk', color: '#fbbf24', bg: 'rgba(251,191,36,0.1)' },
-  high: { label: 'High risk', color: '#f87171', bg: 'rgba(248,113,113,0.1)' },
+  low: { label: 'Low risk', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
+  medium: { label: 'Medium risk', color: 'var(--color-warning)', bg: 'var(--color-warning-muted)' },
+  high: { label: 'High risk', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
 };
 
 function ShieldIcon() {
@@ -46,18 +46,18 @@ export function ApprovalCard({
 
   return (
     <div
-      className={cn('overflow-hidden rounded-md border border-border-strong bg-background-elevated shadow-card', className)}
+      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated shadow-card', className)}
       style={style}
     >
-      <div className="flex items-center justify-between border-b border-border bg-background px-4 py-3">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-[12px] border-b border-border bg-background-subtle px-[16px] py-[14px]">
+        <div className="flex min-w-[0] items-center gap-[8px]">
           <span className="flex" style={{ color: rc.color }}><ShieldIcon /></span>
-          <span className="text-sm font-semibold text-foreground">
+          <span className="truncate text-sm font-semibold text-foreground">
             {title}
           </span>
         </div>
         <span
-          className="rounded-sm px-2 py-0.5 text-[0.6875rem] font-medium"
+          className="shrink-0 rounded-sm px-[8px] py-[3px] text-[0.6875rem] font-semibold leading-none"
           style={{
             color: rc.color,
             background: rc.bg,
@@ -67,15 +67,15 @@ export function ApprovalCard({
         </span>
       </div>
 
-      <div className="flex flex-col gap-3 p-4">
+      <div className="flex flex-col gap-[14px] p-[16px]">
         {description && (
           <p className="m-0 text-sm leading-[1.55] text-foreground-muted">
             {description}
           </p>
         )}
 
-        <div className="rounded-md border border-border bg-background px-3 py-2.5">
-          <span className="mb-1.5 block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
+        <div className="rounded-md border border-border bg-background px-[12px] py-[10px]">
+          <span className="mb-[6px] block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
             Proposed action
           </span>
           <code className="whitespace-pre-wrap break-words font-mono text-[0.8125rem] text-foreground">
@@ -84,8 +84,8 @@ export function ApprovalCard({
         </div>
 
         {reasoning && (
-          <div className="rounded-md border-l-2 border-border-strong bg-background-subtle px-3 py-2.5">
-            <span className="mb-1 block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
+          <div className="rounded-md border border-border bg-background-subtle px-[12px] py-[10px]">
+            <span className="mb-[4px] block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
               Agent reasoning
             </span>
             <p className="m-0 text-[0.8125rem] italic leading-[1.55] text-foreground-muted">
@@ -94,12 +94,12 @@ export function ApprovalCard({
           </div>
         )}
 
-        <div className="mt-1 flex gap-2">
+        <div className="mt-[2px] flex gap-[8px]">
           <button
             type="button"
             onClick={onApprove}
             disabled={loading}
-            className="flex-1 cursor-pointer rounded-md border-0 bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground opacity-100 transition-opacity duration-150 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 cursor-pointer rounded-md border border-transparent bg-accent px-[16px] py-[9px] text-sm font-semibold text-accent-foreground opacity-100 shadow-none outline-none transition-[background,opacity] duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             {loading ? 'Processing…' : 'Approve'}
           </button>
@@ -107,7 +107,7 @@ export function ApprovalCard({
             type="button"
             onClick={onReject}
             disabled={loading}
-            className="flex-1 cursor-pointer rounded-md border border-border-strong bg-transparent px-4 py-2 text-sm font-medium text-foreground-muted disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 cursor-pointer rounded-md border border-border bg-surface-control px-[16px] py-[9px] text-sm font-medium text-foreground-muted shadow-highlight-inset outline-none hover:bg-surface-hover hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             Reject
           </button>

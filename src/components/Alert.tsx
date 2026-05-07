@@ -67,7 +67,7 @@ export function Alert({ variant = 'info', title, children, onDismiss, style, cla
 
   return (
     <div
-      className={cn('flex gap-3 rounded-md px-3.5 py-3', className)}
+      className={cn('flex gap-[14px] rounded-md px-[16px] py-[14px] shadow-highlight-inset', className)}
       role={role}
       aria-atomic="true"
       style={{
@@ -79,13 +79,13 @@ export function Alert({ variant = 'info', title, children, onDismiss, style, cla
       <span aria-hidden="true" className="mt-px shrink-0" style={{ color: cfg.color }}>
         {cfg.icon}
       </span>
-      <div className="flex flex-1 flex-col gap-[3px]">
+      <div className="flex flex-1 flex-col gap-[4px]">
         {title && (
-          <span className="text-sm font-semibold text-foreground">
+          <span className="text-sm font-semibold leading-normal text-foreground">
             {title}
           </span>
         )}
-        <div className="text-sm leading-[1.55] text-foreground-muted">
+        <div className="cd-alert-content text-sm leading-[1.55] text-foreground-muted">
           {children}
         </div>
       </div>
@@ -94,7 +94,7 @@ export function Alert({ variant = 'info', title, children, onDismiss, style, cla
           type="button"
           aria-label="Dismiss alert"
           onClick={onDismiss}
-          className="flex shrink-0 cursor-pointer items-start border-0 bg-transparent p-0 text-foreground-subtle"
+          className="flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-[0px] text-foreground-subtle outline-none hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
             <path d="M3 3l8 8M11 3l-8 8" />

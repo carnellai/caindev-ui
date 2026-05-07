@@ -25,7 +25,7 @@ function RunningIcon() {
       height="14"
       viewBox="0 0 14 14"
     >
-      <circle cx="7" cy="7" r="6" fill="none" stroke="#a78bfa" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="28" strokeDashoffset="10" />
+      <circle cx="7" cy="7" r="6" fill="none" stroke="var(--color-info)" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="28" strokeDashoffset="10" />
     </svg>
   );
 }
@@ -41,25 +41,25 @@ const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
   },
   running: {
     icon: <RunningIcon />,
-    color: '#a78bfa',
+    color: 'var(--color-info)',
   },
   complete: {
     icon: (
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <circle cx="7" cy="7" r="6" fill="#34d399" stroke="#34d399" strokeWidth="1.5" />
+        <circle cx="7" cy="7" r="6" fill="var(--color-success)" stroke="var(--color-success)" strokeWidth="1.5" />
         <path d="M4 7l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    color: '#34d399',
+    color: 'var(--color-success)',
   },
   failed: {
     icon: (
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <circle cx="7" cy="7" r="6" fill="#f87171" stroke="#f87171" strokeWidth="1.5" />
+        <circle cx="7" cy="7" r="6" fill="var(--color-error)" stroke="var(--color-error)" strokeWidth="1.5" />
         <path d="M5 5l4 4M9 5l-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
-    color: '#f87171',
+    color: 'var(--color-error)',
   },
   skipped: {
     icon: (
@@ -73,31 +73,31 @@ const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
 
 export function AgentStep({ steps, className, style }: AgentStepProps) {
   return (
-    <div className={cn('flex flex-col gap-0', className)} style={style}>
+    <div className={cn('flex flex-col gap-[2px]', className)} style={style}>
       {steps.map((step, i) => {
         const cfg = statusConfig[step.status];
         const isLast = i === steps.length - 1;
 
         return (
-          <div key={step.id} className="flex gap-3">
+          <div key={step.id} className="flex gap-[12px]">
             <div className="flex shrink-0 flex-col items-center">
-              <span className="z-[1] flex" style={{ color: cfg.color }}>
+              <span className="z-[1] flex h-[18px] w-[18px] items-center justify-center rounded-full bg-background-elevated" style={{ color: cfg.color }}>
                 {cfg.icon}
               </span>
               {!isLast && (
                 <div
-                  className="my-[3px] min-h-4 w-px flex-1 opacity-40"
+                  className="my-[4px] min-h-[16px] w-px flex-1 opacity-60"
                   style={{
-                    background: step.status === 'complete' ? '#34d399' : 'var(--color-border)',
+                    background: step.status === 'complete' ? 'var(--color-success)' : 'var(--color-border)',
                   }}
                 />
               )}
             </div>
 
-            <div style={{ paddingBottom: isLast ? 0 : '16px' }} className="flex min-w-0 flex-col gap-0.5">
-              <div className="flex items-center gap-2">
+            <div style={{ paddingBottom: isLast ? 0 : '18px' }} className="flex min-w-[0] flex-col gap-[5px]">
+              <div className="flex items-center gap-[8px]">
                 <span
-                  className="text-sm font-medium leading-[14px]"
+                  className="text-sm font-medium leading-normal"
                   style={{
                     color: step.status === 'pending' || step.status === 'skipped'
                       ? 'var(--color-foreground-muted)'
@@ -107,7 +107,7 @@ export function AgentStep({ steps, className, style }: AgentStepProps) {
                   {step.label}
                 </span>
                 {step.duration !== undefined && step.status === 'complete' && (
-                  <span className="text-[0.6875rem] text-foreground-subtle tabular-nums">
+                  <span className="font-mono text-[0.6875rem] text-foreground-subtle tabular-nums">
                     {step.duration}ms
                   </span>
                 )}

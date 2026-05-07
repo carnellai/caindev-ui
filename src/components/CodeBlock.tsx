@@ -54,13 +54,13 @@ export function CodeBlock({
 
   return (
     <div
-      className={cn('overflow-hidden rounded-md border border-border bg-background', className)}
+      className={cn('overflow-hidden rounded-md border border-border-strong bg-background shadow-card', className)}
       style={style}
     >
-      <div className="flex items-center justify-between border-b border-border bg-background-elevated px-3 py-2">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-[12px] border-b border-border bg-background-elevated px-[14px] py-[10px]">
+        <div className="flex min-w-[0] items-center gap-[8px]">
           {filename && (
-            <span className="font-mono text-xs text-foreground-muted">
+            <span className="truncate font-mono text-xs font-medium text-foreground-muted">
               {filename}
             </span>
           )}
@@ -76,7 +76,7 @@ export function CodeBlock({
           aria-label={copied ? 'Code copied' : 'Copy code'}
           onClick={handleCopy}
           className={cn(
-            'flex cursor-pointer items-center gap-[5px] rounded-sm border border-border bg-transparent px-2 py-[3px] text-[0.6875rem] transition-colors duration-150',
+            'flex cursor-pointer items-center gap-[5px] rounded-sm border border-border bg-transparent px-[8px] py-[3px] text-[0.6875rem] transition-colors duration-150',
             copied ? 'text-success' : 'text-foreground-muted',
           )}
         >
@@ -86,13 +86,13 @@ export function CodeBlock({
       </div>
 
       <div className="overflow-x-auto">
-        <pre className="m-0 px-4 py-3.5 font-mono text-[0.8125rem] leading-[1.65] text-foreground-muted">
+        <pre className="m-0 px-[16px] py-[14px] font-mono text-[0.8125rem] leading-[1.65] text-foreground-muted">
           {showLineNumbers ? (
             <table className="w-full border-collapse">
               <tbody>
                 {lines.map((line, i) => (
                   <tr key={i}>
-                    <td className="min-w-[2ch] select-none pr-4 text-right text-xs text-foreground-subtle">
+                    <td className="min-w-[2ch] select-none pr-[16px] text-right text-xs text-foreground-subtle">
                       {i + 1}
                     </td>
                     <td className="w-full">

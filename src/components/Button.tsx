@@ -12,14 +12,14 @@ export type ButtonProps = ComponentProps<typeof BaseButton> & {
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: 'h-[30px] gap-1.5 px-2.5 text-xs',
-  md: 'h-[34px] gap-[7px] px-3.5 text-[0.8125rem]',
-  lg: 'h-[38px] gap-2 px-[18px] text-sm',
+  sm: 'h-[32px] gap-[6px] px-[12px] text-xs',
+  md: 'h-[36px] gap-[8px] px-[16px] text-sm',
+  lg: 'h-[40px] gap-[8px] px-[20px] text-sm',
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
-  solid: 'border border-border-strong bg-accent text-accent-foreground shadow-highlight-inset',
-  outline: 'border border-border-strong bg-surface-control text-foreground shadow-highlight-inset',
+  solid: 'border border-transparent bg-accent text-accent-foreground shadow-none',
+  outline: 'border border-border bg-surface-control text-foreground shadow-highlight-inset',
   ghost: 'border-0 bg-transparent text-foreground-muted shadow-none',
 };
 
@@ -52,11 +52,11 @@ export function Button({
       disabled={isDisabled}
       className={mergeClassName(
         cn(
-          'cd-button inline-flex select-none items-center justify-center rounded-md font-medium tracking-[-0.01em] outline-none transition-[background,border-color,color,opacity,box-shadow] duration-[120ms]',
+          'cd-button box-border inline-flex select-none appearance-none items-center justify-center whitespace-nowrap rounded-md font-medium leading-none outline-none transition-[background,border-color,color,opacity,box-shadow] duration-[120ms]',
           `cd-button-${variant}`,
           variantClasses[variant],
           sizeClasses[size],
-          isDisabled ? 'cursor-not-allowed opacity-[0.56]' : 'cursor-pointer',
+          isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
         ),
         className,
       )}

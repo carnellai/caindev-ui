@@ -31,28 +31,28 @@ export function MetricCard({
   return (
     <div
       className={cn(
-        'flex flex-col gap-1.5 rounded-md border border-border bg-background-elevated px-4 py-3.5',
+        'flex flex-col gap-[10px] rounded-md border border-border-strong bg-background-elevated p-[20px] shadow-card',
         className,
       )}
       style={style}
     >
-      <span className="text-[0.6875rem] font-medium uppercase tracking-[0.08em] text-foreground-subtle">
+      <span className="text-xs font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
         {label}
       </span>
-      <div className="flex items-baseline gap-1">
-        <span className="font-mono text-2xl font-semibold leading-none text-foreground tabular-nums">
+      <div className="flex items-baseline gap-[6px]">
+        <span className="font-mono text-[1.625rem] font-semibold leading-none text-foreground tabular-nums">
           {typeof value === 'number' ? value.toLocaleString() : value}
         </span>
-        {unit && <span className="text-xs text-foreground-subtle">{unit}</span>}
+        {unit && <span className="text-xs font-medium text-foreground-subtle">{unit}</span>}
       </div>
-      <div className="flex items-center gap-1.5">
+      <div className="flex min-h-[16px] items-center gap-[8px]">
         {trend && trendValue && (
-          <span className="text-[0.6875rem] font-medium" style={{ color: trendColor }}>
+          <span className="font-mono text-xs font-semibold leading-none" style={{ color: trendColor }}>
             {trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'} {trendValue}
           </span>
         )}
         {sublabel && (
-          <span className="text-[0.6875rem] text-foreground-subtle">{sublabel}</span>
+          <span className="text-xs leading-none text-foreground-subtle">{sublabel}</span>
         )}
       </div>
     </div>

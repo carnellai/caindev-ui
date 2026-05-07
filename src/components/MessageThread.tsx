@@ -36,7 +36,7 @@ export function MessageThread({
 
   return (
     <div
-      className={cn('flex flex-col gap-5 overflow-y-auto p-4', className)}
+      className={cn('flex flex-col gap-[20px] overflow-y-auto rounded-md bg-background p-[16px]', className)}
       style={{
         maxHeight,
         scrollbarWidth: 'thin',

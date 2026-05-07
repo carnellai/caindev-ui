@@ -55,7 +55,7 @@ export function ThinkingBlock({
 
   return (
     <div
-      className={cn('overflow-hidden rounded-md border border-border bg-background-subtle', className)}
+      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated shadow-card', className)}
       style={style}
     >
       <button
@@ -63,7 +63,7 @@ export function ThinkingBlock({
         aria-expanded={open}
         aria-controls={contentId}
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-3 py-2.5 text-left text-[0.8125rem] font-medium text-foreground-muted"
+        className="flex w-full cursor-pointer items-center gap-[8px] border-0 bg-background-subtle px-[14px] py-[11px] text-left text-[0.8125rem] font-medium text-foreground-muted outline-none hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
       >
         <ChevronIcon open={open} />
         <span>{label}</span>
@@ -78,9 +78,9 @@ export function ThinkingBlock({
       {open && (
         <div
           id={contentId}
-          className="border-t border-border px-3 pb-3"
+          className="border-t border-border px-[14px] pb-[14px]"
         >
-          <p className="m-0 mt-2.5 whitespace-pre-wrap break-words text-[0.8125rem] italic leading-[1.65] text-foreground-muted">
+          <p className="m-0 mt-[12px] whitespace-pre-wrap break-words text-[0.8125rem] italic leading-[1.65] text-foreground-muted">
             {streaming ? (
               <StreamingText text={content} streaming={streaming} />
             ) : content}

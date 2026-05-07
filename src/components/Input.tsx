@@ -50,11 +50,11 @@ export function Input({
   const accessibleLabel = ariaLabel ?? (!label && !ariaLabelledBy ? placeholder : undefined);
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex min-w-[0] flex-col gap-[6px]">
       {label && (
         <label
           htmlFor={inputId}
-          className="text-[0.8125rem] font-medium text-foreground"
+          className="text-sm font-medium leading-normal text-foreground"
         >
           {label}
         </label>
@@ -71,8 +71,8 @@ export function Input({
         style={typeof style === 'object' ? style : undefined}
         className={mergeClassName(
           cn(
-            'box-border h-9 w-full rounded-md bg-surface-control px-3 text-sm text-foreground shadow-highlight-inset outline-none transition-[border-color] duration-150 placeholder:text-foreground-subtle focus:border-accent focus:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-surface-control-disabled disabled:text-foreground-subtle disabled:opacity-[0.65]',
-            error ? 'border border-destructive' : 'border border-border-strong',
+            'box-border h-[36px] w-full min-w-[0] appearance-none rounded-md bg-surface-control px-[14px] text-sm leading-none text-foreground shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 placeholder:text-foreground-subtle hover:bg-surface-hover focus:border-accent focus:bg-surface-control focus:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-surface-control-disabled disabled:text-foreground-subtle disabled:opacity-60',
+            error ? 'border border-destructive' : 'border border-border',
           ),
           className,
         )}

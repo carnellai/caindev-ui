@@ -53,7 +53,7 @@ export function Checkbox({
   return (
     <label
       htmlFor={checkboxId}
-      className={cn('inline-flex select-none items-center gap-2.5', disabled ? 'cursor-not-allowed' : 'cursor-pointer')}
+      className={cn('inline-flex select-none items-center gap-[12px]', disabled ? 'cursor-not-allowed' : 'cursor-pointer')}
       style={{ opacity: disabled ? 0.5 : 1 }}
     >
       <BaseCheckbox.Root
@@ -62,7 +62,7 @@ export function Checkbox({
         indeterminate={indeterminate}
         style={typeof style === 'object' ? style : undefined}
         className={mergeClassName(
-          'flex h-[18px] w-[18px] shrink-0 cursor-inherit items-center justify-center rounded-sm border border-border-strong bg-surface-control shadow-highlight-inset outline-none transition-[background,border-color] duration-[120ms] data-[checked]:border-accent data-[checked]:bg-accent data-[indeterminate]:border-accent data-[indeterminate]:bg-accent data-[disabled]:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          'flex h-[20px] w-[20px] shrink-0 cursor-inherit items-center justify-center rounded-sm border border-border bg-surface-control shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-[120ms] hover:bg-surface-hover data-[checked]:border-accent data-[checked]:bg-accent data-[indeterminate]:border-accent data-[indeterminate]:bg-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:hover:bg-surface-control-disabled focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
           className,
         )}
         {...props}
@@ -75,7 +75,7 @@ export function Checkbox({
       </BaseCheckbox.Root>
 
       {label && (
-        <span className="text-sm leading-none text-foreground-muted">
+        <span className="text-sm leading-normal text-foreground">
           {label}
         </span>
       )}

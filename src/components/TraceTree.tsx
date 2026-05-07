@@ -119,7 +119,7 @@ function JsonBlock({ value }: { value: unknown }) {
   const json = safeJsonStringify(value);
 
   return (
-    <pre className="m-0 overflow-x-auto whitespace-pre-wrap break-words rounded-sm border border-border bg-background px-2.5 py-2 font-mono text-[0.6875rem] leading-[1.55] text-foreground-muted">
+    <pre className="m-0 overflow-x-auto whitespace-pre-wrap break-words rounded-sm border border-border bg-background px-[10px] py-[8px] font-mono text-[0.6875rem] leading-[1.6] text-foreground-muted">
       {json}
     </pre>
   );
@@ -127,8 +127,8 @@ function JsonBlock({ value }: { value: unknown }) {
 
 function MetaRow({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div className="flex items-center gap-2">
-      <span className="min-w-20 text-[0.6875rem] text-foreground-subtle">
+    <div className="flex items-center gap-[8px]">
+      <span className="min-w-[80px] text-[0.6875rem] text-foreground-subtle">
         {label}
       </span>
       <span className="font-mono text-xs text-foreground-muted">
@@ -140,7 +140,7 @@ function MetaRow({ label, value }: { label: string; value: ReactNode }) {
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="mb-1 block text-[0.5625rem] font-semibold uppercase tracking-[0.1em] text-foreground-subtle">
+    <span className="mb-[4px] block text-[0.625rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
       {children}
     </span>
   );
@@ -161,7 +161,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
 
   return (
     <div
-      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated', className)}
+      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated shadow-card', className)}
       style={style}
     >
       <button
@@ -171,7 +171,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
         aria-controls={hasDetails ? detailId : undefined}
         disabled={!hasDetails}
         onClick={() => hasDetails && setOpen((o) => !o)}
-        className={cn('flex w-full items-center gap-2 border-0 bg-transparent px-2.5 py-[9px] text-left', hasDetails ? 'cursor-pointer' : 'cursor-default')}
+        className={cn('flex w-full items-center gap-[8px] border-0 bg-background-elevated px-[12px] py-[10px] text-left outline-none transition-[background] duration-[120ms] hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent', hasDetails ? 'cursor-pointer' : 'cursor-default')}
       >
         {hasDetails && (
           <svg
@@ -185,12 +185,12 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
             <path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         )}
-        {!hasDetails && <span className="w-2.5 shrink-0" />}
+        {!hasDetails && <span className="w-[10px] shrink-0" />}
 
-        <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: statusDot[span.status] }} />
+        <span className="h-[7px] w-[7px] shrink-0 rounded-full" style={{ background: statusDot[span.status] }} />
 
         <span
-          className="flex shrink-0 items-center gap-[3px] rounded-sm px-[5px] py-px text-[0.5625rem] font-bold tracking-[0.08em]"
+          className="flex shrink-0 items-center gap-[4px] rounded-sm px-[6px] py-[2px] text-[0.625rem] font-bold leading-none tracking-[0.08em]"
           style={{
             color: cfg.color,
             background: cfg.bg,
@@ -204,7 +204,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
           {span.name}
         </span>
 
-        <div className="flex shrink-0 items-center gap-2.5">
+        <div className="flex shrink-0 items-center gap-[10px]">
           {span.model && (
             <span className="text-[0.6875rem] text-foreground-subtle">
               {span.model}
@@ -231,10 +231,10 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
       {open && (
         <div
           id={detailId}
-          className="flex flex-col gap-2.5 border-t border-border px-3 py-2.5"
+          className="flex flex-col gap-[12px] border-t border-border bg-background-subtle px-[14px] py-[12px]"
         >
           {(span.model || span.inputTokens || span.outputTokens || span.cost) && (
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-[4px]">
               <SectionLabel>Model</SectionLabel>
               {span.model && <MetaRow label="model" value={span.model} />}
               {span.inputTokens && <MetaRow label="input tokens" value={span.inputTokens.toLocaleString()} />}
@@ -246,7 +246,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
           {span.query && (
             <div>
               <SectionLabel>Query</SectionLabel>
-              <p className="m-0 text-[0.8125rem] italic text-foreground-muted">
+              <p className="m-0 text-[0.8125rem] italic leading-[1.55] text-foreground-muted">
                 "{span.query}"
               </p>
               {span.resultCount !== undefined && (
@@ -292,14 +292,14 @@ export type TraceTreeProps = {
 function SpanTreeNode({ span, depth, defaultOpen }: { span: SpanNode; depth: number; defaultOpen: boolean }) {
   return (
     <div>
-      <div style={{ paddingLeft: `${depth * 20}px` }}>
+      <div style={{ paddingLeft: `${depth * 22}px` }}>
         <SpanCard span={span} defaultOpen={defaultOpen && depth === 0} />
       </div>
       {span.children && span.children.length > 0 && (
         <div
-          className="mt-1 flex flex-col gap-1 border-l border-border pl-2.5"
+          className="mt-[6px] flex flex-col gap-[6px] border-l border-border pl-[10px]"
           style={{
-            marginLeft: `${depth * 20 + 10}px`,
+            marginLeft: `${depth * 22 + 11}px`,
           }}
         >
           {span.children.map((child) => (
@@ -322,12 +322,12 @@ export function TraceTree({
 }: TraceTreeProps) {
   return (
     <div
-      className={cn('overflow-hidden rounded-md border border-border-strong bg-background', className)}
+      className={cn('overflow-hidden rounded-md border border-border bg-background shadow-card', className)}
       style={style}
     >
       {(traceName || traceId || totalDuration) && (
-        <div className="flex items-center justify-between border-b border-border bg-background-elevated px-3.5 py-2.5">
-          <div className="flex items-center gap-2.5">
+        <div className="flex items-center justify-between gap-[12px] border-b border-border bg-background-elevated px-[14px] py-[12px]">
+          <div className="flex min-w-[0] items-center gap-[10px]">
             <span className="text-xs font-semibold text-foreground">
               {traceName ?? 'Trace'}
             </span>
@@ -345,7 +345,7 @@ export function TraceTree({
         </div>
       )}
 
-      <div className="flex flex-col gap-1 p-2.5">
+      <div className="flex flex-col gap-[8px] p-[10px]">
         {spans.map((span) => (
           <SpanTreeNode key={span.id} span={span} depth={0} defaultOpen={defaultOpen} />
         ))}

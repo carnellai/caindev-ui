@@ -60,7 +60,7 @@ function JsonDisplay({ value }: { value: unknown }) {
   const json = safeJsonStringify(value);
 
   return (
-    <pre className="m-0 overflow-x-auto whitespace-pre-wrap break-words rounded-sm border border-border bg-background px-3 py-2.5 font-mono text-xs leading-[1.55] text-foreground-muted">
+    <pre className="m-0 overflow-x-auto whitespace-pre-wrap break-words rounded-sm border border-border bg-background px-[12px] py-[10px] font-mono text-xs leading-[1.6] text-foreground-muted">
       {json}
     </pre>
   );
@@ -83,7 +83,7 @@ export function ToolCallCard({
 
   return (
     <div
-      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated', className)}
+      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated shadow-card', className)}
       style={style}
     >
       <button
@@ -92,7 +92,7 @@ export function ToolCallCard({
         aria-controls={hasContent ? contentId : undefined}
         disabled={!hasContent}
         onClick={() => hasContent && setOpen((o) => !o)}
-        className={cn('flex w-full items-center gap-2 border-0 bg-transparent px-3 py-2.5 text-left', hasContent ? 'cursor-pointer' : 'cursor-default')}
+        className={cn('flex w-full items-center gap-[8px] border-0 bg-background-elevated px-[14px] py-[12px] text-left outline-none transition-[background] duration-[120ms] hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent', hasContent ? 'cursor-pointer' : 'cursor-default')}
       >
         {hasContent && <ChevronIcon open={open} />}
         <span className="flex text-foreground-muted">
@@ -102,10 +102,10 @@ export function ToolCallCard({
           {name}
         </span>
 
-        <span className="ml-auto flex items-center gap-1.5">
+        <span className="ml-auto flex items-center gap-[8px]">
           {status === 'running' && <RunningDots />}
           <span
-            className="rounded-sm px-[7px] py-0.5 text-[0.6875rem] font-medium"
+            className="rounded-sm px-[7px] py-[3px] text-[0.6875rem] font-semibold leading-none"
             style={{
               color: cfg.color,
               background: cfg.bg,
@@ -124,11 +124,11 @@ export function ToolCallCard({
       {open && (
         <div
           id={contentId}
-          className="flex flex-col gap-2.5 border-t border-border p-3"
+          className="flex flex-col gap-[12px] border-t border-border bg-background-subtle p-[14px]"
         >
           {input !== undefined && (
             <div>
-              <span className="mb-1.5 block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
+              <span className="mb-[6px] block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
                 Input
               </span>
               <JsonDisplay value={input} />
@@ -136,7 +136,7 @@ export function ToolCallCard({
           )}
           {output !== undefined && (
             <div>
-              <span className="mb-1.5 block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
+              <span className="mb-[6px] block text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
                 Output
               </span>
               <JsonDisplay value={output} />

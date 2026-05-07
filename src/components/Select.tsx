@@ -70,7 +70,7 @@ export function Select({
   };
 
   return (
-    <div className={cn('flex flex-col gap-1.5', className)} style={style}>
+    <div className={cn('flex flex-col gap-[6px]', className)} style={style}>
       <BaseSelect.Root
         items={options}
         value={value}
@@ -88,7 +88,7 @@ export function Select({
         <BaseSelect.Trigger
           aria-label={label ? undefined : placeholder}
           className={mergeClassName(
-            'flex h-9 min-w-40 cursor-pointer select-none items-center justify-between gap-2 rounded-md border border-border-strong bg-surface-control py-0 pl-3 pr-2.5 text-sm text-foreground shadow-highlight-inset outline-none data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-50 data-[popup-open]:border-accent focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+            'box-border flex h-[36px] min-w-[176px] cursor-pointer select-none appearance-none items-center justify-between gap-[8px] rounded-md border border-border bg-surface-control py-[0px] pl-[14px] pr-[12px] text-sm leading-none text-foreground shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 data-[popup-open]:border-accent focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
             triggerClassName,
           )}
           style={triggerStyle}
@@ -105,9 +105,14 @@ export function Select({
         </BaseSelect.Trigger>
 
         <BaseSelect.Portal>
-          <BaseSelect.Positioner sideOffset={6}>
+          <BaseSelect.Positioner
+            sideOffset={6}
+            collisionPadding={8}
+            positionMethod="fixed"
+            className="z-[9999] outline-none"
+          >
             <BaseSelect.Popup
-              className="rounded-md border border-border-strong bg-background-elevated p-1 shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
+              className="rounded-md border border-border bg-background-elevated p-[6px] text-foreground shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
               style={{
                 minWidth: 'max(var(--anchor-width), 180px)',
                 transformOrigin: 'var(--transform-origin)',
@@ -129,7 +134,7 @@ export function Select({
                       key={optValue}
                       value={optValue}
                       disabled={optDisabled}
-                      className="grid cursor-default select-none grid-cols-[16px_1fr] items-center gap-2 whitespace-nowrap rounded-sm px-2.5 py-[7px] text-sm text-foreground-muted outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground"
+                      className="grid cursor-default select-none grid-cols-[16px_1fr] items-center gap-[8px] whitespace-nowrap rounded-sm px-[10px] py-[8px] text-sm text-foreground-muted outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground"
                     >
                       <BaseSelect.ItemIndicator
                         className="flex text-accent"

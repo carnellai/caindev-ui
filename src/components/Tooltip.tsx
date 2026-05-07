@@ -30,10 +30,16 @@ export function Tooltip({
       <BaseTooltip.Root disabled={disabled}>
         <BaseTooltip.Trigger render={children} />
         <BaseTooltip.Portal>
-          <BaseTooltip.Positioner side={side} sideOffset={8}>
+          <BaseTooltip.Positioner
+            side={side}
+            sideOffset={8}
+            collisionPadding={8}
+            positionMethod="fixed"
+            className="z-[9999] outline-none"
+          >
             <BaseTooltip.Popup
               className={cn(
-                'max-w-[220px] rounded-sm border border-border-strong bg-background-elevated px-2.5 py-1.5 text-xs font-medium leading-[1.4] text-foreground shadow-popover transition-[transform,opacity] duration-100 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[instant]:transition-none',
+                'max-w-[240px] rounded-sm border border-border bg-background-elevated px-[10px] py-[7px] text-xs font-medium leading-[1.45] text-foreground shadow-popover transition-[transform,opacity] duration-100 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[instant]:transition-none',
                 className,
               )}
               style={{

@@ -1,5 +1,6 @@
 import { Toast as BaseToast } from '@base-ui/react/toast';
 import { cn } from '../lib/cn';
+import { useMemo } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 
 export type ToastVariant = 'default' | 'success' | 'error' | 'warning';
@@ -55,20 +56,20 @@ function ToastList() {
             role={role}
             aria-atomic="true"
             className={cn(
-              'absolute bottom-0 left-auto right-0 flex w-full select-none items-start gap-2.5 rounded-md border border-border-strong bg-background-elevated px-3.5 py-3 shadow-toast transition-all duration-200 data-[starting-style]:translate-y-full data-[starting-style]:opacity-0 data-[ending-style]:translate-y-full data-[ending-style]:opacity-0',
+              'pointer-events-auto absolute bottom-0 right-0 flex w-full select-none items-start gap-[12px] rounded-md border border-border bg-background-elevated px-[16px] py-[14px] shadow-toast outline-none transition-[transform,translate,opacity] duration-200 [transform:translateY(calc(var(--toast-offset-y)*-1))] data-[starting-style]:translate-y-full data-[starting-style]:opacity-0 data-[ending-style]:translate-y-full data-[ending-style]:opacity-0 data-[swiping]:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
               className,
             )}
             style={style}
           >
             <span aria-hidden="true" className="mt-px shrink-0" style={{ color: cfg.color }}>{cfg.icon}</span>
-            <div className="flex flex-1 flex-col gap-0.5">
-              <BaseToast.Title className="m-0 text-sm font-semibold text-foreground" />
-              <BaseToast.Description className="m-0 text-[0.8125rem] leading-normal text-foreground-muted" />
+            <div className="flex flex-1 flex-col gap-[4px]">
+              <BaseToast.Title className="m-0 text-sm font-semibold leading-normal text-foreground" />
+              <BaseToast.Description className="m-0 text-[0.8125rem] leading-[1.5] text-foreground-muted" />
             </div>
             <BaseToast.Close
               type="button"
               aria-label="Dismiss toast"
-              className="flex shrink-0 cursor-pointer border-0 bg-transparent p-0 text-foreground-subtle outline-none hover:text-foreground focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-[0px] text-foreground-subtle outline-none hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                 <path d="M3 3l8 8M11 3l-8 8" />
@@ -87,8 +88,16 @@ export function ToastProvider({ children, className, style }: ToastProviderProps
       {children}
       <BaseToast.Portal>
         <BaseToast.Viewport
-          className={cn('fixed bottom-6 right-6 z-[9999] w-80', className)}
-          style={style}
+          className={cn(
+            'pointer-events-none fixed z-[9999] m-0 h-[var(--toast-frontmost-height)] max-w-[calc(100vw-2rem)] list-none overflow-visible p-0 outline-none',
+            className,
+          )}
+          style={{
+            bottom: 'max(1rem, env(safe-area-inset-bottom))',
+            right: 'max(1rem, env(safe-area-inset-right))',
+            width: 'min(calc(100vw - 2rem), 24rem)',
+            ...style,
+          }}
         >
           <ToastList />
         </BaseToast.Viewport>
@@ -100,22 +109,25 @@ export function ToastProvider({ children, className, style }: ToastProviderProps
 export function useToast() {
   const manager = BaseToast.useToastManager();
 
-  return {
-    toast: (title: string, options?: ToastOptions) =>
-      manager.add({
-        title,
-        description: options?.description,
-        data: {
-          variant: options?.variant ?? 'default',
-          className: options?.className,
-          style: options?.style,
-        },
-      }),
-    success: (title: string, description?: string) =>
-      manager.add({ title, description, data: { variant: 'success' } }),
-    error: (title: string, description?: string) =>
-      manager.add({ title, description, data: { variant: 'error' } }),
-    warning: (title: string, description?: string) =>
-      manager.add({ title, description, data: { variant: 'warning' } }),
-  };
+  return useMemo(
+    () => ({
+      toast: (title: string, options?: ToastOptions) =>
+        manager.add({
+          title,
+          description: options?.description,
+          data: {
+            variant: options?.variant ?? 'default',
+            className: options?.className,
+            style: options?.style,
+          },
+        }),
+      success: (title: string, description?: string) =>
+        manager.add({ title, description, data: { variant: 'success' } }),
+      error: (title: string, description?: string) =>
+        manager.add({ title, description, data: { variant: 'error' } }),
+      warning: (title: string, description?: string) =>
+        manager.add({ title, description, data: { variant: 'warning' } }),
+    }),
+    [manager],
+  );
 }

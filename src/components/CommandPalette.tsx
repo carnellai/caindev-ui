@@ -130,13 +130,13 @@ export function CommandPalette({
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className="fixed inset-0 min-h-dvh bg-overlay-backdrop backdrop-blur-[4px] transition-opacity duration-150 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 supports-[-webkit-touch-callout:none]:absolute" />
         <BaseDialog.Popup
-          className="fixed left-1/2 top-[20vh] w-[560px] max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-lg border border-border-strong bg-background-elevated shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
+          className="fixed left-1/2 top-[18vh] w-[600px] max-w-[calc(100vw-2rem)] -translate-x-1/2 overflow-hidden rounded-lg border border-border bg-background-elevated text-foreground shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
           onKeyDown={handleKeyDown}
         >
           <BaseDialog.Title className="sr-only">Command palette</BaseDialog.Title>
 
           {/* Search input */}
-          <div className="flex items-center gap-2.5 border-b border-border px-4 py-3">
+          <div className="flex items-center gap-[12px] border-b border-border bg-background-elevated px-[16px] py-[14px]">
             <span className="shrink-0 text-foreground-subtle">
               <SearchIcon />
             </span>
@@ -149,12 +149,12 @@ export function CommandPalette({
                 setActiveIndex(0);
               }}
               placeholder={placeholder}
-              className="flex-1 border-0 bg-transparent text-sm text-foreground outline-none placeholder:text-foreground-subtle"
+              className="flex-1 border-0 bg-transparent text-sm leading-none text-foreground outline-none placeholder:text-foreground-subtle"
             />
             {query && (
               <button
                 onClick={() => setQuery('')}
-                className="flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-transparent p-0 text-foreground-subtle outline-none hover:text-foreground"
+                className="flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-[0px] text-foreground-subtle outline-none hover:bg-surface-hover hover:text-foreground"
                 aria-label="Clear search"
               >
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -169,17 +169,17 @@ export function CommandPalette({
             ref={listRef}
             role="listbox"
             aria-label="Commands"
-            className="max-h-[360px] overflow-y-auto overscroll-contain p-2"
+            className="max-h-[380px] overflow-y-auto overscroll-contain p-[8px]"
           >
             {flatFiltered.length === 0 ? (
-              <div className="px-3 py-8 text-center text-sm text-foreground-subtle">
+              <div className="px-[12px] py-[36px] text-center text-sm text-foreground-subtle">
                 {emptyText}
               </div>
             ) : (
               Object.entries(grouped).map(([group, groupItems]) => (
-                <div key={group} className="mb-1 last:mb-0">
+                <div key={group} className="mb-[6px] last:mb-[0px]">
                   {group && (
-                    <div className="mb-1 px-2.5 pt-2 text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
+                    <div className="mb-[4px] px-[10px] pt-[8px] text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
                       {group}
                     </div>
                   )}
@@ -195,18 +195,18 @@ export function CommandPalette({
                         onMouseEnter={() => setActiveIndex(globalIndex)}
                         onClick={() => item.onSelect()}
                         className={cn(
-                          'flex cursor-default select-none items-center gap-3 rounded-sm px-2.5 py-2 text-sm outline-none transition-[background,color] duration-[60ms]',
+                          'flex min-h-[44px] cursor-default select-none items-center gap-[12px] rounded-sm px-[10px] py-[9px] text-sm outline-none transition-[background,color] duration-[60ms]',
                           isActive
-                            ? 'bg-surface-hover text-foreground'
+                            ? 'bg-surface-active text-foreground'
                             : 'text-foreground-muted',
                         )}
                       >
                         {item.icon && (
-                          <span className="flex h-5 w-5 shrink-0 items-center justify-center text-foreground-subtle">
+                          <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center text-foreground-subtle">
                             {item.icon}
                           </span>
                         )}
-                        <div className="flex flex-1 flex-col gap-0.5 min-w-0">
+                        <div className="flex min-w-[0] flex-1 flex-col gap-[4px]">
                           <span className="truncate font-medium leading-none">{item.label}</span>
                           {item.description && (
                             <span className="truncate text-xs text-foreground-subtle">
@@ -223,17 +223,17 @@ export function CommandPalette({
           </div>
 
           {/* Footer */}
-          <div className="flex items-center gap-3 border-t border-border px-4 py-2">
-            <span className="flex items-center gap-1 text-[0.6875rem] text-foreground-subtle">
-              <kbd className="flex h-4 min-w-[16px] items-center justify-center rounded border border-border-strong px-1 font-mono text-[0.625rem] text-foreground-subtle">↑↓</kbd>
+          <div className="flex items-center gap-[12px] border-t border-border bg-background-subtle px-[16px] py-[10px]">
+            <span className="flex items-center gap-[4px] text-[0.6875rem] text-foreground-subtle">
+              <kbd className="flex h-[18px] min-w-[18px] items-center justify-center rounded-sm border border-border bg-surface-control px-[5px] font-mono text-[0.625rem] text-foreground-subtle">↑↓</kbd>
               navigate
             </span>
-            <span className="flex items-center gap-1 text-[0.6875rem] text-foreground-subtle">
-              <kbd className="flex h-4 min-w-[16px] items-center justify-center rounded border border-border-strong px-1 font-mono text-[0.625rem] text-foreground-subtle">↵</kbd>
+            <span className="flex items-center gap-[4px] text-[0.6875rem] text-foreground-subtle">
+              <kbd className="flex h-[18px] min-w-[18px] items-center justify-center rounded-sm border border-border bg-surface-control px-[5px] font-mono text-[0.625rem] text-foreground-subtle">↵</kbd>
               select
             </span>
-            <span className="flex items-center gap-1 text-[0.6875rem] text-foreground-subtle">
-              <kbd className="flex h-4 min-w-[16px] items-center justify-center rounded border border-border-strong px-1 font-mono text-[0.625rem] text-foreground-subtle">esc</kbd>
+            <span className="flex items-center gap-[4px] text-[0.6875rem] text-foreground-subtle">
+              <kbd className="flex h-[18px] min-w-[18px] items-center justify-center rounded-sm border border-border bg-surface-control px-[5px] font-mono text-[0.625rem] text-foreground-subtle">esc</kbd>
               close
             </span>
           </div>

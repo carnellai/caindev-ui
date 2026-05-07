@@ -40,10 +40,15 @@ export function Menu({
     >
       <BaseMenu.Trigger render={trigger} />
       <BaseMenu.Portal>
-        <BaseMenu.Positioner sideOffset={6}>
+        <BaseMenu.Positioner
+          sideOffset={6}
+          collisionPadding={8}
+          positionMethod="fixed"
+          className="z-[9999] outline-none"
+        >
           <BaseMenu.Popup
             className={cn(
-              'min-w-[180px] rounded-md border border-border-strong bg-background-elevated p-1 shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
+              'min-w-[192px] rounded-md border border-border bg-background-elevated p-[6px] text-foreground shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
               className,
             )}
             style={{
@@ -55,7 +60,7 @@ export function Menu({
               <div key={gi}>
                 {gi > 0 && (
                   <BaseMenu.Separator
-                    className="my-1 h-px bg-border"
+                    className="my-[6px] h-px bg-border"
                   />
                 )}
                 {group.items.map((item) => (
@@ -65,7 +70,7 @@ export function Menu({
                     disabled={item.disabled}
                     onClick={item.onSelect}
                     className={cn(
-                      'flex cursor-default select-none items-center rounded-sm px-2.5 py-[7px] text-sm outline-none transition-[background,color] duration-[80ms] data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground',
+                      'flex min-h-[34px] cursor-default select-none items-center rounded-sm px-[10px] py-[8px] text-sm outline-none transition-[background,color] duration-[80ms] data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground',
                       item.destructive ? 'text-destructive' : 'text-foreground-muted',
                     )}
                   >

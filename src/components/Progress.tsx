@@ -18,9 +18,9 @@ export type ProgressProps = {
 }
 
 const sizeClasses: Record<ProgressSize, string> = {
-  sm: 'h-1',
-  md: 'h-1.5',
-  lg: 'h-2.5',
+  sm: 'h-[5px]',
+  md: 'h-[7px]',
+  lg: 'h-[10px]',
 }
 
 const variantClasses: Record<ProgressVariant, string> = {
@@ -46,23 +46,23 @@ export function Progress({
       value={value}
       min={min}
       max={max}
-      className={cn('flex w-full flex-col gap-1.5', className)}
+      className={cn('flex w-full flex-col gap-[8px]', className)}
       style={style}>
       {(label || showValue) && (
-        <div className='flex items-center justify-between gap-2'>
+        <div className='flex items-center justify-between gap-[12px]'>
           {label && (
-            <BaseProgress.Label className='text-[0.8125rem] font-medium text-foreground'>
+            <BaseProgress.Label className='text-sm font-medium leading-none text-foreground'>
               {label}
             </BaseProgress.Label>
           )}
           {showValue && (
-            <BaseProgress.Value className='text-xs tabular-nums text-foreground-muted' />
+            <BaseProgress.Value className='font-mono text-xs tabular-nums text-foreground-muted' />
           )}
         </div>
       )}
       <BaseProgress.Track
         className={cn(
-          'w-full overflow-hidden rounded-full bg-background-subtle',
+          'w-full overflow-hidden rounded-full bg-background-subtle shadow-highlight-inset',
           sizeClasses[size],
         )}>
         <BaseProgress.Indicator

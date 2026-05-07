@@ -51,7 +51,7 @@ export function Dialog({
 
         <BaseDialog.Popup
           className={cn(
-            'fixed left-1/2 top-1/2 w-[420px] max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border-strong bg-background-elevated p-6 shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
+            'fixed left-1/2 top-1/2 z-[9999] w-[440px] max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-background-elevated p-[24px] text-foreground shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
             className,
           )}
           style={style}
@@ -59,20 +59,20 @@ export function Dialog({
           <BaseDialog.Close
             type="button"
             aria-label="Close dialog"
-            className="absolute right-3.5 top-3.5 flex h-7 w-7 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-0 text-foreground-subtle outline-none hover:bg-background-subtle hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="absolute right-[14px] top-[14px] flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-[0px] text-foreground-subtle outline-none hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <CloseIcon />
           </BaseDialog.Close>
 
-          <div className={description || children ? 'mb-4' : 'mb-6'}>
+          <div className={description || children ? 'mb-[18px] pr-[34px]' : 'mb-[24px] pr-[34px]'}>
             <BaseDialog.Title
-              className="m-0 text-base font-semibold tracking-[-0.01em] text-foreground"
+              className="m-0 text-base font-semibold leading-normal text-foreground"
             >
               {title}
             </BaseDialog.Title>
             {description && (
               <BaseDialog.Description
-                className="m-0 mt-1.5 text-sm leading-[1.55] text-foreground-muted"
+                className="m-0 mt-[6px] text-sm leading-[1.55] text-foreground-muted"
               >
                 {description}
               </BaseDialog.Description>
@@ -80,10 +80,10 @@ export function Dialog({
           </div>
 
           {children && (
-            <div className="mb-6">{children}</div>
+            <div className="cd-dialog-content mb-[24px] text-sm leading-[1.6] text-foreground-muted">{children}</div>
           )}
 
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-[8px]">
             {actions ?? (
               <BaseDialog.Close render={<Button type="button" variant="outline" />}>
                 Close

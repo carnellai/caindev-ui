@@ -47,20 +47,20 @@ const sideConfig: Record<
     swipeDirection: 'down',
     viewportClass: 'fixed inset-0 flex items-end justify-center',
     popupClass:
-      '-mb-12 w-full max-h-[calc(85vh+3rem)] rounded-t-[12px] border border-border-strong bg-background-elevated px-6 pb-[calc(1.5rem+3rem)] pt-4 shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateY(var(--drawer-swipe-movement-y))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateY(calc(100%-3rem+2px))] data-[starting-style]:[transform:translateY(calc(100%-3rem+2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
-    handleClass: 'mx-auto mb-4 h-1 w-10 rounded-full bg-border-strong',
+      '-mb-12 w-full max-h-[calc(85vh+3rem)] rounded-t-lg border border-border bg-background-elevated px-[24px] pb-[calc(1.5rem+3rem)] pt-[16px] shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateY(var(--drawer-swipe-movement-y))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateY(calc(100%-3rem+2px))] data-[starting-style]:[transform:translateY(calc(100%-3rem+2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
+    handleClass: 'mx-auto mb-[18px] h-[4px] w-[42px] rounded-full bg-border-strong',
   },
   right: {
     swipeDirection: 'right',
     viewportClass: 'fixed inset-0 flex items-stretch justify-end',
     popupClass:
-      '-mr-12 h-full w-[calc(22rem+3rem)] max-w-[calc(100vw-3rem)] border-l border-border-strong bg-background-elevated px-6 pb-6 pr-[calc(1.5rem+3rem)] pt-6 shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateX(var(--drawer-swipe-movement-x))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(100%-3rem+2px))] data-[starting-style]:[transform:translateX(calc(100%-3rem+2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
+      '-mr-12 h-full w-[calc(22rem+3rem)] max-w-[calc(100vw-3rem)] border-l border-border bg-background-elevated px-[24px] pb-[24px] pr-[calc(1.5rem+3rem)] pt-[24px] shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateX(var(--drawer-swipe-movement-x))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(100%-3rem+2px))] data-[starting-style]:[transform:translateX(calc(100%-3rem+2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
   },
   left: {
     swipeDirection: 'left',
     viewportClass: 'fixed inset-0 flex items-stretch justify-start',
     popupClass:
-      '-ml-12 h-full w-[calc(22rem+3rem)] max-w-[calc(100vw-3rem)] border-r border-border-strong bg-background-elevated px-6 pb-6 pl-[calc(1.5rem+3rem)] pt-6 shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateX(calc(-1*var(--drawer-swipe-movement-x)))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(-100%+3rem-2px))] data-[starting-style]:[transform:translateX(calc(-100%+3rem-2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
+      '-ml-12 h-full w-[calc(22rem+3rem)] max-w-[calc(100vw-3rem)] border-r border-border bg-background-elevated px-[24px] pb-[24px] pl-[calc(1.5rem+3rem)] pt-[24px] shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateX(calc(-1*var(--drawer-swipe-movement-x)))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(-100%+3rem-2px))] data-[starting-style]:[transform:translateX(calc(-100%+3rem-2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
   },
 }
 
@@ -94,13 +94,13 @@ export function Drawer({
             style={style}>
             {cfg.handleClass && <div className={cfg.handleClass} aria-hidden />}
             <BaseDrawer.Content className='mx-auto w-full max-w-[32rem]'>
-              <div className='mb-4 flex items-start justify-between gap-4'>
+              <div className='mb-[18px] flex items-start justify-between gap-[16px]'>
                 <div>
-                  <BaseDrawer.Title className='m-0 text-base font-semibold tracking-[-0.01em] text-foreground'>
+                  <BaseDrawer.Title className='m-0 text-base font-semibold leading-normal text-foreground'>
                     {title}
                   </BaseDrawer.Title>
                   {description && (
-                    <BaseDrawer.Description className='m-0 mt-1.5 text-sm leading-[1.55] text-foreground-muted'>
+                    <BaseDrawer.Description className='m-0 mt-[6px] text-sm leading-[1.55] text-foreground-muted'>
                       {description}
                     </BaseDrawer.Description>
                   )}
@@ -109,17 +109,17 @@ export function Drawer({
                   <BaseDrawer.Close
                     type='button'
                     aria-label='Close drawer'
-                    className='flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-0 text-foreground-subtle outline-none hover:bg-background-subtle hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'>
+                    className='flex h-[30px] w-[30px] shrink-0 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-[0px] text-foreground-subtle outline-none hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'>
                     <CloseIcon />
                   </BaseDrawer.Close>
                 )}
               </div>
 
-              {children && <div className='mb-6'>{children}</div>}
+              {children && <div className='mb-[24px] text-sm leading-[1.6] text-foreground-muted'>{children}</div>}
 
               <div
                 className={cn(
-                  'flex gap-2',
+                  'flex gap-[8px]',
                   side === 'bottom' ? 'justify-center' : 'justify-end',
                 )}>
                 {actions ?? (

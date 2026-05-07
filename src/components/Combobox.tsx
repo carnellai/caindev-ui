@@ -58,12 +58,12 @@ export function Combobox({
 }: ComboboxProps) {
   return (
     <div
-      className={cn('flex flex-col gap-1.5', className)}
+      className={cn('flex min-w-[0] flex-col gap-[6px]', className)}
       style={style}>
       {label && (
         <label
           className={cn(
-            'text-[0.8125rem] font-medium',
+            'text-sm font-medium leading-normal',
             disabled ? 'text-foreground-subtle' : 'text-foreground',
           )}>
           {label}
@@ -77,30 +77,32 @@ export function Combobox({
         disabled={disabled}>
         {/*
           InputGroup renders a <div> that is `position: relative` internally.
-          Use `box-content` so the h-9 height is the content height, not total height.
-          The icon div is absolute, anchored to bottom-0, with the same height as InputGroup.
-          Input uses w-full + box-border + pr to make room for the icon on the right.
+          Keep the trigger in a fixed-width grid column so the input text never sits under the icon.
         */}
         <BaseCombobox.InputGroup
-          className='relative h-9 w-64 rounded-md border border-border-strong bg-surface-control shadow-highlight-inset focus-within:border-accent focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50'
+          className='relative h-[36px] min-w-[176px] rounded-md border border-border bg-surface-control shadow-highlight-inset transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover focus-within:border-accent focus-within:bg-surface-control focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60'
           style={{ display: 'grid', gridTemplateColumns: '1fr 2.25rem' }}>
           <BaseCombobox.Input
             placeholder={placeholder}
-            className='h-full min-w-0 border-0 bg-transparent pl-3 text-sm text-foreground outline-none placeholder:text-foreground-subtle'
+            className='h-full min-w-[0] border-0 bg-transparent pl-[14px] text-sm leading-none text-foreground outline-none placeholder:text-foreground-subtle'
           />
           <div className='flex items-center justify-center text-foreground-muted'>
             <BaseCombobox.Trigger
               aria-label='Open'
-              className='flex h-9 w-9 cursor-pointer items-center justify-center border-0 bg-transparent p-0 outline-none hover:text-foreground'>
+              className='flex h-[36px] w-[36px] cursor-pointer items-center justify-center rounded-r-md border-0 bg-transparent p-[0px] outline-none hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent'>
               <ChevronIcon />
             </BaseCombobox.Trigger>
           </div>
         </BaseCombobox.InputGroup>
 
         <BaseCombobox.Portal>
-          <BaseCombobox.Positioner sideOffset={6} className='outline-none'>
+          <BaseCombobox.Positioner
+            sideOffset={6}
+            collisionPadding={8}
+            positionMethod='fixed'
+            className='z-[9999] outline-none'>
             <BaseCombobox.Popup
-              className='min-w-[260px] w-[var(--anchor-width)] rounded-md border border-border-strong bg-background-elevated p-1 shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0'
+              className='min-w-[260px] w-[var(--anchor-width)] rounded-md border border-border bg-background-elevated p-[6px] text-foreground shadow-popover outline-none transition-[transform,opacity] duration-[120ms] data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0'
               style={{ transformOrigin: 'var(--transform-origin)' }}>
               <BaseCombobox.Empty className='px-2.5 py-6 text-center text-sm text-foreground-subtle'>
                 {emptyText}
@@ -113,7 +115,7 @@ export function Combobox({
                     key={item.value}
                     value={item.value}
                     disabled={item.disabled}
-                    className='grid cursor-default select-none grid-cols-[16px_1fr] items-center gap-2 whitespace-nowrap rounded-sm px-2.5 py-[7px] text-sm text-foreground-muted outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground'>
+                    className='grid cursor-default select-none grid-cols-[16px_1fr] items-center gap-[8px] whitespace-nowrap rounded-sm px-[10px] py-[8px] text-sm text-foreground-muted outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground'>
                     <BaseCombobox.ItemIndicator className='flex text-accent'>
                       <CheckIcon />
                     </BaseCombobox.ItemIndicator>

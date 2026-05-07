@@ -24,9 +24,9 @@ function ValueDisplay({ value, depth = 0 }: { value: unknown; depth?: number }) 
     if (depth >= 2) return <span className="text-foreground-subtle">[{value.length} items]</span>;
 
     return (
-      <div className="flex flex-col gap-0.5 border-l border-border pl-3">
+      <div className="flex flex-col gap-[4px] border-l border-border pl-[12px]">
         {value.slice(0, 5).map((item, i) => (
-          <div key={i} className="flex items-start gap-1.5">
+          <div key={i} className="flex items-start gap-[6px]">
             <span className="shrink-0 pt-px text-[0.6875rem] text-foreground-subtle">{i}</span>
             <ValueDisplay value={item} depth={depth + 1} />
           </div>
@@ -46,14 +46,14 @@ function StructuredOutputInner({ data, depth = 0 }: { data: Record<string, unkno
   const entries = Object.entries(data);
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-[8px]">
       {entries.length === 0 && (
         <span className="font-mono text-[0.8125rem] text-foreground-subtle">{'{ }'}</span>
       )}
       {entries.map(([key, value]) => (
         <div
           key={key}
-          className="grid items-start gap-3"
+          className="grid items-start gap-[12px]"
           style={{
             gridTemplateColumns: depth === 0 ? '140px 1fr' : '110px 1fr',
           }}
@@ -61,7 +61,7 @@ function StructuredOutputInner({ data, depth = 0 }: { data: Record<string, unkno
           <span className="overflow-hidden text-ellipsis whitespace-nowrap pt-px font-mono text-xs text-foreground-subtle">
             {key}
           </span>
-          <span className="font-mono text-[0.8125rem] leading-normal">
+          <span className="font-mono text-[0.8125rem] leading-[1.55]">
             <ValueDisplay value={value} depth={depth} />
           </span>
         </div>
@@ -73,15 +73,15 @@ function StructuredOutputInner({ data, depth = 0 }: { data: Record<string, unkno
 export function StructuredOutput({ data, title, className, style }: StructuredOutputProps) {
   return (
     <div
-      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated', className)}
+      className={cn('overflow-hidden rounded-md border border-border bg-background-elevated shadow-card', className)}
       style={style}
     >
       {title && (
-        <div className="border-b border-border bg-background px-3 py-2 font-mono text-xs font-medium text-foreground-muted">
+        <div className="border-b border-border bg-background-subtle px-[14px] py-[10px] font-mono text-xs font-medium text-foreground-muted">
           {title}
         </div>
       )}
-      <div className="px-3.5 py-3">
+      <div className="px-[14px] py-[14px]">
         <StructuredOutputInner data={data} />
       </div>
     </div>

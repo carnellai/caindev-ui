@@ -37,19 +37,19 @@ export function StatDelta({
   };
 
   return (
-    <div className={cn('flex flex-col gap-1', className)} style={style}>
-      <span className="text-[0.6875rem] font-medium uppercase tracking-[0.08em] text-foreground-subtle">
+    <div className={cn('flex flex-col gap-[8px]', className)} style={style}>
+      <span className="text-xs font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
         {label}
       </span>
-      <div className="flex items-baseline gap-2">
-        <span className="font-mono text-xl font-semibold text-foreground tabular-nums">
-          {fmt(current)}{unit && <span className="ml-0.5 text-xs font-normal text-foreground-subtle">{unit}</span>}
+      <div className="flex items-baseline gap-[10px]">
+        <span className="font-mono text-[1.25rem] font-semibold leading-none text-foreground tabular-nums">
+          {fmt(current)}{unit && <span className="ml-[2px] text-xs font-normal text-foreground-subtle">{unit}</span>}
         </span>
-        <span className="font-mono text-xs font-medium" style={{ color }}>
+        <span className="inline-flex items-center gap-[4px] rounded-sm border border-border bg-background-subtle px-[6px] py-[3px] font-mono text-xs font-semibold leading-none" style={{ color }}>
           {arrow} {Math.abs(deltaPercent).toFixed(1)}%
         </span>
       </div>
-      <span className="font-mono text-[0.6875rem] text-foreground-subtle">
+      <span className="font-mono text-xs leading-none text-foreground-subtle">
         vs {fmt(previous)}{unit ? ` ${unit}` : ''} prev
       </span>
     </div>
