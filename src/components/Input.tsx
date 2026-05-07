@@ -50,7 +50,7 @@ export function Input({
   const accessibleLabel = ariaLabel ?? (!label && !ariaLabelledBy ? placeholder : undefined);
 
   return (
-    <div className="flex min-w-[0] flex-col gap-[6px]">
+    <div className="flex min-w-[0] flex-col gap-2">
       {label && (
         <label
           htmlFor={inputId}

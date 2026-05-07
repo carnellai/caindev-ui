@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, UIEvent } from 'react';
 import { MessageBubble, type MessageRole } from './MessageBubble';
 import { cn } from '../lib/cn';
 
@@ -26,16 +26,48 @@ export function MessageThread({
   className,
   style,
 }: MessageThreadProps) {
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isNearBottomRef = useRef(true);
+  const previousMessagesRef = useRef<{ count: number; lastKey: string } | null>(null);
+  const lastMessage = messages[messages.length - 1];
+  const lastMessageKey = lastMessage
+    ? `${lastMessage.id}\n${lastMessage.content}\n${lastMessage.streaming ? 'streaming' : 'complete'}`
+    : '';
+
+  function isNearBottom(element: HTMLDivElement) {
+    return element.scrollHeight - element.scrollTop - element.clientHeight <= 48;
+  }
+
+  function handleScroll(event: UIEvent<HTMLDivElement>) {
+    isNearBottomRef.current = isNearBottom(event.currentTarget);
+  }
 
   useEffect(() => {
-    if (autoScroll) {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = containerRef.current;
+    const previousMessages = previousMessagesRef.current;
+    const currentMessages = { count: messages.length, lastKey: lastMessageKey };
+
+    previousMessagesRef.current = currentMessages;
+
+    if (!autoScroll || !container) {
+      return;
     }
-  }, [messages, autoScroll]);
+
+    if (previousMessages && !isNearBottomRef.current) {
+      return;
+    }
+
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: previousMessages && messages.length >= previousMessages.count ? 'smooth' : 'auto',
+    });
+    isNearBottomRef.current = true;
+  }, [autoScroll, messages.length, lastMessageKey]);
 
   return (
     <div
+      ref={containerRef}
+      onScroll={handleScroll}
       className={cn('flex flex-col gap-[20px] overflow-y-auto rounded-md bg-background p-[16px]', className)}
       style={{
         maxHeight,
@@ -53,7 +85,6 @@ export function MessageThread({
           timestamp={msg.timestamp}
         />
       ))}
-      <div ref={bottomRef} />
     </div>
   );
 }

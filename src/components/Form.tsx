@@ -56,7 +56,7 @@ export function FormField({
       name={name}
       disabled={disabled}
       invalid={invalid || hasError || undefined}
-      className={cn('flex flex-col gap-1.5', className)}
+      className={cn('flex flex-col gap-2', className)}
       style={style}
     >
       <Field.Label className="flex items-center gap-1 text-[0.8125rem] font-medium text-foreground">

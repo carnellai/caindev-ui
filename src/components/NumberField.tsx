@@ -1,6 +1,6 @@
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field'
 import { useId } from 'react'
-import type { CSSProperties } from 'react';
+import type { CSSProperties, PointerEvent } from 'react';
 import { cn } from '../lib/cn';
 
 export type NumberFieldProps = {
@@ -65,6 +65,13 @@ export function NumberField({
   style,
 }: NumberFieldProps) {
   const id = useId()
+  const preserveFocusWithoutScroll = (event: PointerEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget;
+    if (document.activeElement !== button) {
+      event.preventDefault();
+      button.focus({ preventScroll: true });
+    }
+  };
 
   return (
     <BaseNumberField.Root
@@ -104,14 +111,14 @@ export function NumberField({
       )}
 
       <BaseNumberField.Group className='inline-flex w-fit flex-row rounded-md shadow-highlight-inset'>
-        <BaseNumberField.Decrement className='-ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-l-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
+        <BaseNumberField.Decrement onPointerDown={preserveFocusWithoutScroll} type='button' className='-ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-l-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
           <MinusIcon />
         </BaseNumberField.Decrement>
         <BaseNumberField.Input
           style={{ width: '64px' }}
           className='h-[36px] shrink-0 border-y border-border bg-surface-control text-center text-sm tabular-nums text-foreground outline-none transition-[background,border-color] duration-150 placeholder:text-foreground-subtle hover:bg-surface-hover focus:z-10 focus:border-accent focus:bg-surface-control focus:outline-2 focus:outline-offset-[-1px] focus:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60'
         />
-        <BaseNumberField.Increment className='-ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-r-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
+        <BaseNumberField.Increment onPointerDown={preserveFocusWithoutScroll} type='button' className='-ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-r-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
           <PlusIcon />
         </BaseNumberField.Increment>
       </BaseNumberField.Group>

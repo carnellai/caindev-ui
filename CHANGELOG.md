@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.2
+
+- Fixed Drawer and CommandPalette portal overlays to use explicit viewport geometry so they remain anchored and visible even if utility classes are not emitted by consumer builds.
+- Removed PromptInput click-focus scroll jumps by applying focus with `preventScroll` when pointer-focusing the textarea.
+- Fixed internal action controls that could trigger form scroll/submit behavior by enforcing `type="button"` on Pagination, NumberField, and CommandPalette internal buttons.
+- Improved Tooltip placement consistency by explicitly centering alignment to the active trigger anchor.
+- Increased dark-mode Skeleton base and shimmer contrast for better visibility on dark surfaces.
+- Updated default Table cell behavior to keep rows compact (truncate short content, 2-line clamp for medium content) while preserving wrap for longer descriptive values.
+- Hardened Dialog scrim anchoring with explicit fixed viewport geometry so backdrop visibility is stable in consumer builds.
+- Reinforced Select and Combobox option state contrast by styling selected rows with active surface/text tokens in both themes.
+- Increased Slider contrast in dark mode by thickening the track, strengthening inactive track border/surface contrast, and ensuring the filled indicator remains clearly visible.
+
 ## 0.1.1
 
 - Added a minimal global baseline to `@caindev/ui/styles.css` for clean consumer apps.

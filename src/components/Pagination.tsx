@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, PointerEvent } from 'react';
 import { cn } from '../lib/cn';
 
 export type PaginationProps = {
@@ -81,6 +81,13 @@ export function Pagination({
   style,
 }: PaginationProps) {
   const pages = getPages(page, totalPages, siblings)
+  const preserveFocusWithoutScroll = (event: PointerEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget;
+    if (document.activeElement !== button) {
+      event.preventDefault();
+      button.focus({ preventScroll: true });
+    }
+  };
 
   const itemBase =
     'flex h-[30px] min-w-[30px] cursor-pointer select-none items-center justify-center rounded-sm border px-2 text-xs font-medium outline-none transition-[background,border-color,color] duration-[80ms] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40'
@@ -91,6 +98,8 @@ export function Pagination({
       className={cn('flex items-center gap-1', className)}
       style={style}>
       <button
+        type='button'
+        onPointerDown={preserveFocusWithoutScroll}
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
         aria-label='Previous page'
@@ -110,7 +119,9 @@ export function Pagination({
           </span>
         ) : (
           <button
+            type='button'
             key={p}
+            onPointerDown={preserveFocusWithoutScroll}
             onClick={() => onPageChange(p)}
             aria-label={`Page ${p}`}
             aria-current={p === page ? 'page' : undefined}
@@ -126,6 +137,8 @@ export function Pagination({
       )}
 
       <button
+        type='button'
+        onPointerDown={preserveFocusWithoutScroll}
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
         aria-label='Next page'

@@ -41,6 +41,8 @@
   --color-surface-control-disabled: rgba(255, 255, 255, 0.025);
   --color-surface-hover: rgba(255, 255, 255, 0.08);
   --color-surface-active: rgba(255, 255, 255, 0.1);
+  --color-skeleton: rgba(255, 255, 255, 0.09);
+  --color-skeleton-highlight: rgba(255, 255, 255, 0.18);
   --color-overlay-backdrop: rgba(0, 0, 0, 0.6);
   --color-accent: #7c3aed;
   --color-accent-hover: #8b5cf6;
@@ -140,7 +142,8 @@ select {
   --color-surface-active: rgba(255, 255, 255, 0.1);
   --color-highlight-inset: rgba(255, 255, 255, 0.08);
   --color-overlay-backdrop: rgba(0, 0, 0, 0.6);
-  --color-skeleton-highlight: rgba(255, 255, 255, 0.04);
+  --color-skeleton: rgba(255, 255, 255, 0.09);
+  --color-skeleton-highlight: rgba(255, 255, 255, 0.18);
   --color-accent: #7c3aed;
   --color-accent-hover: #8b5cf6;
   --color-accent-muted: rgba(124, 58, 237, 0.15);
@@ -196,7 +199,8 @@ select {
   --color-surface-active: rgba(255, 255, 255, 0.1);
   --color-highlight-inset: rgba(255, 255, 255, 0.08);
   --color-overlay-backdrop: rgba(0, 0, 0, 0.6);
-  --color-skeleton-highlight: rgba(255, 255, 255, 0.04);
+  --color-skeleton: rgba(255, 255, 255, 0.065);
+  --color-skeleton-highlight: rgba(255, 255, 255, 0.13);
   --color-destructive: #ef4444;
   --color-ring: #52525b;
 
@@ -244,6 +248,7 @@ select {
   --color-surface-active: rgba(24, 24, 27, 0.07);
   --color-highlight-inset: rgba(255, 255, 255, 0.9);
   --color-overlay-backdrop: rgba(24, 24, 27, 0.36);
+  --color-skeleton: rgba(24, 24, 27, 0.08);
   --color-skeleton-highlight: rgba(255, 255, 255, 0.72);
   --color-accent: #7c3aed;
   --color-accent-hover: #8b5cf6;
@@ -434,6 +439,10 @@ select {
   border: 1.5px solid currentColor;
   border-right-color: transparent;
   animation: cd-button-spin 700ms linear infinite;
+}
+
+.cd-skeleton {
+  background: var(--color-skeleton);
 }
 
 .cd-skeleton-shimmer {

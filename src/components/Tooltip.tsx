@@ -32,6 +32,7 @@ export function Tooltip({
         <BaseTooltip.Portal>
           <BaseTooltip.Positioner
             side={side}
+            align="center"
             sideOffset={8}
             collisionPadding={8}
             positionMethod="fixed"

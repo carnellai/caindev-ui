@@ -37,13 +37,13 @@ export function Switch({ label, id, disabled, style, className, ...props }: Swit
         disabled={disabled}
         style={typeof style === 'object' ? style : undefined}
         className={mergeClassName(
-          'relative flex h-[24px] w-[44px] shrink-0 cursor-inherit items-center rounded-full border border-border bg-surface-control p-[2px] shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover data-[checked]:border-accent/50 data-[checked]:bg-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:hover:bg-surface-control-disabled focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          'relative flex h-[24px] w-[44px] shrink-0 cursor-inherit items-center rounded-full border border-border bg-surface-control p-[2px] shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover data-[checked]:border-accent/50 data-[checked]:bg-accent data-[checked]:shadow-none data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:hover:bg-surface-control-disabled focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
           className,
         )}
         {...props}
       >
         <BaseSwitch.Thumb
-          className="h-[18px] w-[18px] rounded-full bg-foreground-muted shadow-card transition-[translate] duration-150 ease-[cubic-bezier(0.26,0.75,0.38,0.45)] data-[checked]:translate-x-[20px] data-[checked]:bg-accent-foreground"
+          className="h-[18px] w-[18px] rounded-full bg-foreground-muted shadow-none transition-[translate] duration-150 ease-[cubic-bezier(0.26,0.75,0.38,0.45)] data-[checked]:translate-x-[20px] data-[checked]:bg-accent-foreground"
         />
       </BaseSwitch.Root>
 

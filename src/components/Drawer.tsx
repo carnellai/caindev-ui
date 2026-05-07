@@ -38,27 +38,27 @@ const sideConfig: Record<
   DrawerSide,
   {
     swipeDirection: 'down' | 'left' | 'right'
-    viewportClass: string
+    viewportWrapperClass: string
     popupClass: string
     handleClass?: string
   }
 > = {
   bottom: {
     swipeDirection: 'down',
-    viewportClass: 'fixed inset-0 flex items-end justify-center',
+    viewportWrapperClass: 'fixed flex items-end justify-center',
     popupClass:
       '-mb-12 w-full max-h-[calc(85vh+3rem)] rounded-t-lg border border-border bg-background-elevated px-[24px] pb-[calc(1.5rem+3rem)] pt-[16px] shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateY(var(--drawer-swipe-movement-y))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateY(calc(100%-3rem+2px))] data-[starting-style]:[transform:translateY(calc(100%-3rem+2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
     handleClass: 'mx-auto mb-[18px] h-[4px] w-[42px] rounded-full bg-border-strong',
   },
   right: {
     swipeDirection: 'right',
-    viewportClass: 'fixed inset-0 flex items-stretch justify-end',
+    viewportWrapperClass: 'fixed flex items-stretch justify-end',
     popupClass:
       '-mr-12 h-full w-[calc(22rem+3rem)] max-w-[calc(100vw-3rem)] border-l border-border bg-background-elevated px-[24px] pb-[24px] pr-[calc(1.5rem+3rem)] pt-[24px] shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateX(var(--drawer-swipe-movement-x))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(100%-3rem+2px))] data-[starting-style]:[transform:translateX(calc(100%-3rem+2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
   },
   left: {
     swipeDirection: 'left',
-    viewportClass: 'fixed inset-0 flex items-stretch justify-start',
+    viewportWrapperClass: 'fixed flex items-stretch justify-start',
     popupClass:
       '-ml-12 h-full w-[calc(22rem+3rem)] max-w-[calc(100vw-3rem)] border-r border-border bg-background-elevated px-[24px] pb-[24px] pl-[calc(1.5rem+3rem)] pt-[24px] shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateX(calc(-1*var(--drawer-swipe-movement-x)))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(-100%+3rem-2px))] data-[starting-style]:[transform:translateX(calc(-100%+3rem-2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
   },
@@ -78,6 +78,7 @@ export function Drawer({
   style,
 }: DrawerProps) {
   const cfg = sideConfig[side]
+  const viewportStyle: CSSProperties = { position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 }
 
   return (
     <BaseDrawer.Root
@@ -87,8 +88,11 @@ export function Drawer({
       onOpenChange={(nextOpen) => onOpenChange?.(nextOpen)}>
       <BaseDrawer.Trigger render={trigger} />
       <BaseDrawer.Portal>
-        <BaseDrawer.Backdrop className='fixed inset-0 min-h-dvh bg-overlay-backdrop backdrop-blur-[4px] opacity-[calc(1*(1-var(--drawer-swipe-progress)))] transition-opacity duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:duration-0 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)] supports-[-webkit-touch-callout:none]:absolute' />
-        <BaseDrawer.Viewport className={cfg.viewportClass}>
+        <BaseDrawer.Backdrop
+          className='fixed min-h-dvh bg-overlay-backdrop backdrop-blur-[4px] opacity-[calc(1*(1-var(--drawer-swipe-progress)))] transition-opacity duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:duration-0 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)] supports-[-webkit-touch-callout:none]:absolute'
+          style={viewportStyle}
+        />
+        <BaseDrawer.Viewport className={cfg.viewportWrapperClass} style={viewportStyle}>
           <BaseDrawer.Popup
             className={cn(cfg.popupClass, className)}
             style={style}>

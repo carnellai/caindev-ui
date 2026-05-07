@@ -134,7 +134,7 @@ export function Select({
                       key={optValue}
                       value={optValue}
                       disabled={optDisabled}
-                      className="grid cursor-default select-none grid-cols-[16px_1fr] items-center gap-[8px] whitespace-nowrap rounded-sm px-[10px] py-[8px] text-sm text-foreground-muted outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground"
+                      className="grid cursor-default select-none grid-cols-[16px_1fr] items-center gap-[8px] whitespace-nowrap rounded-sm px-[10px] py-[8px] text-sm text-foreground-muted outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground data-[selected]:bg-surface-active data-[selected]:text-foreground"
                     >
                       <BaseSelect.ItemIndicator
                         className="flex text-accent"

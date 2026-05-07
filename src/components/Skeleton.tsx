@@ -17,7 +17,7 @@ export function Skeleton({
 }: SkeletonProps) {
   return (
     <div
-      className={cn('relative overflow-hidden bg-background-subtle', className)}
+      className={cn('cd-skeleton relative overflow-hidden', className)}
       style={{ width, height, borderRadius, ...style }}
     >
       <div className="cd-skeleton-shimmer absolute inset-0" />

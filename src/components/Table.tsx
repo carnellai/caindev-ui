@@ -39,13 +39,34 @@ export function Table<T extends Record<string, unknown>>({
     }
   };
 
+  const renderCell = (row: T, col: Column<T>) => {
+    if (col.render) return col.render(row);
+
+    const value = String(row[col.key] ?? '');
+    const shouldTruncate = value.length <= 56;
+    const shouldClamp = value.length > 56 && value.length <= 200;
+
+    return (
+      <span
+        className={cn(
+          'cd-table-cell-text block max-w-[min(20rem,60vw)] overflow-hidden',
+          shouldTruncate ? 'truncate whitespace-nowrap' : 'whitespace-normal break-words',
+          shouldClamp ? '[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]' : undefined,
+        )}
+        title={value || undefined}
+      >
+        {value}
+      </span>
+    );
+  };
+
   return (
     <div
       className={cn('w-full overflow-x-auto rounded-md border border-border-strong bg-background-elevated shadow-card', className)}
       style={style}
     >
       <table
-        className={cn('w-full border-collapse text-sm leading-[1.5] text-foreground', tableClassName)}
+        className={cn('cd-table w-full border-collapse text-sm leading-[1.5] text-foreground', tableClassName)}
         style={tableStyle}
       >
         <thead>
@@ -53,13 +74,15 @@ export function Table<T extends Record<string, unknown>>({
             {columns.map((col) => (
               <th
                 key={col.key}
-                className="whitespace-nowrap px-[16px] py-[10px] text-[0.6875rem] font-semibold uppercase tracking-[0.06em] text-foreground-subtle"
+                className="px-[16px] py-[10px] text-[0.6875rem] font-semibold uppercase tracking-[0.06em] text-foreground-subtle"
                 style={{
                   textAlign: col.align ?? 'left',
                   width: col.width,
                 }}
               >
-                {col.header}
+                <span className="cd-table-header-text block truncate whitespace-nowrap">
+                  {col.header}
+                </span>
               </th>
             ))}
           </tr>
@@ -91,12 +114,12 @@ export function Table<T extends Record<string, unknown>>({
                 {columns.map((col) => (
                   <td
                     key={col.key}
-                    className="px-[16px] py-[12px] align-middle text-foreground-muted"
+                    className="cd-table-cell max-w-[18rem] overflow-hidden px-[16px] py-[12px] align-middle text-foreground-muted"
                     style={{
                       textAlign: col.align ?? 'left',
                     }}
                   >
-                    {col.render ? col.render(row) : String(row[col.key] ?? '')}
+                    {renderCell(row, col)}
                   </td>
                 ))}
               </tr>

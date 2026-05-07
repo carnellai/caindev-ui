@@ -63,8 +63,13 @@ export function CommandPalette({
 }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const previousOpenRef = useRef(false);
+  const overlayStyle = { position: 'fixed' as const, top: 0, right: 0, bottom: 0, left: 0 };
+  const actualOpen = open ?? internalOpen;
 
   const filtered = useMemo(
     () => items.filter((item) => matchesQuery(item, query)),
@@ -86,12 +91,28 @@ export function CommandPalette({
 
   // Reset on open
   function handleOpenChange(nextOpen: boolean) {
-    if (nextOpen) {
-      setQuery('');
-      setActiveIndex(0);
-    }
+    setInternalOpen(nextOpen);
     onOpenChange?.(nextOpen);
   }
+
+  useEffect(() => {
+    const wasOpen = previousOpenRef.current;
+    previousOpenRef.current = actualOpen;
+
+    if (actualOpen && !wasOpen) {
+      previousFocusRef.current = document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+      setQuery('');
+      setActiveIndex(0);
+      inputRef.current?.focus({ preventScroll: true });
+    }
+
+    if (!actualOpen && wasOpen) {
+      previousFocusRef.current?.focus({ preventScroll: true });
+      previousFocusRef.current = null;
+    }
+  }, [actualOpen]);
 
   // Clamp activeIndex when filtered changes
   useEffect(() => {
@@ -116,7 +137,16 @@ export function CommandPalette({
     const list = listRef.current;
     if (!list) return;
     const active = list.querySelector('[data-active="true"]') as HTMLElement | null;
-    active?.scrollIntoView({ block: 'nearest' });
+    if (!active) return;
+
+    const listRect = list.getBoundingClientRect();
+    const activeRect = active.getBoundingClientRect();
+
+    if (activeRect.top < listRect.top) {
+      list.scrollTop -= listRect.top - activeRect.top;
+    } else if (activeRect.bottom > listRect.bottom) {
+      list.scrollTop += activeRect.bottom - listRect.bottom;
+    }
   }, [activeIndex]);
 
   return (
@@ -128,9 +158,15 @@ export function CommandPalette({
       {trigger && <BaseDialog.Trigger render={trigger} />}
 
       <BaseDialog.Portal>
-        <BaseDialog.Backdrop className="fixed inset-0 min-h-dvh bg-overlay-backdrop backdrop-blur-[4px] transition-opacity duration-150 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 supports-[-webkit-touch-callout:none]:absolute" />
+        <BaseDialog.Backdrop
+          className="fixed inset-0 min-h-dvh bg-overlay-backdrop backdrop-blur-[4px] transition-opacity duration-150 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 supports-[-webkit-touch-callout:none]:absolute"
+          style={overlayStyle}
+        />
         <BaseDialog.Popup
+          initialFocus={false}
+          finalFocus={false}
           className="fixed left-1/2 top-[18vh] w-[600px] max-w-[calc(100vw-2rem)] -translate-x-1/2 overflow-hidden rounded-lg border border-border bg-background-elevated text-foreground shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
+          style={{ position: 'fixed', top: '18vh', left: '50%', translate: '-50% 0' }}
           onKeyDown={handleKeyDown}
         >
           <BaseDialog.Title className="sr-only">Command palette</BaseDialog.Title>
@@ -142,7 +178,6 @@ export function CommandPalette({
             </span>
             <input
               ref={inputRef}
-              autoFocus
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -153,6 +188,7 @@ export function CommandPalette({
             />
             {query && (
               <button
+                type="button"
                 onClick={() => setQuery('')}
                 className="flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-[0px] text-foreground-subtle outline-none hover:bg-surface-hover hover:text-foreground"
                 aria-label="Clear search"
@@ -195,7 +231,7 @@ export function CommandPalette({
                         onMouseEnter={() => setActiveIndex(globalIndex)}
                         onClick={() => item.onSelect()}
                         className={cn(
-                          'flex min-h-[44px] cursor-default select-none items-center gap-[12px] rounded-sm px-[10px] py-[9px] text-sm outline-none transition-[background,color] duration-[60ms]',
+                          'flex min-h-[46px] cursor-default select-none items-center gap-[12px] rounded-sm px-[10px] py-[10px] text-sm outline-none transition-[background,color] duration-[60ms]',
                           isActive
                             ? 'bg-surface-active text-foreground'
                             : 'text-foreground-muted',
@@ -206,10 +242,10 @@ export function CommandPalette({
                             {item.icon}
                           </span>
                         )}
-                        <div className="flex min-w-[0] flex-1 flex-col gap-[4px]">
-                          <span className="truncate font-medium leading-none">{item.label}</span>
+                        <div className="flex min-w-[0] flex-1 flex-col gap-[3px]">
+                          <span className="truncate font-medium leading-[1.35]">{item.label}</span>
                           {item.description && (
-                            <span className="truncate text-xs text-foreground-subtle">
+                            <span className="truncate text-xs leading-[1.35] text-foreground-subtle">
                               {item.description}
                             </span>
                           )}

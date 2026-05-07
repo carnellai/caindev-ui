@@ -13,6 +13,24 @@ export type TokenCostProps = {
   className?: string;
 };
 
+const formatCurrency = (value: number) => {
+  const absolute = Math.abs(value);
+  const fractionDigits = absolute < 0.01
+    ? 6
+    : absolute < 1
+      ? 4
+      : Number.isInteger(value)
+        ? 0
+        : 2;
+
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  }).format(value);
+};
+
 export function TokenCost({
   inputTokens,
   outputTokens,
@@ -70,7 +88,7 @@ export function TokenCost({
         <span className="flex items-center gap-1">
           <span className="text-[0.6875rem] text-foreground-subtle">cost</span>
           <span className="font-mono text-[0.8125rem] text-foreground tabular-nums">
-            ${cost < 0.01 ? cost.toFixed(6) : cost.toFixed(4)}
+            {formatCurrency(cost)}
           </span>
         </span>
       )}

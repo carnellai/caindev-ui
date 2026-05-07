@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties, ChangeEvent, KeyboardEvent, ReactNode } from 'react';
+import type { CSSProperties, ChangeEvent, KeyboardEvent, PointerEvent, ReactNode } from 'react';
 import { cn } from '../lib/cn';
 
 export type PromptInputProps = {
@@ -89,6 +89,13 @@ export function PromptInput({
   };
 
   const canSubmit = value.trim().length > 0 && !disabled;
+  const handlePointerDown = (event: PointerEvent<HTMLTextAreaElement>) => {
+    const element = event.currentTarget;
+    if (document.activeElement !== element) {
+      event.preventDefault();
+      element.focus({ preventScroll: true });
+    }
+  };
 
   return (
     <div
@@ -104,6 +111,7 @@ export function PromptInput({
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        onPointerDown={handlePointerDown}
         placeholder={placeholder}
         disabled={disabled || loading}
         rows={1}

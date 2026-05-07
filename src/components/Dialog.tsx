@@ -36,6 +36,8 @@ export function Dialog({
   className,
   style,
 }: DialogProps) {
+  const overlayStyle: CSSProperties = { position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 };
+
   return (
     <BaseDialog.Root
       open={open}
@@ -47,6 +49,7 @@ export function Dialog({
       <BaseDialog.Portal>
         <BaseDialog.Backdrop
           className="fixed inset-0 min-h-dvh bg-overlay-backdrop backdrop-blur-[4px] transition-opacity duration-150 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 supports-[-webkit-touch-callout:none]:absolute"
+          style={overlayStyle}
         />
 
         <BaseDialog.Popup

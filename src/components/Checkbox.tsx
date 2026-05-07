@@ -62,7 +62,7 @@ export function Checkbox({
         indeterminate={indeterminate}
         style={typeof style === 'object' ? style : undefined}
         className={mergeClassName(
-          'flex h-[20px] w-[20px] shrink-0 cursor-inherit items-center justify-center rounded-sm border border-border bg-surface-control shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-[120ms] hover:bg-surface-hover data-[checked]:border-accent data-[checked]:bg-accent data-[indeterminate]:border-accent data-[indeterminate]:bg-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:hover:bg-surface-control-disabled focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          'flex h-[20px] w-[20px] shrink-0 cursor-inherit items-center justify-center rounded-sm border border-border bg-surface-control shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-[120ms] hover:bg-surface-hover data-[checked]:border-accent data-[checked]:bg-accent data-[checked]:shadow-none data-[indeterminate]:border-accent data-[indeterminate]:bg-accent data-[indeterminate]:shadow-none data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:hover:bg-surface-control-disabled focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
           className,
         )}
         {...props}

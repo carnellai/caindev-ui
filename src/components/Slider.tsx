@@ -18,7 +18,7 @@ export type SliderProps = {
   className?: string;
 };
 
-const thumbClassName = 'h-4 w-4 cursor-pointer rounded-full border border-border-strong bg-accent-foreground shadow-card outline-none data-[disabled]:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background';
+const thumbClassName = 'h-4 w-4 cursor-pointer rounded-full border-2 border-accent bg-background-elevated shadow-card outline-none data-[disabled]:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 
 export function Slider({
   label,
@@ -64,10 +64,10 @@ export function Slider({
           className={cn('flex w-full select-none items-center py-2.5 touch-none', disabled ? 'cursor-not-allowed' : undefined)}
         >
           <BaseSlider.Track
-            className="relative h-1 w-full rounded-sm border border-border bg-background-subtle"
+            className="relative h-2 w-full rounded-sm border border-border-strong bg-surface-control"
           >
             <BaseSlider.Indicator
-              className="rounded-sm bg-accent"
+              className="h-full rounded-sm bg-accent"
             />
             {isRange ? (
               <>
