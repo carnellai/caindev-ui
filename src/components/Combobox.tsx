@@ -1,4 +1,5 @@
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox'
+import { useId } from 'react';
 import { cn } from '../lib/cn';
 import type { CSSProperties } from 'react';
 
@@ -56,12 +57,14 @@ export function Combobox({
   className,
   style,
 }: ComboboxProps) {
+  const inputId = useId();
   return (
     <div
       className={cn('flex min-w-[0] flex-col gap-[6px]', className)}
       style={style}>
       {label && (
         <label
+          htmlFor={inputId}
           className={cn(
             'text-sm font-medium leading-normal',
             disabled ? 'text-foreground-subtle' : 'text-foreground',
@@ -83,6 +86,7 @@ export function Combobox({
           className='relative h-[36px] min-w-[176px] rounded-md border border-border bg-surface-control shadow-highlight-inset transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover focus-within:border-accent focus-within:bg-surface-control focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60'
           style={{ display: 'grid', gridTemplateColumns: '1fr 2.25rem' }}>
           <BaseCombobox.Input
+            id={inputId}
             placeholder={placeholder}
             className='h-full min-w-[0] border-0 bg-transparent pl-[14px] text-sm leading-none text-foreground outline-none placeholder:text-foreground-subtle'
           />

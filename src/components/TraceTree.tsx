@@ -4,7 +4,7 @@ import { cn } from '../lib/cn';
 import { safeJsonStringify } from '../lib/safeJsonStringify';
 
 export type SpanKind = 'llm' | 'tool' | 'retrieval' | 'agent' | 'span' | 'embedding' | 'guardrail';
-export type SpanStatus = 'pending' | 'running' | 'completed' | 'success' | 'failed' | 'error' | 'queued' | 'cancelled' | 'skipped';
+export type SpanStatus = 'pending' | 'running' | 'completed' | 'failed' | 'queued' | 'cancelled' | 'skipped';
 
 export type SpanNode = {
   id: string;
@@ -36,8 +36,8 @@ export type SpanNode = {
 const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; icon: ReactNode }> = {
   llm: {
     label: 'LLM',
-    color: '#a78bfa',
-    bg: 'rgba(167,139,250,0.12)',
+    color: 'var(--color-info)',
+    bg: 'var(--color-info-muted)',
     icon: (
       <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
         <path d="M2 4h12M2 8h8M2 12h6" />
@@ -46,8 +46,8 @@ const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; i
   },
   tool: {
     label: 'TOOL',
-    color: '#34d399',
-    bg: 'rgba(52,211,153,0.12)',
+    color: 'var(--color-success)',
+    bg: 'var(--color-success-muted)',
     icon: (
       <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M14.5 2.5a3 3 0 0 0-4 4L4 13a1 1 0 0 0 0 1.4l.6.6a1 1 0 0 0 1.4 0l6.5-6.5a3 3 0 0 0 4-4l-2 2-1.5-.5-.5-1.5 2-2z" />
@@ -56,8 +56,8 @@ const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; i
   },
   retrieval: {
     label: 'RETRIEVAL',
-    color: '#fbbf24',
-    bg: 'rgba(251,191,36,0.12)',
+    color: 'var(--color-warning)',
+    bg: 'var(--color-warning-muted)',
     icon: (
       <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="7" cy="7" r="5" />
@@ -67,8 +67,8 @@ const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; i
   },
   agent: {
     label: 'AGENT',
-    color: '#f472b6',
-    bg: 'rgba(244,114,182,0.12)',
+    color: 'var(--cd-trace-agent-color)',
+    bg: 'var(--cd-trace-agent-bg)',
     icon: (
       <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="8" cy="6" r="3" />
@@ -78,8 +78,8 @@ const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; i
   },
   span: {
     label: 'SPAN',
-    color: '#94a3b8',
-    bg: 'rgba(148,163,184,0.1)',
+    color: 'var(--color-neutral)',
+    bg: 'var(--color-neutral-muted)',
     icon: (
       <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
         <rect x="2" y="2" width="12" height="12" rx="2" />
@@ -88,8 +88,8 @@ const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; i
   },
   embedding: {
     label: 'EMBED',
-    color: '#60a5fa',
-    bg: 'rgba(96,165,250,0.12)',
+    color: 'var(--cd-trace-embed-color)',
+    bg: 'var(--cd-trace-embed-bg)',
     icon: (
       <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
         <path d="M2 8h12M8 2v12" />
@@ -98,8 +98,8 @@ const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; i
   },
   guardrail: {
     label: 'GUARD',
-    color: '#fb923c',
-    bg: 'rgba(251,146,60,0.12)',
+    color: 'var(--cd-trace-guard-color)',
+    bg: 'var(--cd-trace-guard-bg)',
     icon: (
       <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M8 2L2 4.5v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6v-4L8 2z" />
@@ -109,20 +109,18 @@ const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; i
 };
 
 const statusDot: Record<SpanStatus, string> = {
-  pending: '#52525b',
-  running: '#a78bfa',
-  completed: '#34d399',
-  success: '#34d399',
-  failed: '#f87171',
-  error: '#f87171',
-  queued: '#fbbf24',
-  cancelled: '#94a3b8',
-  skipped: '#94a3b8',
+  pending: 'var(--color-foreground-subtle)',
+  running: 'var(--color-info)',
+  completed: 'var(--color-success)',
+  failed: 'var(--color-error)',
+  queued: 'var(--color-warning)',
+  cancelled: 'var(--color-neutral)',
+  skipped: 'var(--color-neutral)',
 };
 
-function normalizeSpanStatus(status: SpanStatus): Exclude<SpanStatus, 'success' | 'error'> {
-  if (status === 'success') return 'completed';
-  if (status === 'error') return 'failed';
+function normalizeSpanStatus(status: SpanStatus): SpanStatus {
+  if ((status as string) === 'success') return 'completed';
+  if ((status as string) === 'error') return 'failed';
   return status;
 }
 

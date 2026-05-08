@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 import { cn } from '../lib/cn';
 import { safeJsonStringify } from '../lib/safeJsonStringify';
 
-export type ToolStatus = 'pending' | 'running' | 'completed' | 'success' | 'failed' | 'error' | 'queued' | 'cancelled' | 'skipped';
+export type ToolStatus = 'pending' | 'running' | 'completed' | 'failed' | 'queued' | 'cancelled' | 'skipped';
 
 export type ToolCallCardProps = {
   name: string;
@@ -20,17 +20,15 @@ const statusConfig: Record<ToolStatus, { label: string; color: string; bg: strin
   pending: { label: 'Pending', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
   running: { label: 'Running', color: 'var(--color-info)', bg: 'var(--color-info-muted)' },
   completed: { label: 'Done', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
-  success: { label: 'Done', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
   failed: { label: 'Error', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
-  error: { label: 'Error', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
   queued: { label: 'Queued', color: 'var(--color-warning)', bg: 'var(--color-warning-muted)' },
   cancelled: { label: 'Cancelled', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
   skipped: { label: 'Skipped', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
 };
 
-function normalizeToolStatus(status: ToolStatus): Exclude<ToolStatus, 'success' | 'error'> {
-  if (status === 'success') return 'completed';
-  if (status === 'error') return 'failed';
+function normalizeToolStatus(status: ToolStatus): ToolStatus {
+  if ((status as string) === 'success') return 'completed';
+  if ((status as string) === 'error') return 'failed';
   return status;
 }
 

@@ -1,10 +1,8 @@
 import { cn } from '../lib/cn';
 import type { CSSProperties, ReactNode } from 'react';
-export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
 export type AlertTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 
 export type AlertProps = {
-  variant?: AlertVariant;
   tone?: AlertTone;
   title?: string;
   children: ReactNode;
@@ -71,10 +69,9 @@ const alertConfig: Record<
   },
 };
 
-export function Alert({ variant = 'info', tone, title, children, onDismiss, style, className }: AlertProps) {
-  const resolvedTone = tone ?? variant;
-  const cfg = alertConfig[resolvedTone];
-  const role = resolvedTone === 'warning' || resolvedTone === 'error' ? 'alert' : 'status';
+export function Alert({ tone = 'info', title, children, onDismiss, style, className }: AlertProps) {
+  const cfg = alertConfig[tone];
+  const role = tone === 'warning' || tone === 'error' ? 'alert' : 'status';
 
   return (
     <div

@@ -3,7 +3,6 @@ import { cn } from '../lib/cn';
 import type { CSSProperties } from 'react';
 
 export type ProgressSize = 'sm' | 'md' | 'lg'
-export type ProgressVariant = 'default' | 'success' | 'warning' | 'error'
 export type ProgressTone = 'neutral' | 'info' | 'success' | 'warning' | 'error'
 
 export type ProgressProps = {
@@ -13,7 +12,6 @@ export type ProgressProps = {
   label?: string
   showValue?: boolean
   size?: ProgressSize
-  variant?: ProgressVariant
   tone?: ProgressTone
   className?: string
   style?: CSSProperties
@@ -33,13 +31,6 @@ const toneClasses: Record<ProgressTone, string> = {
   error: 'bg-error',
 }
 
-const variantClasses: Record<ProgressVariant, ProgressTone> = {
-  default: 'neutral',
-  success: 'success',
-  warning: 'warning',
-  error: 'error',
-}
-
 export function Progress({
   value,
   min = 0,
@@ -47,12 +38,11 @@ export function Progress({
   label,
   showValue = false,
   size = 'md',
-  variant = 'default',
-  tone,
+  tone = 'neutral',
   className,
   style,
 }: ProgressProps) {
-  const resolvedTone = tone ?? variantClasses[variant];
+  const resolvedTone = tone;
 
   return (
     <BaseProgress.Root

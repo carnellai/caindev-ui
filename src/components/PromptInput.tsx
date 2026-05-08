@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties, ChangeEvent, KeyboardEvent, PointerEvent, ReactNode } from 'react';
+import type { CSSProperties, ChangeEvent, KeyboardEvent, MutableRefObject, PointerEvent, ReactNode, Ref } from 'react';
 import { cn } from '../lib/cn';
 
 export type PromptInputProps = {
@@ -19,6 +19,7 @@ export type PromptInputProps = {
   actions?: ReactNode;
   className?: string;
   style?: CSSProperties;
+  ref?: Ref<HTMLTextAreaElement>;
 };
 
 function SendIcon() {
@@ -49,6 +50,7 @@ export function PromptInput({
   actions,
   className,
   style,
+  ref,
 }: PromptInputProps) {
   const [internalValue, setInternalValue] = useState('');
   const value = controlledValue ?? internalValue;
@@ -106,7 +108,11 @@ export function PromptInput({
       style={style}
     >
       <textarea
-        ref={textareaRef}
+        ref={(el) => {
+          (textareaRef as MutableRefObject<HTMLTextAreaElement | null>).current = el;
+          if (typeof ref === 'function') ref(el);
+          else if (ref != null) (ref as MutableRefObject<HTMLTextAreaElement | null>).current = el;
+        }}
         aria-label="Prompt"
         value={value}
         onChange={handleChange}
