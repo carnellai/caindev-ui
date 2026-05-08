@@ -6,7 +6,7 @@ import type { CSSProperties, ReactElement, ReactNode } from 'react';
 export type DrawerSide = 'bottom' | 'right' | 'left'
 
 export type DrawerProps = {
-  trigger: ReactElement
+  trigger?: ReactElement
   title: string
   description?: string
   children?: ReactNode
@@ -169,7 +169,7 @@ export function Drawer({
       open={open}
       defaultOpen={defaultOpen}
       onOpenChange={(nextOpen) => onOpenChange?.(nextOpen)}>
-      <BaseDrawer.Trigger render={trigger} />
+      {trigger && <BaseDrawer.Trigger render={trigger} />}
       <BaseDrawer.Portal>
         <BaseDrawer.Backdrop
           className={cn(

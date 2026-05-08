@@ -1,6 +1,6 @@
 import { cn } from '../lib/cn';
 import type { CSSProperties, ReactNode } from 'react';
-export type StepStatus = 'pending' | 'running' | 'completed' | 'complete' | 'failed' | 'queued' | 'cancelled' | 'skipped';
+export type StepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'queued' | 'cancelled' | 'skipped';
 
 export type AgentStepItem = {
   id: string;
@@ -52,15 +52,6 @@ const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
     ),
     color: 'var(--color-success)',
   },
-  complete: {
-    icon: (
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <circle cx="7" cy="7" r="6" fill="var(--color-success)" stroke="var(--color-success)" strokeWidth="1.5" />
-        <path d="M4 7l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-    color: 'var(--color-success)',
-  },
   failed: {
     icon: (
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -96,8 +87,8 @@ const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
   },
 };
 
-function normalizeStepStatus(status: StepStatus): Exclude<StepStatus, 'complete'> {
-  if (status === 'complete') return 'completed';
+function normalizeStepStatus(status: StepStatus): StepStatus {
+  if ((status as string) === 'complete') return 'completed';
   return status;
 }
 

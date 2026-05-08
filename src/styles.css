@@ -591,6 +591,26 @@ select {
   }
 }
 
+/* TraceTree: component-private palette for kind badges with no semantic-token mapping. */
+:root,
+[data-appearance='dark'] {
+  --cd-trace-agent-color: #f472b6;
+  --cd-trace-agent-bg: rgba(244, 114, 182, 0.12);
+  --cd-trace-embed-color: #60a5fa;
+  --cd-trace-embed-bg: rgba(96, 165, 250, 0.12);
+  --cd-trace-guard-color: #fb923c;
+  --cd-trace-guard-bg: rgba(251, 146, 60, 0.12);
+}
+
+[data-appearance='light'] {
+  --cd-trace-agent-color: #be185d;
+  --cd-trace-agent-bg: rgba(244, 114, 182, 0.12);
+  --cd-trace-embed-color: #1d4ed8;
+  --cd-trace-embed-bg: rgba(96, 165, 250, 0.12);
+  --cd-trace-guard-color: #c2410c;
+  --cd-trace-guard-bg: rgba(251, 146, 60, 0.12);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cd-button-spinner,
   .cd-skeleton-shimmer,

@@ -50,7 +50,7 @@ export default defineConfig({
         || id === 'react/jsx-runtime'
       ),
     },
-    sourcemap: true,
+    sourcemap: false,
     cssCodeSplit: true,
     emptyOutDir: true,
   },

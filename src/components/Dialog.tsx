@@ -4,7 +4,7 @@ import { cn } from '../lib/cn';
 import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
 export type DialogProps = {
-  trigger: ReactElement;
+  trigger?: ReactElement;
   title: string;
   description?: string;
   children?: ReactNode;
@@ -44,7 +44,7 @@ export function Dialog({
       defaultOpen={defaultOpen}
       onOpenChange={(nextOpen) => onOpenChange?.(nextOpen)}
     >
-      <BaseDialog.Trigger render={trigger} />
+      {trigger && <BaseDialog.Trigger render={trigger} />}
 
       <BaseDialog.Portal>
         <BaseDialog.Backdrop

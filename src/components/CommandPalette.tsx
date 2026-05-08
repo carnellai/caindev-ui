@@ -1,5 +1,5 @@
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent, ReactElement, ReactNode } from 'react';
 import { cn } from '../lib/cn';
 
@@ -61,6 +61,7 @@ export function CommandPalette({
   emptyText = 'No results found.',
   trigger,
 }: CommandPaletteProps) {
+  const listboxId = useId();
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const isControlled = open !== undefined;
@@ -89,6 +90,7 @@ export function CommandPalette({
   }, [filtered]);
 
   const flatFiltered = filtered;
+  const activeItem = flatFiltered[activeIndex];
 
   // Reset on open
   function handleOpenChange(nextOpen: boolean) {
@@ -180,6 +182,11 @@ export function CommandPalette({
             </span>
             <input
               ref={inputRef}
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded={true}
+              aria-controls={listboxId}
+              aria-activedescendant={activeItem ? `${listboxId}-${activeItem.id}` : undefined}
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -204,6 +211,7 @@ export function CommandPalette({
 
           {/* Results */}
           <div
+            id={listboxId}
             ref={listRef}
             role="listbox"
             aria-label="Commands"
@@ -227,6 +235,7 @@ export function CommandPalette({
                     return (
                       <div
                         key={item.id}
+                        id={`${listboxId}-${item.id}`}
                         role="option"
                         aria-selected={isActive}
                         data-active={isActive}

@@ -11,13 +11,13 @@ export type StructuredOutputProps = {
 function ValueDisplay({ value, depth = 0 }: { value: unknown; depth?: number }) {
   if (value === null) return <span className="italic text-foreground-subtle">null</span>;
   if (value === undefined) return <span className="italic text-foreground-subtle">undefined</span>;
-  if (typeof value === 'boolean') return <span style={{ color: '#a78bfa' }}>{value.toString()}</span>;
-  if (typeof value === 'number') return <span style={{ color: '#34d399' }}>{value}</span>;
+  if (typeof value === 'boolean') return <span style={{ color: 'var(--color-info)' }}>{value.toString()}</span>;
+  if (typeof value === 'number') return <span style={{ color: 'var(--color-success)' }}>{value}</span>;
   if (typeof value === 'string') {
     if (value.length > 120) {
       return <span className="text-foreground-muted">"{value.slice(0, 120)}…"</span>;
     }
-    return <span style={{ color: '#fbbf24' }}>"{value}"</span>;
+    return <span style={{ color: 'var(--color-warning)' }}>"{value}"</span>;
   }
   if (Array.isArray(value)) {
     if (value.length === 0) return <span className="text-foreground-subtle">[]</span>;

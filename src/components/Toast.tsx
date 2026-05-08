@@ -3,12 +3,10 @@ import { cn } from '../lib/cn';
 import { useMemo } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 
-export type ToastVariant = 'default' | 'success' | 'error' | 'warning';
 export type ToastTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 
 export type ToastOptions = {
   description?: string;
-  variant?: ToastVariant;
   tone?: ToastTone;
   className?: string;
   style?: CSSProperties;
@@ -43,9 +41,11 @@ const toneConfig: Record<ToastTone, { color: string; icon: ReactNode }> = {
   },
 };
 
-function variantToTone(variant: ToastVariant): ToastTone {
-  if (variant === 'default') return 'neutral';
-  return variant;
+function variantToTone(variant: string): ToastTone {
+  if (variant === 'success') return 'success';
+  if (variant === 'error') return 'error';
+  if (variant === 'warning') return 'warning';
+  return 'neutral';
 }
 
 function ToastList() {
@@ -54,9 +54,9 @@ function ToastList() {
   return (
     <>
       {toasts.map((toast) => {
-        const variant = (toast.data?.variant as ToastVariant) ?? 'default';
         const tone = toast.data?.tone as ToastTone | undefined;
-        const resolvedTone = tone ?? variantToTone(variant);
+        const legacyVariant = toast.data?.variant as string | undefined;
+        const resolvedTone: ToastTone = tone ?? (legacyVariant ? variantToTone(legacyVariant) : 'neutral');
         const className = toast.data?.className as string | undefined;
         const style = toast.data?.style as CSSProperties | undefined;
         const cfg = toneConfig[resolvedTone];
@@ -129,18 +129,17 @@ export function useToast() {
           title,
           description: options?.description,
           data: {
-            variant: options?.variant ?? 'default',
-            tone: options?.tone,
+            tone: options?.tone ?? 'neutral',
             className: options?.className,
             style: options?.style,
           },
         }),
       success: (title: string, description?: string) =>
-        manager.add({ title, description, data: { variant: 'success' } }),
+        manager.add({ title, description, data: { tone: 'success' } }),
       error: (title: string, description?: string) =>
-        manager.add({ title, description, data: { variant: 'error' } }),
+        manager.add({ title, description, data: { tone: 'error' } }),
       warning: (title: string, description?: string) =>
-        manager.add({ title, description, data: { variant: 'warning' } }),
+        manager.add({ title, description, data: { tone: 'warning' } }),
     }),
     [manager],
   );
