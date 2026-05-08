@@ -10,7 +10,7 @@ export {
   type AgentStepProps,
   type StepStatus,
 } from './components/AgentStep'
-export { Alert, type AlertProps, type AlertVariant } from './components/Alert'
+export { Alert, type AlertProps, type AlertTone, type AlertVariant } from './components/Alert'
 export {
   ApprovalCard,
   type ApprovalCardProps,
@@ -40,6 +40,7 @@ export { Dialog, DialogClose, type DialogProps } from './components/Dialog'
 export {
   EmptyState,
   type EmptyStateProps,
+  type EmptyStateTone,
   type EmptyStateVariant,
 } from './components/EmptyState'
 export {
@@ -154,6 +155,7 @@ export {
   ToastProvider,
   type ToastOptions,
   type ToastProviderProps,
+  type ToastTone,
   type ToastVariant,
   useToast,
 } from './components/Toast'
@@ -189,6 +191,7 @@ export {
   Progress,
   type ProgressProps,
   type ProgressSize,
+  type ProgressTone,
   type ProgressVariant,
 } from './components/Progress'
 export {

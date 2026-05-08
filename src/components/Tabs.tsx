@@ -41,10 +41,10 @@ export function Tabs({ tabs, defaultValue, value, onValueChange, className, styl
           </BaseTabs.Tab>
         ))}
         <BaseTabs.Indicator
-          className="absolute bottom-[3px] left-0 h-[2px] rounded-sm bg-accent transition-[width,transform] duration-200"
+          className="absolute bottom-[3px] left-0 h-[2px] rounded-full bg-accent transition-[width,transform] duration-200"
           style={{
-            width: 'var(--active-tab-width)',
-            transform: 'translateX(var(--active-tab-left))',
+            width: 'calc(var(--active-tab-width) * 0.5)',
+            transform: 'translateX(calc(var(--active-tab-left) + (var(--active-tab-width) * 0.25)))',
           }}
         />
       </BaseTabs.List>

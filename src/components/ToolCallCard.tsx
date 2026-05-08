@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 import { cn } from '../lib/cn';
 import { safeJsonStringify } from '../lib/safeJsonStringify';
 
-export type ToolStatus = 'pending' | 'running' | 'success' | 'error';
+export type ToolStatus = 'pending' | 'running' | 'completed' | 'success' | 'failed' | 'error' | 'queued' | 'cancelled' | 'skipped';
 
 export type ToolCallCardProps = {
   name: string;
@@ -19,9 +19,20 @@ export type ToolCallCardProps = {
 const statusConfig: Record<ToolStatus, { label: string; color: string; bg: string }> = {
   pending: { label: 'Pending', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
   running: { label: 'Running', color: 'var(--color-info)', bg: 'var(--color-info-muted)' },
+  completed: { label: 'Done', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
   success: { label: 'Done', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
+  failed: { label: 'Error', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
   error: { label: 'Error', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
+  queued: { label: 'Queued', color: 'var(--color-warning)', bg: 'var(--color-warning-muted)' },
+  cancelled: { label: 'Cancelled', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
+  skipped: { label: 'Skipped', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
 };
+
+function normalizeToolStatus(status: ToolStatus): Exclude<ToolStatus, 'success' | 'error'> {
+  if (status === 'success') return 'completed';
+  if (status === 'error') return 'failed';
+  return status;
+}
 
 function WrenchIcon() {
   return (
@@ -78,7 +89,8 @@ export function ToolCallCard({
 }: ToolCallCardProps) {
   const [open, setOpen] = useState(defaultOpen);
   const contentId = useId();
-  const cfg = statusConfig[status];
+  const normalizedStatus = normalizeToolStatus(status);
+  const cfg = statusConfig[normalizedStatus];
   const hasContent = input !== undefined || output !== undefined;
 
   return (
@@ -103,7 +115,7 @@ export function ToolCallCard({
         </span>
 
         <span className="ml-auto flex items-center gap-[8px]">
-          {status === 'running' && <RunningDots />}
+          {normalizedStatus === 'running' && <RunningDots />}
           <span
             className="rounded-sm px-[7px] py-[3px] text-[0.6875rem] font-semibold leading-none"
             style={{

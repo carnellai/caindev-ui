@@ -4,6 +4,7 @@ import type { CSSProperties } from 'react';
 
 export type ProgressSize = 'sm' | 'md' | 'lg'
 export type ProgressVariant = 'default' | 'success' | 'warning' | 'error'
+export type ProgressTone = 'neutral' | 'info' | 'success' | 'warning' | 'error'
 
 export type ProgressProps = {
   value: number | null
@@ -13,6 +14,7 @@ export type ProgressProps = {
   showValue?: boolean
   size?: ProgressSize
   variant?: ProgressVariant
+  tone?: ProgressTone
   className?: string
   style?: CSSProperties
 }
@@ -23,11 +25,19 @@ const sizeClasses: Record<ProgressSize, string> = {
   lg: 'h-[10px]',
 }
 
-const variantClasses: Record<ProgressVariant, string> = {
-  default: 'bg-accent',
+const toneClasses: Record<ProgressTone, string> = {
+  neutral: 'bg-accent',
+  info: 'bg-info',
   success: 'bg-success',
   warning: 'bg-warning',
   error: 'bg-error',
+}
+
+const variantClasses: Record<ProgressVariant, ProgressTone> = {
+  default: 'neutral',
+  success: 'success',
+  warning: 'warning',
+  error: 'error',
 }
 
 export function Progress({
@@ -38,9 +48,12 @@ export function Progress({
   showValue = false,
   size = 'md',
   variant = 'default',
+  tone,
   className,
   style,
 }: ProgressProps) {
+  const resolvedTone = tone ?? variantClasses[variant];
+
   return (
     <BaseProgress.Root
       value={value}
@@ -68,7 +81,7 @@ export function Progress({
         <BaseProgress.Indicator
           className={cn(
             'h-full rounded-full transition-[width] duration-500 data-[indeterminate]:cd-progress-indeterminate',
-            variantClasses[variant],
+            toneClasses[resolvedTone],
           )}
           style={
             value !== null

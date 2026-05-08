@@ -52,16 +52,22 @@ export function TokenCost({
     <div
       className={cn(
         'flex flex-wrap',
-        isRow ? 'flex-row items-center gap-3' : 'flex-col items-start gap-1',
+        isRow ? 'flex-row items-center' : 'flex-col items-start',
         className,
       )}
-      style={style}
+      style={{
+        gap: isRow ? '6px 12px' : '4px',
+        ...style,
+      }}
     >
       {model && (
-        <span className="text-xs text-foreground-subtle">{model}</span>
+        <span className="flex items-center" style={{ gap: 4 }}>
+          <span className="text-[0.6875rem] text-foreground-subtle">model</span>
+          <span className="text-[0.8125rem] text-foreground-muted">{model}</span>
+        </span>
       )}
       {inputTokens !== undefined && (
-        <span className="flex items-center gap-1">
+        <span className="flex items-center" style={{ gap: 4 }}>
           <span className="text-[0.6875rem] text-foreground-subtle">in</span>
           <span className="font-mono text-[0.8125rem] text-foreground-muted tabular-nums">
             {inputTokens.toLocaleString()}
@@ -69,7 +75,7 @@ export function TokenCost({
         </span>
       )}
       {outputTokens !== undefined && (
-        <span className="flex items-center gap-1">
+        <span className="flex items-center" style={{ gap: 4 }}>
           <span className="text-[0.6875rem] text-foreground-subtle">out</span>
           <span className="font-mono text-[0.8125rem] text-foreground-muted tabular-nums">
             {outputTokens.toLocaleString()}
@@ -77,7 +83,7 @@ export function TokenCost({
         </span>
       )}
       {total !== undefined && !inputTokens && !outputTokens && (
-        <span className="flex items-center gap-1">
+        <span className="flex items-center" style={{ gap: 4 }}>
           <span className="text-[0.6875rem] text-foreground-subtle">tokens</span>
           <span className="font-mono text-[0.8125rem] text-foreground-muted tabular-nums">
             {total.toLocaleString()}
@@ -85,7 +91,7 @@ export function TokenCost({
         </span>
       )}
       {cost !== undefined && (
-        <span className="flex items-center gap-1">
+        <span className="flex items-center" style={{ gap: 4 }}>
           <span className="text-[0.6875rem] text-foreground-subtle">cost</span>
           <span className="font-mono text-[0.8125rem] text-foreground tabular-nums">
             {formatCurrency(cost)}

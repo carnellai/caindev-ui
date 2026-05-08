@@ -1,6 +1,6 @@
 {
   "name": "@caindev/ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "ESM-only React component library for AI product interfaces, with compiled styles and theme tokens.",
   "type": "module",
   "private": false,

@@ -1,9 +1,11 @@
 import { cn } from '../lib/cn';
 import type { CSSProperties, ReactNode } from 'react';
 export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
+export type AlertTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 
 export type AlertProps = {
   variant?: AlertVariant;
+  tone?: AlertTone;
   title?: string;
   children: ReactNode;
   onDismiss?: () => void;
@@ -11,20 +13,28 @@ export type AlertProps = {
   className?: string;
 };
 
+const neutralIcon = (
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+    <circle cx="8" cy="8" r="6" />
+    <path d="M8 7v4M8 5.5v.5" />
+  </svg>
+);
+
 const alertConfig: Record<
-  AlertVariant,
+  AlertTone,
   { color: string; bg: string; border: string; icon: ReactNode }
 > = {
+  neutral: {
+    color: 'var(--color-foreground-muted)',
+    bg: 'var(--color-background-subtle)',
+    border: 'var(--color-border)',
+    icon: neutralIcon,
+  },
   info: {
     color: 'var(--color-info)',
     bg: 'var(--color-info-muted)',
     border: 'var(--color-info-border)',
-    icon: (
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-        <circle cx="8" cy="8" r="6" />
-        <path d="M8 7v4M8 5.5v.5" />
-      </svg>
-    ),
+    icon: neutralIcon,
   },
   success: {
     color: 'var(--color-success)',
@@ -61,9 +71,10 @@ const alertConfig: Record<
   },
 };
 
-export function Alert({ variant = 'info', title, children, onDismiss, style, className }: AlertProps) {
-  const cfg = alertConfig[variant];
-  const role = variant === 'warning' || variant === 'error' ? 'alert' : 'status';
+export function Alert({ variant = 'info', tone, title, children, onDismiss, style, className }: AlertProps) {
+  const resolvedTone = tone ?? variant;
+  const cfg = alertConfig[resolvedTone];
+  const role = resolvedTone === 'warning' || resolvedTone === 'error' ? 'alert' : 'status';
 
   return (
     <div

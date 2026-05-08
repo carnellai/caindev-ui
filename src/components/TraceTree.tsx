@@ -4,7 +4,7 @@ import { cn } from '../lib/cn';
 import { safeJsonStringify } from '../lib/safeJsonStringify';
 
 export type SpanKind = 'llm' | 'tool' | 'retrieval' | 'agent' | 'span' | 'embedding' | 'guardrail';
-export type SpanStatus = 'running' | 'success' | 'error' | 'pending';
+export type SpanStatus = 'pending' | 'running' | 'completed' | 'success' | 'failed' | 'error' | 'queued' | 'cancelled' | 'skipped';
 
 export type SpanNode = {
   id: string;
@@ -109,11 +109,22 @@ const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; i
 };
 
 const statusDot: Record<SpanStatus, string> = {
-  running: '#a78bfa',
-  success: '#34d399',
-  error: '#f87171',
   pending: '#52525b',
+  running: '#a78bfa',
+  completed: '#34d399',
+  success: '#34d399',
+  failed: '#f87171',
+  error: '#f87171',
+  queued: '#fbbf24',
+  cancelled: '#94a3b8',
+  skipped: '#94a3b8',
 };
+
+function normalizeSpanStatus(status: SpanStatus): Exclude<SpanStatus, 'success' | 'error'> {
+  if (status === 'success') return 'completed';
+  if (status === 'error') return 'failed';
+  return status;
+}
 
 function JsonBlock({ value }: { value: unknown }) {
   const json = safeJsonStringify(value);
@@ -157,6 +168,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
   const [open, setOpen] = useState(defaultOpen);
   const detailId = useId();
   const cfg = kindConfig[span.kind];
+  const normalizedStatus = normalizeSpanStatus(span.status);
   const hasDetails = span.input !== undefined || span.output !== undefined || span.model || span.query;
 
   return (
@@ -187,7 +199,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
         )}
         {!hasDetails && <span className="w-[10px] shrink-0" />}
 
-        <span className="h-[7px] w-[7px] shrink-0 rounded-full" style={{ background: statusDot[span.status] }} />
+        <span className="h-[7px] w-[7px] shrink-0 rounded-full" style={{ background: statusDot[normalizedStatus] }} />
 
         <span
           className="flex shrink-0 items-center gap-[4px] rounded-sm px-[6px] py-[2px] text-[0.625rem] font-bold leading-none tracking-[0.08em]"

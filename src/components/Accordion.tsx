@@ -59,7 +59,7 @@ export function Accordion({
         >
           <BaseAccordion.Header className="m-0">
             <BaseAccordion.Trigger
-              className="group flex w-full cursor-pointer select-none items-center justify-between gap-4 border-0 bg-transparent py-3.5 text-left text-sm font-medium text-foreground outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 hover:text-foreground-muted focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="group flex w-full cursor-pointer select-none items-center justify-between gap-4 border-0 bg-transparent px-[0px] py-3.5 text-left text-sm font-medium text-foreground outline-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 hover:text-foreground-muted focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               <span>{item.trigger}</span>
               <span
@@ -74,9 +74,7 @@ export function Accordion({
             style={{ height: 'var(--accordion-panel-height)' }}
             className="overflow-hidden transition-[height] duration-200 ease-[ease] data-[starting-style]:h-0 data-[ending-style]:h-0"
           >
-            <div
-              className="pb-3.5 text-sm leading-[1.6] text-foreground-muted"
-            >
+            <div className="pt-1 pb-5 text-sm leading-[1.6] text-foreground-muted">
               {item.content}
             </div>
           </BaseAccordion.Panel>

@@ -1,6 +1,7 @@
 import { cn } from '../lib/cn';
 import type { CSSProperties, ReactNode } from 'react';
 export type EmptyStateVariant = 'default' | 'error';
+export type EmptyStateTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 
 export type EmptyStateProps = {
   icon?: ReactNode;
@@ -8,6 +9,7 @@ export type EmptyStateProps = {
   description?: string;
   action?: ReactNode;
   variant?: EmptyStateVariant;
+  tone?: EmptyStateTone;
   style?: CSSProperties;
   className?: string;
 };
@@ -36,10 +38,12 @@ export function EmptyState({
   description,
   action,
   variant = 'default',
+  tone,
   style,
   className,
 }: EmptyStateProps) {
-  const isError = variant === 'error';
+  const resolvedTone = tone ?? (variant === 'error' ? 'error' : 'neutral');
+  const isError = resolvedTone === 'error';
 
   return (
     <div

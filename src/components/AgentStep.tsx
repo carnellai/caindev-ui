@@ -1,6 +1,6 @@
 import { cn } from '../lib/cn';
 import type { CSSProperties, ReactNode } from 'react';
-export type StepStatus = 'pending' | 'running' | 'complete' | 'failed' | 'skipped';
+export type StepStatus = 'pending' | 'running' | 'completed' | 'complete' | 'failed' | 'queued' | 'cancelled' | 'skipped';
 
 export type AgentStepItem = {
   id: string;
@@ -43,6 +43,15 @@ const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
     icon: <RunningIcon />,
     color: 'var(--color-info)',
   },
+  completed: {
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="6" fill="var(--color-success)" stroke="var(--color-success)" strokeWidth="1.5" />
+        <path d="M4 7l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+    color: 'var(--color-success)',
+  },
   complete: {
     icon: (
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -69,13 +78,35 @@ const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
     ),
     color: 'var(--color-foreground-subtle)',
   },
+  queued: {
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    ),
+    color: 'var(--color-warning)',
+  },
+  cancelled: {
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    ),
+    color: 'var(--color-foreground-subtle)',
+  },
 };
+
+function normalizeStepStatus(status: StepStatus): Exclude<StepStatus, 'complete'> {
+  if (status === 'complete') return 'completed';
+  return status;
+}
 
 export function AgentStep({ steps, className, style }: AgentStepProps) {
   return (
     <div className={cn('flex flex-col gap-[2px]', className)} style={style}>
       {steps.map((step, i) => {
-        const cfg = statusConfig[step.status];
+        const normalizedStatus = normalizeStepStatus(step.status);
+        const cfg = statusConfig[normalizedStatus];
         const isLast = i === steps.length - 1;
 
         return (
@@ -88,7 +119,7 @@ export function AgentStep({ steps, className, style }: AgentStepProps) {
                 <div
                   className="my-[4px] min-h-[16px] w-px flex-1 opacity-60"
                   style={{
-                    background: step.status === 'complete' ? 'var(--color-success)' : 'var(--color-border)',
+                    background: normalizedStatus === 'completed' ? 'var(--color-success)' : 'var(--color-border)',
                   }}
                 />
               )}
@@ -106,7 +137,7 @@ export function AgentStep({ steps, className, style }: AgentStepProps) {
                 >
                   {step.label}
                 </span>
-                {step.duration !== undefined && step.status === 'complete' && (
+                {step.duration !== undefined && normalizedStatus === 'completed' && (
                   <span className="font-mono text-[0.6875rem] text-foreground-subtle tabular-nums">
                     {step.duration}ms
                   </span>

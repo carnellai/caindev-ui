@@ -1,5 +1,48 @@
 # Changelog
 
+## 0.3.0
+
+### API consistency
+
+- Normalized runtime status vocabulary across process-oriented components.
+  - Prefer `completed` over `complete`.
+  - Prefer `completed` over `success` for runtime status.
+  - Prefer `failed` over `error` for runtime status.
+- Added compatibility aliases for older runtime status values where applicable:
+  - `complete` maps to `completed`.
+  - `success` maps to `completed`.
+  - `error` maps to `failed`.
+- Cleaned up `CommandPalette` controlled/uncontrolled open-state behavior.
+  - `open`, `defaultOpen`, and `onOpenChange` now follow a single controllable-state pattern.
+  - Public API remains unchanged.
+
+### Semantic color props
+
+- Added additive `tone` support for semantic color/severity where applicable.
+- Existing semantic `variant` values remain supported for compatibility.
+- `tone` is now the preferred prop for semantic severity/color, while `variant` remains reserved for visual structure/style.
+
+### Component polish
+
+- Refined `Tabs` active indicator so it is thinner, shorter, and less visually heavy.
+- Improved `Accordion` content alignment and vertical rhythm.
+- Improved `TokenCost` layout so model, input tokens, output tokens, and cost render as distinct metric groups.
+- Improved `StatDelta` duration formatting to avoid duplicate unit output such as `ms ms`.
+
+### Docs
+
+- Updated docs examples to prefer canonical runtime statuses such as `completed` and `failed`.
+- Updated docs to prefer `tone` for semantic color examples where supported.
+- Fixed the main Documentation nav target so it opens Getting Started instead of the Button component page.
+- Refreshed API notes for the 0.3.0 cleanup.
+
+### Validation
+
+- Validated the package through the external `caindev-ui-smoke` consumer fixture using a packed tarball.
+- Confirmed package usage through the public imports:
+  - `@caindev/ui`
+  - `@caindev/ui/styles.css`
+
 ## 0.2.0
 
 - Added external consumer smoke fixture as release gate: packed tarball is validated in a clean Vite + React 19 app before each release.

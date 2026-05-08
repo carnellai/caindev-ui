@@ -63,13 +63,14 @@ export function CommandPalette({
 }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const isControlled = open !== undefined;
   const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const previousOpenRef = useRef(false);
   const overlayStyle = { position: 'fixed' as const, top: 0, right: 0, bottom: 0, left: 0 };
-  const actualOpen = open ?? internalOpen;
+  const actualOpen = isControlled ? open : internalOpen;
 
   const filtered = useMemo(
     () => items.filter((item) => matchesQuery(item, query)),
@@ -91,7 +92,9 @@ export function CommandPalette({
 
   // Reset on open
   function handleOpenChange(nextOpen: boolean) {
-    setInternalOpen(nextOpen);
+    if (!isControlled) {
+      setInternalOpen(nextOpen);
+    }
     onOpenChange?.(nextOpen);
   }
 
@@ -151,8 +154,7 @@ export function CommandPalette({
 
   return (
     <BaseDialog.Root
-      open={open}
-      defaultOpen={defaultOpen}
+      open={actualOpen}
       onOpenChange={handleOpenChange}
     >
       {trigger && <BaseDialog.Trigger render={trigger} />}

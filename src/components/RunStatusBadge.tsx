@@ -10,17 +10,21 @@ export type RunStatusBadgeProps = {
   className?: string;
 };
 
-const runConfig: Record<RunStatus, { label: string; color: string; bg: string; pulse?: boolean }> = {
+const runConfig: Record<Exclude<RunStatus, 'error'>, { label: string; color: string; bg: string; pulse?: boolean }> = {
   running: { label: 'Running', color: 'var(--color-info)', bg: 'var(--color-info-muted)', pulse: true },
   completed: { label: 'Completed', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
   failed: { label: 'Failed', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
-  error: { label: 'Error', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
   queued: { label: 'Queued', color: 'var(--color-warning)', bg: 'var(--color-warning-muted)' },
   cancelled: { label: 'Cancelled', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
 };
 
+function normalizeRunStatus(status: RunStatus): Exclude<RunStatus, 'error'> {
+  if (status === 'error') return 'failed';
+  return status;
+}
+
 export function RunStatusBadge({ status, size = 'md', style, className }: RunStatusBadgeProps) {
-  const cfg = runConfig[status];
+  const cfg = runConfig[normalizeRunStatus(status)];
   const isSmall = size === 'sm';
 
   return (

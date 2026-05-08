@@ -4,10 +4,12 @@ import { useMemo } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 
 export type ToastVariant = 'default' | 'success' | 'error' | 'warning';
+export type ToastTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 
 export type ToastOptions = {
   description?: string;
   variant?: ToastVariant;
+  tone?: ToastTone;
   className?: string;
   style?: CSSProperties;
 };
@@ -18,9 +20,13 @@ export type ToastProviderProps = {
   style?: CSSProperties;
 };
 
-const variantConfig: Record<ToastVariant, { color: string; icon: ReactNode }> = {
-  default: {
+const toneConfig: Record<ToastTone, { color: string; icon: ReactNode }> = {
+  neutral: {
     color: 'var(--color-foreground-muted)',
+    icon: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="8" cy="8" r="6" /><path d="M8 7v4M8 5.5v.5" /></svg>,
+  },
+  info: {
+    color: 'var(--color-info)',
     icon: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="8" cy="8" r="6" /><path d="M8 7v4M8 5.5v.5" /></svg>,
   },
   success: {
@@ -37,6 +43,11 @@ const variantConfig: Record<ToastVariant, { color: string; icon: ReactNode }> = 
   },
 };
 
+function variantToTone(variant: ToastVariant): ToastTone {
+  if (variant === 'default') return 'neutral';
+  return variant;
+}
+
 function ToastList() {
   const { toasts } = BaseToast.useToastManager();
 
@@ -44,10 +55,12 @@ function ToastList() {
     <>
       {toasts.map((toast) => {
         const variant = (toast.data?.variant as ToastVariant) ?? 'default';
+        const tone = toast.data?.tone as ToastTone | undefined;
+        const resolvedTone = tone ?? variantToTone(variant);
         const className = toast.data?.className as string | undefined;
         const style = toast.data?.style as CSSProperties | undefined;
-        const cfg = variantConfig[variant];
-        const role = variant === 'error' || variant === 'warning' ? 'alert' : 'status';
+        const cfg = toneConfig[resolvedTone];
+        const role = resolvedTone === 'error' || resolvedTone === 'warning' ? 'alert' : 'status';
 
         return (
           <BaseToast.Root
@@ -117,6 +130,7 @@ export function useToast() {
           description: options?.description,
           data: {
             variant: options?.variant ?? 'default',
+            tone: options?.tone,
             className: options?.className,
             style: options?.style,
           },
