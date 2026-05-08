@@ -99,4 +99,4 @@ export function Dialog({
   );
 }
 
-export const DialogClose = BaseDialog.Close;
+export const DialogClose: typeof BaseDialog.Close = BaseDialog.Close;

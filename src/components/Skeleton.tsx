@@ -20,7 +20,10 @@ export function Skeleton({
       className={cn('cd-skeleton relative overflow-hidden', className)}
       style={{ width, height, borderRadius, ...style }}
     >
-      <div className="cd-skeleton-shimmer absolute inset-0" />
+      <div
+        className="cd-skeleton-shimmer absolute"
+        style={{ inset: 0 }}
+      />
     </div>
   );
 }

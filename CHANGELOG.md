@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0
+
+- Added external consumer smoke fixture as release gate: packed tarball is validated in a clean Vite + React 19 app before each release.
+- Improved package export and type readiness: `DialogClose` now carries an explicit `typeof BaseDialog.Close` type annotation so consumers get full prop inference without importing Base UI directly.
+- Hardened `Skeleton` shimmer for external consumers: replaced Tailwind `inset-0` utility with inline `style={{ inset: 0 }}` so the shimmer is always positioned correctly regardless of whether consumer builds emit that utility class.
+- Audited `package.json`: removed duplicate `@base-ui/react` entry from `devDependencies` (it is already a runtime `dependency`), keeping the dependency graph clean for consumers.
+- `ThemeProvider` and global portal guidance: consumers should render `<ThemeProvider>` at the React tree root and mount overlays (Dialog, Drawer, CommandPalette, Toast, Tooltip) outside content-stacking contexts to avoid filter/transform compositing issues.
+- Drawer/Dialog/overlay hardening carried forward from the 0.1.x line: stable viewport geometry, Base UI `modal="trap-focus"` for Drawer, scrim anchoring, and layering resets.
+- Scroll-jump fixes carried forward from 0.1.x: `preventScroll` on PromptInput pointer-focus, `type="button"` enforcement on internal controls.
+- Docs refreshed to demonstrate real npm installation and external-consumer usage patterns.
+
 ## 0.1.3
 
 - Fixed Drawer viewport positioning/visibility in consumer apps.
