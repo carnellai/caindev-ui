@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+- Fixed Drawer viewport positioning/visibility in consumer apps.
+- Fixed Drawer layering: use Base UI `modal="trap-focus"` (avoids the extra fullscreen `InternalBackdrop` only mounted when `modal={true}`) plus `.cd-drawer-*` / inline filter resets so the sheet does not composite inside a blurred modal stack; left/right scrims are width-clipped so dimming applies only beside the sheet (bottom drawer still uses a fullscreen dim-only scrim).
+
 ## 0.1.2
 
 - Fixed Drawer and CommandPalette portal overlays to use explicit viewport geometry so they remain anchored and visible even if utility classes are not emitted by consumer builds.
