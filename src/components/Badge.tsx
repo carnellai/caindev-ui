@@ -1,5 +1,5 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes } from 'react';
 export type BadgeVariant =
   | 'default'
   | 'success'
@@ -9,15 +9,12 @@ export type BadgeVariant =
   | 'outline';
 export type BadgeSize = 'sm' | 'md';
 
-export type BadgeProps = {
-  children: ReactNode;
+export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
   variant?: BadgeVariant;
   size?: BadgeSize;
-  style?: CSSProperties;
-  className?: string;
 };
 
-const variantClasses: Partial<Record<BadgeVariant, string>> = {
+const variantClasses: Record<BadgeVariant, string> = {
   default: 'border border-border bg-background-subtle text-foreground',
   success: 'border border-success-border bg-success-muted text-success',
   warning: 'border border-warning-border bg-warning-muted text-warning',
@@ -37,9 +34,11 @@ export function Badge({
   size = 'md',
   style,
   className,
+  ...props
 }: BadgeProps) {
   return (
     <span
+      {...props}
       className={cn(
         'inline-flex items-center whitespace-nowrap font-semibold leading-none',
         variantClasses[variant],

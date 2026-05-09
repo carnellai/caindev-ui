@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '../lib/cn';
 import { safeJsonStringify } from '../lib/safeJsonStringify';
 
@@ -155,22 +155,23 @@ function SectionLabel({ children }: { children: ReactNode }) {
   );
 }
 
-export type SpanCardProps = {
+export type SpanCardProps = HTMLAttributes<HTMLDivElement> & {
   span: SpanNode;
   defaultOpen?: boolean;
-  className?: string;
-  style?: CSSProperties;
 };
 
-export function SpanCard({ span, defaultOpen = false, className, style }: SpanCardProps) {
+export function SpanCard({ span, defaultOpen = false, className, style, ...props }: SpanCardProps) {
   const [open, setOpen] = useState(defaultOpen);
   const detailId = useId();
   const cfg = kindConfig[span.kind];
   const normalizedStatus = normalizeSpanStatus(span.status);
-  const hasDetails = span.input !== undefined || span.output !== undefined || span.model || span.query;
+  const hasTokenDetails = span.inputTokens !== undefined || span.outputTokens !== undefined;
+  const hasModelDetails = span.model !== undefined || hasTokenDetails || span.cost !== undefined;
+  const hasDetails = span.input !== undefined || span.output !== undefined || span.model !== undefined || span.query !== undefined || hasModelDetails;
 
   return (
     <div
+      {...props}
       className={cn('overflow-hidden rounded-md border border-border bg-background-elevated shadow-card', className)}
       style={style}
     >
@@ -214,24 +215,24 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
           {span.name}
         </span>
 
-        <div className="flex shrink-0 items-center gap-[10px]">
+        <div className="flex min-w-0 shrink items-center justify-end gap-[10px]">
           {span.model && (
-            <span className="text-[0.6875rem] text-foreground-subtle">
+            <span className="max-w-[220px] truncate text-[0.6875rem] text-foreground-subtle">
               {span.model}
             </span>
           )}
-          {(span.inputTokens || span.outputTokens) && (
-            <span className="font-mono text-[0.6875rem] text-foreground-subtle">
+          {hasTokenDetails && (
+            <span className="whitespace-nowrap font-mono text-[0.6875rem] text-foreground-subtle">
               {(span.inputTokens ?? 0) + (span.outputTokens ?? 0)} tok
             </span>
           )}
           {span.cost !== undefined && (
-            <span className="font-mono text-[0.6875rem] text-foreground-subtle">
+            <span className="whitespace-nowrap font-mono text-[0.6875rem] text-foreground-subtle">
               ${span.cost.toFixed(4)}
             </span>
           )}
           {span.duration !== undefined && (
-            <span className="font-mono text-[0.6875rem] text-foreground-subtle tabular-nums">
+            <span className="whitespace-nowrap font-mono text-[0.6875rem] text-foreground-subtle tabular-nums">
               {span.duration}ms
             </span>
           )}
@@ -243,12 +244,12 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
           id={detailId}
           className="flex flex-col gap-[12px] border-t border-border bg-background-subtle px-[14px] py-[12px]"
         >
-          {(span.model || span.inputTokens || span.outputTokens || span.cost) && (
+          {hasModelDetails && (
             <div className="flex flex-col gap-[4px]">
               <SectionLabel>Model</SectionLabel>
               {span.model && <MetaRow label="model" value={span.model} />}
-              {span.inputTokens && <MetaRow label="input tokens" value={span.inputTokens.toLocaleString()} />}
-              {span.outputTokens && <MetaRow label="output tokens" value={span.outputTokens.toLocaleString()} />}
+              {span.inputTokens !== undefined && <MetaRow label="input tokens" value={span.inputTokens.toLocaleString()} />}
+              {span.outputTokens !== undefined && <MetaRow label="output tokens" value={span.outputTokens.toLocaleString()} />}
               {span.cost !== undefined && <MetaRow label="cost" value={`$${span.cost.toFixed(6)}`} />}
             </div>
           )}
@@ -286,7 +287,7 @@ export function SpanCard({ span, defaultOpen = false, className, style }: SpanCa
   );
 }
 
-export type TraceTreeProps = {
+export type TraceTreeProps = HTMLAttributes<HTMLDivElement> & {
   /** Root spans for the trace tree. Child spans come from SpanNode.children. */
   spans: SpanNode[];
   traceName?: string;
@@ -295,29 +296,30 @@ export type TraceTreeProps = {
   totalDuration?: number;
   /** Opens top-level span detail panels by default. */
   defaultOpen?: boolean;
-  className?: string;
-  style?: CSSProperties;
 };
 
 function SpanTreeNode({ span, depth, defaultOpen }: { span: SpanNode; depth: number; defaultOpen: boolean }) {
+  const childSpans = span.children ?? [];
+  const hasChildren = childSpans.length > 0;
+
   return (
-    <div>
+    <li className="list-none">
       <div style={{ paddingLeft: `${depth * 22}px` }}>
         <SpanCard span={span} defaultOpen={defaultOpen && depth === 0} />
       </div>
-      {span.children && span.children.length > 0 && (
-        <div
-          className="mt-[6px] flex flex-col gap-[6px] border-l border-border pl-[10px]"
+      {hasChildren && (
+        <ul
+          className="m-0 mt-[6px] flex list-none flex-col gap-[6px] border-l border-border pl-[10px]"
           style={{
             marginLeft: `${depth * 22 + 11}px`,
           }}
         >
-          {span.children.map((child) => (
+          {childSpans.map((child) => (
             <SpanTreeNode key={child.id} span={child} depth={depth + 1} defaultOpen={defaultOpen} />
           ))}
-        </div>
+        </ul>
       )}
-    </div>
+    </li>
   );
 }
 
@@ -329,13 +331,15 @@ export function TraceTree({
   defaultOpen = false,
   className,
   style,
+  ...props
 }: TraceTreeProps) {
   return (
     <div
-      className={cn('overflow-hidden rounded-md border border-border bg-background shadow-card', className)}
+      {...props}
+      className={cn('cd-trace-tree overflow-hidden rounded-md border border-border bg-background shadow-card', className)}
       style={style}
     >
-      {(traceName || traceId || totalDuration) && (
+      {(traceName || traceId || totalDuration !== undefined) && (
         <div className="flex items-center justify-between gap-[12px] border-b border-border bg-background-elevated px-[14px] py-[12px]">
           <div className="flex min-w-[0] items-center gap-[10px]">
             <span className="text-xs font-semibold text-foreground">
@@ -347,7 +351,7 @@ export function TraceTree({
               </span>
             )}
           </div>
-          {totalDuration && (
+          {totalDuration !== undefined && (
             <span className="font-mono text-[0.6875rem] text-foreground-subtle">
               {totalDuration}ms total
             </span>
@@ -355,11 +359,11 @@ export function TraceTree({
         </div>
       )}
 
-      <div className="flex flex-col gap-[8px] p-[10px]">
+      <ul className="m-0 flex list-none flex-col gap-[8px] p-[10px]">
         {spans.map((span) => (
           <SpanTreeNode key={span.id} span={span} depth={0} defaultOpen={defaultOpen} />
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

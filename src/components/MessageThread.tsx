@@ -57,9 +57,10 @@ export function MessageThread({
       return;
     }
 
+    const didAppendMessage = previousMessages ? messages.length > previousMessages.count : false;
     container.scrollTo({
       top: container.scrollHeight,
-      behavior: previousMessages && messages.length >= previousMessages.count ? 'smooth' : 'auto',
+      behavior: didAppendMessage ? 'smooth' : 'auto',
     });
     isNearBottomRef.current = true;
   }, [autoScroll, messages.length, lastMessageKey]);
@@ -68,6 +69,10 @@ export function MessageThread({
     <div
       ref={containerRef}
       onScroll={handleScroll}
+      role="log"
+      aria-live="polite"
+      aria-relevant="additions text"
+      aria-atomic="false"
       className={cn('flex flex-col gap-[20px] overflow-y-auto rounded-md bg-background p-[16px]', className)}
       style={{
         maxHeight,

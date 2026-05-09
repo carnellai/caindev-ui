@@ -11,6 +11,8 @@ export type InputProps = ComponentProps<typeof BaseInput> & {
   className?: ComponentProps<typeof BaseInput>['className'];
   /** Targets the inner input control, not the label/hint/error wrapper. */
   style?: ComponentProps<typeof BaseInput>['style'];
+  /** Targets the outer wrapper div (label + control + hint/error). */
+  wrapperClassName?: string;
 };
 
 function mergeIds(...ids: Array<string | undefined>) {
@@ -35,6 +37,7 @@ export function Input({
   id,
   style,
   className,
+  wrapperClassName,
   disabled,
   placeholder,
   'aria-describedby': ariaDescribedBy,
@@ -50,7 +53,7 @@ export function Input({
   const accessibleLabel = ariaLabel ?? (!label && !ariaLabelledBy ? placeholder : undefined);
 
   return (
-    <div className="flex min-w-[0] flex-col gap-2">
+    <div className={cn('flex min-w-[0] flex-col gap-2', wrapperClassName)}>
       {label && (
         <label
           htmlFor={inputId}
@@ -68,10 +71,10 @@ export function Input({
         aria-invalid={error ? true : ariaInvalid}
         aria-label={accessibleLabel}
         aria-labelledby={ariaLabelledBy}
-        style={typeof style === 'object' ? style : undefined}
+        style={style}
         className={mergeClassName(
           cn(
-            'box-border h-[36px] w-full min-w-[0] appearance-none rounded-md bg-surface-control px-[14px] text-sm leading-none text-foreground shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 placeholder:text-foreground-subtle hover:bg-surface-hover focus:border-accent focus:bg-surface-control focus:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-surface-control-disabled disabled:text-foreground-subtle disabled:opacity-60',
+            'box-border font-[inherit] h-[36px] w-full min-w-[0] appearance-none rounded-md bg-surface-control px-[14px] text-sm leading-none text-foreground shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 placeholder:text-foreground-subtle hover:bg-surface-hover focus:border-accent focus:bg-surface-control focus:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-surface-control-disabled disabled:text-foreground-subtle disabled:opacity-60',
             error ? 'border border-destructive' : 'border border-border',
           ),
           className,

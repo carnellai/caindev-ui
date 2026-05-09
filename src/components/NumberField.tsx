@@ -1,6 +1,6 @@
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field'
 import { useId } from 'react'
-import type { CSSProperties, PointerEvent } from 'react';
+import type { CSSProperties, InputHTMLAttributes, PointerEvent } from 'react';
 import { cn } from '../lib/cn';
 
 export type NumberFieldProps = {
@@ -16,6 +16,7 @@ export type NumberFieldProps = {
   readOnly?: boolean
   placeholder?: string
   format?: Intl.NumberFormatOptions
+  inputProps?: InputHTMLAttributes<HTMLInputElement>
   className?: string
   style?: CSSProperties
 }
@@ -61,10 +62,14 @@ export function NumberField({
   readOnly,
   placeholder,
   format,
+  inputProps,
   className,
   style,
 }: NumberFieldProps) {
   const id = useId()
+  const hintId = hint ? `${id}-hint` : undefined
+  const mergedAriaDescribedBy =
+    [inputProps?.['aria-describedby'], hintId].filter(Boolean).join(' ') || undefined
   const preserveFocusWithoutScroll = (event: PointerEvent<HTMLButtonElement>) => {
     const button = event.currentTarget;
     if (document.activeElement !== button) {
@@ -111,19 +116,26 @@ export function NumberField({
       )}
 
       <BaseNumberField.Group className='inline-flex w-fit flex-row rounded-md shadow-highlight-inset'>
-        <BaseNumberField.Decrement onPointerDown={preserveFocusWithoutScroll} type='button' className='-ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-l-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
+        <BaseNumberField.Decrement onPointerDown={preserveFocusWithoutScroll} type='button' className='box-border -ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-l-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
           <MinusIcon />
         </BaseNumberField.Decrement>
         <BaseNumberField.Input
+          {...inputProps}
+          placeholder={placeholder}
+          aria-describedby={mergedAriaDescribedBy}
           style={{ width: '64px' }}
-          className='h-[36px] shrink-0 border-y border-border bg-surface-control text-center text-sm tabular-nums text-foreground outline-none transition-[background,border-color] duration-150 placeholder:text-foreground-subtle hover:bg-surface-hover focus:z-10 focus:border-accent focus:bg-surface-control focus:outline-2 focus:outline-offset-[-1px] focus:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60'
+          className='box-border font-[inherit] h-[36px] shrink-0 border-y border-border bg-surface-control text-center text-sm tabular-nums text-foreground outline-none transition-[background,border-color] duration-150 placeholder:text-foreground-subtle hover:bg-surface-hover focus:z-10 focus:border-accent focus:bg-surface-control focus:outline-2 focus:outline-offset-[-1px] focus:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60'
         />
-        <BaseNumberField.Increment onPointerDown={preserveFocusWithoutScroll} type='button' className='-ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-r-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
+        <BaseNumberField.Increment onPointerDown={preserveFocusWithoutScroll} type='button' className='box-border -ml-px flex h-[36px] w-[36px] shrink-0 cursor-pointer select-none items-center justify-center rounded-r-md border border-border bg-surface-control text-foreground-muted outline-none transition-[background,color,border-color] duration-[120ms] hover:bg-surface-hover hover:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-1px] focus-visible:outline-accent'>
           <PlusIcon />
         </BaseNumberField.Increment>
       </BaseNumberField.Group>
 
-      {hint && <span className='text-xs text-foreground-subtle'>{hint}</span>}
+      {hint && (
+        <span id={hintId} className='text-xs text-foreground-subtle'>
+          {hint}
+        </span>
+      )}
     </BaseNumberField.Root>
   )
 }

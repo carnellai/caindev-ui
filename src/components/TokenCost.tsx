@@ -1,16 +1,14 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 export type TokenCostLayout = 'row' | 'stack';
 
-export type TokenCostProps = {
+export type TokenCostProps = HTMLAttributes<HTMLDivElement> & {
   inputTokens?: number;
   outputTokens?: number;
   totalTokens?: number;
   cost?: number;
   model?: string;
   layout?: TokenCostLayout;
-  style?: CSSProperties;
-  className?: string;
 };
 
 const formatCurrency = (value: number) => {
@@ -40,6 +38,7 @@ export function TokenCost({
   layout = 'row',
   style,
   className,
+  ...props
 }: TokenCostProps) {
   const total = totalTokens ?? (
     inputTokens !== undefined && outputTokens !== undefined
@@ -50,6 +49,7 @@ export function TokenCost({
 
   return (
     <div
+      {...props}
       className={cn(
         'flex flex-wrap',
         isRow ? 'flex-row items-center' : 'flex-col items-start',
@@ -82,7 +82,7 @@ export function TokenCost({
           </span>
         </span>
       )}
-      {total !== undefined && !inputTokens && !outputTokens && (
+      {total !== undefined && inputTokens === undefined && outputTokens === undefined && (
         <span className="flex items-center" style={{ gap: 4 }}>
           <span className="text-[0.6875rem] text-foreground-subtle">tokens</span>
           <span className="font-mono text-[0.8125rem] text-foreground-muted tabular-nums">

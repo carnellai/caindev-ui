@@ -1,33 +1,32 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, HTMLAttributes } from 'react';
 export type StackDirection = 'vertical' | 'horizontal';
 
-export type StackProps = {
-  children: ReactNode;
+export type StackProps = HTMLAttributes<HTMLDivElement> & {
   direction?: StackDirection;
   gap?: string | number;
   align?: CSSProperties['alignItems'];
   justify?: CSSProperties['justifyContent'];
   wrap?: boolean;
-  style?: CSSProperties;
-  className?: string;
 };
 
 export type HStackProps = Omit<StackProps, 'direction'>;
 export type VStackProps = Omit<StackProps, 'direction'>;
 
 export function Stack({
-  children,
   direction = 'vertical',
   gap = '16px',
   align,
   justify,
   wrap = false,
+  children,
   style,
   className,
+  ...props
 }: StackProps) {
   return (
     <div
+      {...props}
       className={cn('flex', className)}
       style={{
         // Intentional inline styles: all values below are prop-driven at

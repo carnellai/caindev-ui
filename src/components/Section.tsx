@@ -1,13 +1,9 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes } from 'react';
 export type SectionSize = 'sm' | 'md' | 'lg';
 
-export type SectionProps = {
-  children: ReactNode;
+export type SectionProps = HTMLAttributes<HTMLElement> & {
   size?: SectionSize;
-  style?: CSSProperties;
-  className?: string;
-  id?: string;
 };
 
 const paddingMap: Record<SectionSize, string> = {
@@ -17,15 +13,15 @@ const paddingMap: Record<SectionSize, string> = {
 };
 
 export function Section({
-  children,
   size = 'md',
+  children,
   style,
   className,
-  id,
+  ...props
 }: SectionProps) {
   return (
     <section
-      id={id}
+      {...props}
       className={cn(paddingMap[size], className)}
       style={style}
     >

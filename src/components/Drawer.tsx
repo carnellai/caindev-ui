@@ -1,7 +1,7 @@
 import { Drawer as BaseDrawer } from '@base-ui/react/drawer'
 import { Button } from './Button'
 import { cn } from '../lib/cn';
-import type { CSSProperties, ReactElement, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, ReactElement, ReactNode } from 'react';
 
 export type DrawerSide = 'bottom' | 'right' | 'left'
 
@@ -15,6 +15,11 @@ export type DrawerProps = {
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
+  rootProps?: Omit<
+    ComponentPropsWithoutRef<typeof BaseDrawer.Root>,
+    'swipeDirection' | 'modal' | 'open' | 'defaultOpen' | 'onOpenChange' | 'children'
+  >
+  contentProps?: ComponentPropsWithoutRef<typeof BaseDrawer.Content>
   className?: string
   style?: CSSProperties
 }
@@ -54,13 +59,13 @@ const sideConfig: Record<
     swipeDirection: 'right',
     viewportWrapperClass: 'flex items-stretch justify-end',
     popupClass:
-      '-mr-12 h-full w-[calc(22rem+3rem)] max-w-[calc(100vw-3rem)] border-l border-border bg-background-elevated px-[24px] pb-[24px] pr-[calc(1.5rem+3rem)] pt-[24px] shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateX(var(--drawer-swipe-movement-x))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(100%-3rem+2px))] data-[starting-style]:[transform:translateX(calc(100%-3rem+2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
+      'h-full w-[22rem] max-w-[calc(100vw-3rem)] border-l border-border bg-background-elevated px-[24px] pb-[24px] pt-[24px] overflow-y-auto overscroll-contain touch-auto [transform:translateX(var(--drawer-swipe-movement-x))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(100%+2px))] data-[starting-style]:[transform:translateX(calc(100%+2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
   },
   left: {
     swipeDirection: 'left',
     viewportWrapperClass: 'flex items-stretch justify-start',
     popupClass:
-      '-ml-12 h-full w-[calc(22rem+3rem)] max-w-[calc(100vw-3rem)] border-r border-border bg-background-elevated px-[24px] pb-[24px] pl-[calc(1.5rem+3rem)] pt-[24px] shadow-dialog overflow-y-auto overscroll-contain touch-auto [transform:translateX(calc(-1*var(--drawer-swipe-movement-x)))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(-100%+3rem-2px))] data-[starting-style]:[transform:translateX(calc(-100%+3rem-2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
+      'h-full w-[22rem] max-w-[calc(100vw-3rem)] border-r border-border bg-background-elevated px-[24px] pb-[24px] pt-[24px] overflow-y-auto overscroll-contain touch-auto [transform:translateX(calc(-1*var(--drawer-swipe-movement-x)))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-[swiping]:select-none data-[ending-style]:[transform:translateX(calc(-100%-2px))] data-[starting-style]:[transform:translateX(calc(-100%-2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength)*400ms)]',
   },
 }
 
@@ -74,45 +79,32 @@ export function Drawer({
   open,
   defaultOpen,
   onOpenChange,
+  rootProps,
+  contentProps,
   className,
   style,
 }: DrawerProps) {
   const cfg = sideConfig[side]
-
-  /** Matches `popupClass` / `popupGeometryStyle` width cap so the scrim never sits over the sheet (left/right). */
-  const drawerBandWidth = 'min(22rem + 3rem, 100vw - 3rem)'
+  const { className: contentClassName, style: contentStyle, ...restContentProps } = contentProps ?? {}
+  const mergedContentClassName: ComponentPropsWithoutRef<typeof BaseDrawer.Content>['className'] =
+    typeof contentClassName === 'function'
+      ? (state) => cn('mx-auto h-full w-full max-w-[32rem] bg-background-elevated', contentClassName(state))
+      : cn('mx-auto h-full w-full max-w-[32rem] bg-background-elevated', contentClassName)
 
   /**
-   * Dim-only scrim. For left/right drawers the overlay is clipped to the page beside the sheet so the panel is never tinted.
-   * Bottom drawer keeps a fullscreen scrim (variable sheet height makes a side-only clip impractical).
+   * Dim-only scrim behind the sheet.
    * Root uses `modal="trap-focus"` so Base UI does not inject the fullscreen InternalBackdrop used when modal=true.
    */
   const backdropStyle: CSSProperties = {
     position: 'fixed',
     zIndex: 100_000,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     backdropFilter: 'none',
     WebkitBackdropFilter: 'none',
     filter: 'none',
-    ...(side === 'right'
-      ? {
-          top: 0,
-          bottom: 0,
-          left: 0,
-          width: `calc(100vw - ${drawerBandWidth})`,
-        }
-      : side === 'left'
-        ? {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            width: `calc(100vw - ${drawerBandWidth})`,
-          }
-        : {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-          }),
   }
 
   /** Full-viewport stack above scrim — keep filter/backdrop clean for sharp sheet painting. */
@@ -135,7 +127,7 @@ export function Drawer({
           top: 0,
           right: 0,
           bottom: 0,
-          width: 'calc(22rem + 3rem)',
+          width: '22rem',
           maxWidth: 'calc(100vw - 3rem)',
         }
       : side === 'left'
@@ -144,7 +136,7 @@ export function Drawer({
             top: 0,
             bottom: 0,
             left: 0,
-            width: 'calc(22rem + 3rem)',
+            width: '22rem',
             maxWidth: 'calc(100vw - 3rem)',
           }
         : {
@@ -157,6 +149,8 @@ export function Drawer({
   const popupStyle: CSSProperties = {
     ...popupGeometryStyle,
     ...style,
+    zIndex: 100_002,
+    backgroundColor: 'var(--color-background-elevated)',
     backdropFilter: 'none',
     WebkitBackdropFilter: 'none',
     filter: 'none',
@@ -164,6 +158,7 @@ export function Drawer({
 
   return (
     <BaseDrawer.Root
+      {...rootProps}
       swipeDirection={cfg.swipeDirection}
       modal='trap-focus'
       open={open}
@@ -183,7 +178,10 @@ export function Drawer({
             className={cn('cd-drawer-popup', cfg.popupClass, className)}
             style={popupStyle}>
             {cfg.handleClass && <div className={cfg.handleClass} aria-hidden />}
-            <BaseDrawer.Content className='mx-auto w-full max-w-[32rem]'>
+            <BaseDrawer.Content
+              {...restContentProps}
+              className={mergedContentClassName}
+              style={contentStyle}>
               <div className='mb-[18px] flex items-start justify-between gap-[16px]'>
                 <div>
                   <BaseDrawer.Title className='m-0 text-base font-semibold leading-normal text-foreground'>

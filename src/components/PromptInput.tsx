@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties, ChangeEvent, KeyboardEvent, MutableRefObject, PointerEvent, ReactNode, Ref } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
+import type { CSSProperties, ChangeEvent, KeyboardEvent, MutableRefObject, ReactNode, Ref } from 'react';
 import { cn } from '../lib/cn';
 
 export type PromptInputProps = {
@@ -19,6 +19,7 @@ export type PromptInputProps = {
   actions?: ReactNode;
   className?: string;
   style?: CSSProperties;
+  'aria-describedby'?: string;
   ref?: Ref<HTMLTextAreaElement>;
 };
 
@@ -50,11 +51,14 @@ export function PromptInput({
   actions,
   className,
   style,
+  'aria-describedby': ariaDescribedBy,
   ref,
 }: PromptInputProps) {
   const [internalValue, setInternalValue] = useState('');
   const value = controlledValue ?? internalValue;
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const keyboardHintId = useId();
+  const describedBy = [ariaDescribedBy, keyboardHintId].filter(Boolean).join(' ');
 
   useEffect(() => {
     const el = textareaRef.current;
@@ -91,13 +95,6 @@ export function PromptInput({
   };
 
   const canSubmit = value.trim().length > 0 && !disabled;
-  const handlePointerDown = (event: PointerEvent<HTMLTextAreaElement>) => {
-    const element = event.currentTarget;
-    if (document.activeElement !== element) {
-      event.preventDefault();
-      element.focus({ preventScroll: true });
-    }
-  };
 
   return (
     <div
@@ -114,14 +111,14 @@ export function PromptInput({
           else if (ref != null) (ref as MutableRefObject<HTMLTextAreaElement | null>).current = el;
         }}
         aria-label="Prompt"
+        aria-describedby={describedBy}
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        onPointerDown={handlePointerDown}
         placeholder={placeholder}
         disabled={disabled || loading}
         rows={1}
-        className="box-border w-full resize-none overflow-y-hidden border-0 bg-transparent px-[16px] pb-[8px] pt-[14px] text-[0.9375rem] leading-[1.6] text-foreground outline-none placeholder:text-foreground-subtle disabled:cursor-not-allowed disabled:text-foreground-subtle"
+        className="box-border font-[inherit] w-full resize-none overflow-y-hidden border-0 bg-transparent px-[16px] pb-[8px] pt-[14px] text-[0.9375rem] leading-[1.6] text-foreground outline-none placeholder:text-foreground-subtle disabled:cursor-not-allowed disabled:text-foreground-subtle"
       />
 
       <div className="flex items-center justify-between gap-[12px] border-t border-border bg-background-subtle px-[10px] py-[10px]">
@@ -130,7 +127,7 @@ export function PromptInput({
         </div>
 
         <div className="flex shrink-0 items-center gap-[8px]">
-          <span className="text-[0.6875rem] text-foreground-subtle">
+          <span id={keyboardHintId} className="text-[0.6875rem] text-foreground-subtle">
             {loading ? '' : 'Enter to send · Shift+Enter for newline'}
           </span>
 
@@ -140,7 +137,7 @@ export function PromptInput({
               aria-label="Stop generation"
               onClick={onStop}
               disabled={disabled || !onStop}
-              className="flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-md border border-transparent bg-foreground text-background shadow-none outline-none disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="box-border flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-md border border-transparent bg-foreground text-background shadow-none outline-none disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               <StopIcon />
             </button>
@@ -151,7 +148,7 @@ export function PromptInput({
               onClick={handleSubmit}
               disabled={!canSubmit}
               className={cn(
-                'flex h-[32px] w-[32px] items-center justify-center rounded-md border outline-none transition-[background,border-color,color] duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                'box-border flex h-[32px] w-[32px] items-center justify-center rounded-md border outline-none transition-[background,border-color,color] duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
                 canSubmit ? 'cursor-pointer border-transparent bg-accent text-accent-foreground shadow-none hover:bg-accent-hover' : 'cursor-not-allowed border-border bg-surface-control-disabled text-foreground-subtle',
               )}
             >

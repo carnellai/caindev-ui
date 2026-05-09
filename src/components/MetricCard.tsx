@@ -1,8 +1,8 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 export type MetricTrend = 'up' | 'down' | 'neutral';
 
-export type MetricCardProps = {
+export type MetricCardProps = HTMLAttributes<HTMLDivElement> & {
   label: string;
   value: string | number;
   unit?: string;
@@ -10,8 +10,6 @@ export type MetricCardProps = {
   trendValue?: string;
   trendPositive?: boolean;
   sublabel?: string;
-  style?: CSSProperties;
-  className?: string;
 };
 
 export function MetricCard({
@@ -24,12 +22,14 @@ export function MetricCard({
   sublabel,
   style,
   className,
+  ...props
 }: MetricCardProps) {
   const isGood = trend === 'neutral' ? null : trendPositive ? trend === 'up' : trend === 'down';
   const trendColor = isGood === null ? 'var(--color-foreground-subtle)' : isGood ? 'var(--color-success)' : 'var(--color-error)';
 
   return (
     <div
+      {...props}
       className={cn(
         'flex flex-col gap-[10px] rounded-md border border-border-strong bg-background-elevated p-[20px] shadow-card',
         className,

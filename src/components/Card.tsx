@@ -1,14 +1,11 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
-export type CardProps = {
-  children: ReactNode;
+export type CardProps = HTMLAttributes<HTMLDivElement> & {
   header?: ReactNode;
   footer?: ReactNode;
   padding?: CardPadding;
-  style?: CSSProperties;
-  className?: string;
 };
 
 const bodyPaddingClasses: Record<CardPadding, string> = {
@@ -32,6 +29,7 @@ export function Card({
   padding = 'md',
   style,
   className,
+  ...props
 }: CardProps) {
   return (
     <div
@@ -40,6 +38,7 @@ export function Card({
         className,
       )}
       style={style}
+      {...props}
     >
       {header && (
         <div

@@ -1,13 +1,10 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes } from 'react';
 export type ContainerSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
-export type ContainerProps = {
-  children: ReactNode;
+export type ContainerProps = HTMLAttributes<HTMLDivElement> & {
   size?: ContainerSize;
   center?: boolean;
-  style?: CSSProperties;
-  className?: string;
 };
 
 const sizeClasses: Record<ContainerSize, string> = {
@@ -19,14 +16,16 @@ const sizeClasses: Record<ContainerSize, string> = {
 };
 
 export function Container({
-  children,
   size = 'xl',
   center = true,
+  children,
   style,
   className,
+  ...props
 }: ContainerProps) {
   return (
     <div
+      {...props}
       className={cn(
         'w-full',
         sizeClasses[size],

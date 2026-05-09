@@ -29,15 +29,15 @@ export function Switch({ label, id, disabled, style, className, ...props }: Swit
   return (
     <label
       htmlFor={switchId}
-      className={cn('inline-flex select-none items-center gap-[12px]', disabled ? 'cursor-not-allowed' : 'cursor-pointer')}
+      className={cn('inline-flex select-none items-center gap-3', disabled ? 'cursor-not-allowed' : 'cursor-pointer')}
       style={{ opacity: disabled ? 0.5 : 1 }}
     >
       <BaseSwitch.Root
         id={switchId}
         disabled={disabled}
-        style={typeof style === 'object' ? style : undefined}
+        style={style}
         className={mergeClassName(
-          'relative flex h-[24px] w-[44px] shrink-0 cursor-inherit items-center rounded-full border border-border bg-surface-control p-[2px] shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover data-[checked]:border-accent/50 data-[checked]:bg-accent data-[checked]:shadow-none data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:hover:bg-surface-control-disabled focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          'box-border relative flex h-[24px] w-[44px] shrink-0 cursor-inherit items-center rounded-full border border-border bg-surface-control p-[2px] shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover data-[checked]:border-accent/50 data-[checked]:bg-accent data-[checked]:shadow-none data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:hover:bg-surface-control-disabled focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
           className,
         )}
         {...props}

@@ -36,20 +36,17 @@ export function Dialog({
   className,
   style,
 }: DialogProps) {
-  const overlayStyle: CSSProperties = { position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 };
-
   return (
     <BaseDialog.Root
       open={open}
       defaultOpen={defaultOpen}
-      onOpenChange={(nextOpen) => onOpenChange?.(nextOpen)}
+      onOpenChange={onOpenChange}
     >
       {trigger && <BaseDialog.Trigger render={trigger} />}
 
       <BaseDialog.Portal>
         <BaseDialog.Backdrop
           className="fixed inset-0 min-h-dvh bg-overlay-backdrop backdrop-blur-[4px] transition-opacity duration-150 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 supports-[-webkit-touch-callout:none]:absolute"
-          style={overlayStyle}
         />
 
         <BaseDialog.Popup
@@ -62,7 +59,7 @@ export function Dialog({
           <BaseDialog.Close
             type="button"
             aria-label="Close dialog"
-            className="absolute right-[14px] top-[14px] flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-[0px] text-foreground-subtle outline-none hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="absolute right-[14px] top-[14px] flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-0 text-foreground-subtle outline-none hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <CloseIcon />
           </BaseDialog.Close>

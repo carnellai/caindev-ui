@@ -8,6 +8,7 @@ export type ToastTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 export type ToastOptions = {
   description?: string;
   tone?: ToastTone;
+  duration?: number;
   className?: string;
   style?: CSSProperties;
 };
@@ -42,6 +43,7 @@ const toneConfig: Record<ToastTone, { color: string; icon: ReactNode }> = {
 };
 
 function variantToTone(variant: string): ToastTone {
+  if (variant === 'info') return 'info';
   if (variant === 'success') return 'success';
   if (variant === 'error') return 'error';
   if (variant === 'warning') return 'warning';
@@ -60,14 +62,11 @@ function ToastList() {
         const className = toast.data?.className as string | undefined;
         const style = toast.data?.style as CSSProperties | undefined;
         const cfg = toneConfig[resolvedTone];
-        const role = resolvedTone === 'error' || resolvedTone === 'warning' ? 'alert' : 'status';
 
         return (
           <BaseToast.Root
             key={toast.id}
             toast={toast}
-            role={role}
-            aria-atomic="true"
             className={cn(
               'pointer-events-auto absolute bottom-0 right-0 flex w-full select-none items-start gap-[12px] rounded-md border border-border bg-background-elevated px-[16px] py-[14px] shadow-toast outline-none transition-[transform,translate,opacity] duration-200 [transform:translateY(calc(var(--toast-offset-y)*-1))] data-[starting-style]:translate-y-full data-[starting-style]:opacity-0 data-[ending-style]:translate-y-full data-[ending-style]:opacity-0 data-[swiping]:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
               className,
@@ -128,6 +127,7 @@ export function useToast() {
         manager.add({
           title,
           description: options?.description,
+          timeout: options?.duration,
           data: {
             tone: options?.tone ?? 'neutral',
             className: options?.className,
@@ -136,10 +136,13 @@ export function useToast() {
         }),
       success: (title: string, description?: string) =>
         manager.add({ title, description, data: { tone: 'success' } }),
+      info: (title: string, description?: string) =>
+        manager.add({ title, description, data: { tone: 'info' } }),
       error: (title: string, description?: string) =>
         manager.add({ title, description, data: { tone: 'error' } }),
       warning: (title: string, description?: string) =>
         manager.add({ title, description, data: { tone: 'warning' } }),
+      dismiss: (id: string) => manager.close(id),
     }),
     [manager],
   );

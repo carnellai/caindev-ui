@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { StreamingText } from './StreamingText';
 import { cn } from '../lib/cn';
@@ -52,6 +52,13 @@ export function ThinkingBlock({
 }: ThinkingBlockProps) {
   const [open, setOpen] = useState(defaultOpen || streaming);
   const contentId = useId();
+  const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+
+  useEffect(() => {
+    if (streaming) {
+      setOpen(true);
+    }
+  }, [streaming]);
 
   return (
     <div
@@ -70,7 +77,7 @@ export function ThinkingBlock({
         {streaming && <PulsingDot />}
         {!streaming && (
           <span className="ml-auto text-[0.6875rem] text-foreground-subtle">
-            {content.split(' ').length} words
+            {wordCount} words
           </span>
         )}
       </button>

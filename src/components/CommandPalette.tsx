@@ -67,6 +67,7 @@ export function CommandPalette({
   const isControlled = open !== undefined;
   const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const previousOpenRef = useRef(false);
@@ -100,6 +101,12 @@ export function CommandPalette({
     onOpenChange?.(nextOpen);
   }
 
+  function handleItemSelect(item: CommandItem | undefined) {
+    if (!item) return;
+    item.onSelect();
+    handleOpenChange(false);
+  }
+
   useEffect(() => {
     const wasOpen = previousOpenRef.current;
     previousOpenRef.current = actualOpen;
@@ -127,15 +134,52 @@ export function CommandPalette({
   function handleKeyDown(e: ReactKeyboardEvent) {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setActiveIndex((i) => Math.min(i + 1, flatFiltered.length - 1));
+      setActiveIndex((i) => {
+        if (flatFiltered.length === 0) return 0;
+        return Math.min(i + 1, flatFiltered.length - 1);
+      });
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setActiveIndex((i) => Math.max(i - 1, 0));
+      setActiveIndex((i) => {
+        if (flatFiltered.length === 0) return 0;
+        return Math.max(i - 1, 0);
+      });
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      flatFiltered[activeIndex]?.onSelect();
+      handleItemSelect(flatFiltered[activeIndex]);
     }
   }
+
+  useEffect(() => {
+    if (!actualOpen) return;
+
+    function handleGlobalNavKeyDown(event: KeyboardEvent) {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Enter') {
+        event.preventDefault();
+
+        if (event.key === 'ArrowDown') {
+          setActiveIndex((i) => {
+            if (flatFiltered.length === 0) return 0;
+            return Math.min(i + 1, flatFiltered.length - 1);
+          });
+          return;
+        }
+
+        if (event.key === 'ArrowUp') {
+          setActiveIndex((i) => {
+            if (flatFiltered.length === 0) return 0;
+            return Math.max(i - 1, 0);
+          });
+          return;
+        }
+
+        handleItemSelect(flatFiltered[activeIndex]);
+      }
+    }
+
+    window.addEventListener('keydown', handleGlobalNavKeyDown, { capture: true });
+    return () => window.removeEventListener('keydown', handleGlobalNavKeyDown, { capture: true });
+  }, [actualOpen, activeIndex, flatFiltered]);
 
   // Scroll active item into view
   useEffect(() => {
@@ -167,11 +211,11 @@ export function CommandPalette({
           style={overlayStyle}
         />
         <BaseDialog.Popup
+          ref={popupRef}
           initialFocus={false}
           finalFocus={false}
           className="fixed left-1/2 top-[18vh] w-[600px] max-w-[calc(100vw-2rem)] -translate-x-1/2 overflow-hidden rounded-lg border border-border bg-background-elevated text-foreground shadow-dialog outline-none transition-[transform,opacity] duration-150 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0"
           style={{ position: 'fixed', top: '18vh', left: '50%', translate: '-50% 0' }}
-          onKeyDown={handleKeyDown}
         >
           <BaseDialog.Title className="sr-only">Command palette</BaseDialog.Title>
 
@@ -192,8 +236,9 @@ export function CommandPalette({
                 setQuery(e.target.value);
                 setActiveIndex(0);
               }}
+              onKeyDown={handleKeyDown}
               placeholder={placeholder}
-              className="flex-1 border-0 bg-transparent text-sm leading-none text-foreground outline-none placeholder:text-foreground-subtle"
+              className="font-[inherit] flex-1 border-0 bg-transparent text-sm leading-none text-foreground outline-none placeholder:text-foreground-subtle"
             />
             {query && (
               <button
@@ -222,10 +267,20 @@ export function CommandPalette({
                 {emptyText}
               </div>
             ) : (
-              Object.entries(grouped).map(([group, groupItems]) => (
-                <div key={group} className="mb-[6px] last:mb-[0px]">
+              Object.entries(grouped).map(([group, groupItems], groupIndex) => {
+                const groupHeadingId = group ? `${listboxId}-group-${groupIndex}` : undefined;
+                return (
+                  <div
+                    key={group || 'ungrouped'}
+                    role={group ? 'group' : undefined}
+                    aria-labelledby={group ? groupHeadingId : undefined}
+                    className="mb-[6px] last:mb-[0px]"
+                  >
                   {group && (
-                    <div className="mb-[4px] px-[10px] pt-[8px] text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle">
+                    <div
+                      id={groupHeadingId}
+                      className="mb-[4px] px-[10px] pt-[8px] text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-foreground-subtle"
+                    >
                       {group}
                     </div>
                   )}
@@ -240,7 +295,7 @@ export function CommandPalette({
                         aria-selected={isActive}
                         data-active={isActive}
                         onMouseEnter={() => setActiveIndex(globalIndex)}
-                        onClick={() => item.onSelect()}
+                        onClick={() => handleItemSelect(item)}
                         className={cn(
                           'flex min-h-[46px] cursor-default select-none items-center gap-[12px] rounded-sm px-[10px] py-[10px] text-sm outline-none transition-[background,color] duration-[60ms]',
                           isActive
@@ -264,8 +319,9 @@ export function CommandPalette({
                       </div>
                     );
                   })}
-                </div>
-              ))
+                  </div>
+                );
+              })
             )}
           </div>
 
@@ -294,8 +350,16 @@ export function useCommandPalette() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    function isEditableTarget(target: EventTarget | null): boolean {
+      if (!(target instanceof Element)) return false;
+      if (target.closest('input, textarea, select')) return true;
+      if (target.closest('[contenteditable]')) return true;
+      return target instanceof HTMLElement && target.isContentEditable;
+    }
+
     function handleKeyDown(e: globalThis.KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        if (isEditableTarget(e.target)) return;
         e.preventDefault();
         setOpen((prev) => !prev);
       }

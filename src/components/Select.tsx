@@ -46,10 +46,6 @@ function CheckIcon() {
   );
 }
 
-function mergeClassName(base: string, className?: string) {
-  return cn(base, className);
-}
-
 export function Select({
   label,
   placeholder = 'Select an option',
@@ -63,32 +59,26 @@ export function Select({
   triggerStyle,
   triggerClassName,
 }: SelectProps) {
-  const isDisabled = disabled || options.length === 0;
-
-  const handleValueChange = (nextValue: string | null) => {
-    onValueChange?.(nextValue);
-  };
-
   return (
     <div className={cn('flex flex-col gap-[6px]', className)} style={style}>
       <BaseSelect.Root
         items={options}
         value={value}
         defaultValue={defaultValue}
-        onValueChange={handleValueChange}
-        disabled={isDisabled}
+        onValueChange={onValueChange}
+        disabled={disabled}
       >
         {label && (
           <BaseSelect.Label
-            className={cn('text-[0.8125rem] font-medium', isDisabled ? 'text-foreground-subtle' : 'text-foreground')}
+            className={cn('text-[0.8125rem] font-medium', disabled ? 'text-foreground-subtle' : 'text-foreground')}
           >
             {label}
           </BaseSelect.Label>
         )}
         <BaseSelect.Trigger
           aria-label={label ? undefined : placeholder}
-          className={mergeClassName(
-            'box-border flex h-[36px] min-w-[176px] cursor-pointer select-none appearance-none items-center justify-between gap-[8px] rounded-md border border-border bg-surface-control py-[0px] pl-[14px] pr-[12px] text-sm leading-none text-foreground shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 data-[popup-open]:border-accent focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          className={cn(
+            'box-border font-[inherit] flex h-[36px] min-w-[176px] cursor-pointer select-none appearance-none items-center justify-between gap-[8px] rounded-md border border-border bg-surface-control pl-[14px] pr-[12px] text-sm leading-none text-foreground shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 data-[popup-open]:border-accent focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
             triggerClassName,
           )}
           style={triggerStyle}

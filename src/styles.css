@@ -73,7 +73,7 @@
 
 }
 
-/* Keep shadow utilities bound to runtime CSS vars so ThemeProvider/data attributes can swap values dynamically. */
+/* Keep shadow utilities bound to runtime CSS vars so data attributes can swap values dynamically. */
 @theme inline {
   --shadow-highlight-inset: inset 0 1px 0 var(--color-highlight-inset);
   --shadow-popover: var(--shadow-popover);
@@ -82,30 +82,7 @@
   --shadow-card: var(--shadow-card);
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-
 :root {
-  color-scheme: dark;
-
   --font-sans: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
   --font-serif: 'Newsreader', ui-serif, Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
@@ -131,6 +108,9 @@ select {
   --color-background: #09090b;
   --color-background-elevated: #111113;
   --color-background-subtle: #18181b;
+  --color-surface: var(--color-background);
+  --color-surface-elevated: var(--color-background-elevated);
+  --color-surface-subtle: var(--color-background-subtle);
   --color-foreground: #fafafa;
   --color-foreground-muted: #a1a1aa;
   --color-foreground-subtle: #52525b;
@@ -181,54 +161,8 @@ select {
 [data-appearance='dark'] {
   color-scheme: dark;
 
-  --color-background: #09090b;
-  --color-background-elevated: #111113;
-  --color-background-subtle: #18181b;
-  --color-foreground: #fafafa;
-  --color-foreground-muted: #a1a1aa;
-  --color-foreground-subtle: #52525b;
-  --color-accent: #7c3aed;
-  --color-accent-hover: #8b5cf6;
-  --color-accent-muted: rgba(124, 58, 237, 0.15);
-  --color-accent-foreground: #fafafa;
-  --color-border: rgba(255, 255, 255, 0.07);
-  --color-border-strong: rgba(255, 255, 255, 0.12);
-  --color-surface-control: rgba(255, 255, 255, 0.04);
-  --color-surface-control-disabled: rgba(255, 255, 255, 0.025);
-  --color-surface-hover: rgba(255, 255, 255, 0.08);
-  --color-surface-active: rgba(255, 255, 255, 0.1);
-  --color-highlight-inset: rgba(255, 255, 255, 0.08);
-  --color-overlay-backdrop: rgba(0, 0, 0, 0.6);
   --color-skeleton: rgba(255, 255, 255, 0.065);
   --color-skeleton-highlight: rgba(255, 255, 255, 0.13);
-  --color-destructive: #ef4444;
-  --color-ring: #52525b;
-
-  --color-info: #a78bfa;
-  --color-info-foreground: #fafafa;
-  --color-info-muted: rgba(167, 139, 250, 0.12);
-  --color-info-border: rgba(167, 139, 250, 0.2);
-  --color-success: #34d399;
-  --color-success-foreground: #052e16;
-  --color-success-muted: rgba(52, 211, 153, 0.12);
-  --color-success-border: rgba(52, 211, 153, 0.2);
-  --color-warning: #fbbf24;
-  --color-warning-foreground: #422006;
-  --color-warning-muted: rgba(251, 191, 36, 0.12);
-  --color-warning-border: rgba(251, 191, 36, 0.2);
-  --color-error: #f87171;
-  --color-error-foreground: #450a0a;
-  --color-error-muted: rgba(248, 113, 113, 0.12);
-  --color-error-border: rgba(248, 113, 113, 0.2);
-  --color-neutral: #94a3b8;
-  --color-neutral-foreground: #0f172a;
-  --color-neutral-muted: rgba(148, 163, 184, 0.1);
-  --color-neutral-border: rgba(148, 163, 184, 0.2);
-
-  --shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-dialog: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-toast: 0 8px 24px rgba(0, 0, 0, 0.4);
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 [data-appearance='light'] {
@@ -329,40 +263,34 @@ select {
   --color-accent-foreground: #fafafa;
 }
 
-/* Light mode accent overrides — darken where needed for contrast */
-[data-appearance='light'][data-accent='emerald'],
-[data-appearance='light'] [data-accent='emerald'] {
+/* Light mode accent overrides — darken explicit theme roots where needed for contrast */
+[data-appearance='light'][data-accent='emerald'] {
   --color-accent: #00896a;
   --color-accent-hover: #00a878;
   --color-accent-muted: rgba(0, 137, 106, 0.1);
 }
 
-[data-appearance='light'][data-accent='teal'],
-[data-appearance='light'] [data-accent='teal'] {
+[data-appearance='light'][data-accent='teal'] {
   --color-accent: #0772a1;
   --color-accent-hover: #0891b2;
   --color-accent-muted: rgba(7, 114, 161, 0.1);
 }
 
-[data-appearance='light'][data-accent='orange'],
-[data-appearance='light'] [data-accent='orange'] {
+[data-appearance='light'][data-accent='orange'] {
   --color-accent: #c75a08;
   --color-accent-hover: #ea6c0a;
   --color-accent-muted: rgba(199, 90, 8, 0.1);
 }
 
-[data-appearance='light'][data-accent='blue'],
-[data-appearance='light'] [data-accent='blue'] {
+[data-appearance='light'][data-accent='blue'] {
   --color-accent-muted: rgba(26, 108, 245, 0.1);
 }
 
-[data-appearance='light'][data-accent='violet'],
-[data-appearance='light'] [data-accent='violet'] {
+[data-appearance='light'][data-accent='violet'] {
   --color-accent-muted: rgba(124, 58, 237, 0.1);
 }
 
-[data-appearance='light'][data-accent='crimson'],
-[data-appearance='light'] [data-accent='crimson'] {
+[data-appearance='light'][data-accent='crimson'] {
   --color-accent-muted: rgba(212, 22, 60, 0.1);
 }
 
@@ -459,6 +387,7 @@ select {
 }
 
 .cd-skeleton-shimmer {
+  inset: 0;
   background: linear-gradient(
     90deg,
     transparent 0%,
@@ -592,8 +521,7 @@ select {
 }
 
 /* TraceTree: component-private palette for kind badges with no semantic-token mapping. */
-:root,
-[data-appearance='dark'] {
+.cd-trace-tree {
   --cd-trace-agent-color: #f472b6;
   --cd-trace-agent-bg: rgba(244, 114, 182, 0.12);
   --cd-trace-embed-color: #60a5fa;
@@ -602,7 +530,7 @@ select {
   --cd-trace-guard-bg: rgba(251, 146, 60, 0.12);
 }
 
-[data-appearance='light'] {
+[data-appearance='light'] .cd-trace-tree {
   --cd-trace-agent-color: #be185d;
   --cd-trace-agent-bg: rgba(244, 114, 182, 0.12);
   --cd-trace-embed-color: #1d4ed8;

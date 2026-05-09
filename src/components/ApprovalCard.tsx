@@ -1,8 +1,8 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 export type ApprovalRisk = 'low' | 'medium' | 'high';
 
-export type ApprovalCardProps = {
+export type ApprovalCardProps = HTMLAttributes<HTMLDivElement> & {
   title: string;
   description?: string;
   action: string;
@@ -11,8 +11,6 @@ export type ApprovalCardProps = {
   onApprove: () => void;
   onReject: () => void;
   loading?: boolean;
-  className?: string;
-  style?: CSSProperties;
 };
 
 // Component-private palette — not part of the public token surface in v1.
@@ -41,11 +39,14 @@ export function ApprovalCard({
   loading = false,
   className,
   style,
+  ...props
 }: ApprovalCardProps) {
   const rc = riskConfig[risk];
 
   return (
     <div
+      {...props}
+      aria-busy={loading || undefined}
       className={cn('overflow-hidden rounded-md border border-border bg-background-elevated shadow-card', className)}
       style={style}
     >

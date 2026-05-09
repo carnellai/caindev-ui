@@ -1,15 +1,13 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 export type ScoreBarSize = 'sm' | 'md';
 
-export type ScoreBarProps = {
+export type ScoreBarProps = HTMLAttributes<HTMLDivElement> & {
   score: number;
   threshold?: number;
   label?: string;
   showValue?: boolean;
   size?: ScoreBarSize;
-  style?: CSSProperties;
-  className?: string;
 };
 
 export function ScoreBar({
@@ -20,16 +18,18 @@ export function ScoreBar({
   size = 'md',
   style,
   className,
+  ...props
 }: ScoreBarProps) {
   const clampedScore = Math.min(Math.max(score, 0), 1);
   const pct = clampedScore * 100;
-  const passing = threshold !== undefined ? score >= threshold : true;
+  const clampedThreshold = threshold !== undefined ? Math.min(Math.max(threshold, 0), 1) : undefined;
+  const passing = clampedThreshold !== undefined ? clampedScore >= clampedThreshold : true;
   const barColor = passing ? 'var(--color-success)' : 'var(--color-error)';
   const height = size === 'sm' ? '5px' : '7px';
   const meterLabel = label ?? 'Score';
 
   return (
-    <div className={cn('flex w-full flex-col gap-[8px]', className)} style={style}>
+    <div {...props} className={cn('flex w-full flex-col gap-[8px]', className)} style={style}>
       {(label || showValue) && (
         <div className="flex items-center justify-between gap-[12px]">
           {label && <span className="text-sm font-medium leading-none text-foreground">{label}</span>}
@@ -56,11 +56,11 @@ export function ScoreBar({
             background: barColor,
           }}
         />
-        {threshold !== undefined && (
+        {clampedThreshold !== undefined && (
           <div
             className="absolute top-[-3px] w-[2px] -translate-x-1/2 rounded-sm bg-foreground-subtle"
             style={{
-              left: `${threshold * 100}%`,
+              left: `${clampedThreshold * 100}%`,
               height: `calc(${height} + 6px)`,
             }}
           />

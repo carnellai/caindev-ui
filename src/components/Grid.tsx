@@ -1,25 +1,23 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties, ReactNode } from 'react';
-export type GridProps = {
-  children: ReactNode;
+import type { HTMLAttributes } from 'react';
+export type GridProps = HTMLAttributes<HTMLDivElement> & {
   cols?: number | string;
   gap?: string | number;
   rowGap?: string | number;
   colGap?: string | number;
   minColWidth?: string;
-  style?: CSSProperties;
-  className?: string;
 };
 
 export function Grid({
-  children,
   cols = 2,
   gap = '16px',
   rowGap,
   colGap,
   minColWidth,
+  children,
   style,
   className,
+  ...props
 }: GridProps) {
   const template = minColWidth
     ? `repeat(auto-fill, minmax(${minColWidth}, 1fr))`
@@ -29,6 +27,7 @@ export function Grid({
 
   return (
     <div
+      {...props}
       className={cn('grid', className)}
       style={{
         // Intentional inline styles: all values below are prop-driven at
@@ -37,12 +36,12 @@ export function Grid({
         // None of these can be mapped to static Tailwind classes.
         gridTemplateColumns: template,
         gap: typeof gap === 'number' ? `${gap}px` : gap,
-        rowGap: rowGap
+        rowGap: rowGap != null
           ? typeof rowGap === 'number'
             ? `${rowGap}px`
             : rowGap
           : undefined,
-        columnGap: colGap
+        columnGap: colGap != null
           ? typeof colGap === 'number'
             ? `${colGap}px`
             : colGap

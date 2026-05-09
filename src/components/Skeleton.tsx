@@ -17,13 +17,11 @@ export function Skeleton({
 }: SkeletonProps) {
   return (
     <div
+      aria-hidden="true"
       className={cn('cd-skeleton relative overflow-hidden', className)}
       style={{ width, height, borderRadius, ...style }}
     >
-      <div
-        className="cd-skeleton-shimmer absolute"
-        style={{ inset: 0 }}
-      />
+      <div className="cd-skeleton-shimmer absolute" />
     </div>
   );
 }

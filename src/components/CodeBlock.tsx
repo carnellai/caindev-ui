@@ -86,26 +86,22 @@ export function CodeBlock({
       </div>
 
       <div className="overflow-x-auto">
-        <pre className="m-0 px-[16px] py-[14px] font-mono text-[0.8125rem] leading-[1.65] text-foreground-muted">
-          {showLineNumbers ? (
-            <table className="w-full border-collapse">
-              <tbody>
-                {lines.map((line, i) => (
-                  <tr key={i}>
-                    <td className="min-w-[2ch] select-none pr-[16px] text-right text-xs text-foreground-subtle">
-                      {i + 1}
-                    </td>
-                    <td className="w-full">
-                      <code>{line}</code>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
+        {showLineNumbers ? (
+          <div className="px-[16px] py-[14px] font-mono text-[0.8125rem] leading-[1.65] text-foreground-muted">
+            {lines.map((line, i) => (
+              <div key={i} className="flex">
+                <span className="min-w-[2ch] select-none pr-[16px] text-right text-xs text-foreground-subtle">
+                  {i + 1}
+                </span>
+                <code className="w-full whitespace-pre">{line || ' '}</code>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <pre className="m-0 px-[16px] py-[14px] font-mono text-[0.8125rem] leading-[1.65] text-foreground-muted">
             <code>{code}</code>
-          )}
-        </pre>
+          </pre>
+        )}
       </div>
     </div>
   );

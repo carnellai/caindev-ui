@@ -1,26 +1,24 @@
 import { useId, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 import { cn } from '../lib/cn';
 import { safeJsonStringify } from '../lib/safeJsonStringify';
 
 export type ToolStatus = 'pending' | 'running' | 'completed' | 'failed' | 'queued' | 'cancelled' | 'skipped';
 
-export type ToolCallCardProps = {
+export type ToolCallCardProps = HTMLAttributes<HTMLDivElement> & {
   name: string;
   status: ToolStatus;
   input?: Record<string, unknown>;
   output?: unknown;
   duration?: number;
   defaultOpen?: boolean;
-  className?: string;
-  style?: CSSProperties;
 };
 
 const statusConfig: Record<ToolStatus, { label: string; color: string; bg: string }> = {
   pending: { label: 'Pending', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
   running: { label: 'Running', color: 'var(--color-info)', bg: 'var(--color-info-muted)' },
   completed: { label: 'Done', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
-  failed: { label: 'Error', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
+  failed: { label: 'Failed', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
   queued: { label: 'Queued', color: 'var(--color-warning)', bg: 'var(--color-warning-muted)' },
   cancelled: { label: 'Cancelled', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
   skipped: { label: 'Skipped', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
@@ -84,6 +82,7 @@ export function ToolCallCard({
   defaultOpen = false,
   className,
   style,
+  ...props
 }: ToolCallCardProps) {
   const [open, setOpen] = useState(defaultOpen);
   const contentId = useId();
@@ -93,6 +92,7 @@ export function ToolCallCard({
 
   return (
     <div
+      {...props}
       className={cn('overflow-hidden rounded-md border border-border bg-background-elevated shadow-card', className)}
       style={style}
     >

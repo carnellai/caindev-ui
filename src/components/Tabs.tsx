@@ -21,7 +21,7 @@ export type TabsProps = {
 export function Tabs({ tabs, defaultValue, value, onValueChange, className, style }: TabsProps) {
   return (
     <BaseTabs.Root
-      defaultValue={defaultValue ?? tabs[0]?.value}
+      defaultValue={value === undefined ? (defaultValue ?? tabs[0]?.value) : undefined}
       value={value}
       onValueChange={(nextValue) => onValueChange?.(nextValue)}
       className={cn('flex flex-col gap-[12px]', className)}
@@ -35,7 +35,7 @@ export function Tabs({ tabs, defaultValue, value, onValueChange, className, styl
             key={tab.value}
             value={tab.value}
             disabled={tab.disabled}
-            className="relative flex h-[32px] cursor-pointer select-none items-center rounded-sm border-0 bg-transparent px-[12px] text-sm font-medium text-foreground-subtle outline-none transition-[background,color] duration-[120ms] data-[active]:bg-surface-active data-[active]:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+            className="font-[inherit] relative flex h-[32px] cursor-pointer select-none items-center rounded-sm border-0 bg-transparent px-[12px] text-sm font-medium text-foreground-subtle outline-none transition-[background,color] duration-[120ms] data-[active]:bg-surface-active data-[active]:text-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 hover:bg-surface-hover hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
           >
             {tab.label}
           </BaseTabs.Tab>

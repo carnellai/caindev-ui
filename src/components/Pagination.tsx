@@ -72,6 +72,10 @@ function getPages(
   return pages
 }
 
+function clampPage(page: number, totalPages: number) {
+  return Math.min(Math.max(page, 1), totalPages)
+}
+
 export function Pagination({
   page,
   totalPages,
@@ -80,7 +84,9 @@ export function Pagination({
   className,
   style,
 }: PaginationProps) {
-  const pages = getPages(page, totalPages, siblings)
+  const boundedTotalPages = Math.max(1, totalPages)
+  const currentPage = clampPage(page, boundedTotalPages)
+  const pages = getPages(currentPage, boundedTotalPages, siblings)
   const preserveFocusWithoutScroll = (event: PointerEvent<HTMLButtonElement>) => {
     const button = event.currentTarget;
     if (document.activeElement !== button) {
@@ -88,6 +94,9 @@ export function Pagination({
       button.focus({ preventScroll: true });
     }
   };
+  const goToPage = (nextPage: number) => {
+    onPageChange(clampPage(nextPage, boundedTotalPages))
+  }
 
   const itemBase =
     'flex h-[30px] min-w-[30px] cursor-pointer select-none items-center justify-center rounded-sm border px-2 text-xs font-medium outline-none transition-[background,border-color,color] duration-[80ms] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-40'
@@ -100,8 +109,8 @@ export function Pagination({
       <button
         type='button'
         onPointerDown={preserveFocusWithoutScroll}
-        onClick={() => onPageChange(page - 1)}
-        disabled={page <= 1}
+        onClick={() => goToPage(currentPage - 1)}
+        disabled={currentPage <= 1}
         aria-label='Previous page'
         className={cn(
           itemBase,
@@ -122,12 +131,12 @@ export function Pagination({
             type='button'
             key={p}
             onPointerDown={preserveFocusWithoutScroll}
-            onClick={() => onPageChange(p)}
+            onClick={() => goToPage(p)}
             aria-label={`Page ${p}`}
-            aria-current={p === page ? 'page' : undefined}
+            aria-current={p === currentPage ? 'page' : undefined}
             className={cn(
               itemBase,
-              p === page
+              p === currentPage
                 ? 'border-accent bg-accent text-accent-foreground'
                 : 'border-border-strong bg-surface-control text-foreground-muted hover:bg-surface-hover hover:text-foreground',
             )}>
@@ -139,8 +148,8 @@ export function Pagination({
       <button
         type='button'
         onPointerDown={preserveFocusWithoutScroll}
-        onClick={() => onPageChange(page + 1)}
-        disabled={page >= totalPages}
+        onClick={() => goToPage(currentPage + 1)}
+        disabled={currentPage >= boundedTotalPages}
         aria-label='Next page'
         className={cn(
           itemBase,

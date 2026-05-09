@@ -141,14 +141,6 @@ export {
 } from './components/StreamingText'
 export { Switch, type SwitchProps } from './components/Switch'
 export { type Tab, Tabs, type TabsProps } from './components/Tabs'
-export {
-  ThemeProvider,
-  type ThemeAccent,
-  type ThemeAppearance,
-  type ThemeProviderProps,
-  type ThemeRadius,
-  type ThemeScope,
-} from './components/ThemeProvider'
 export { Table, type Column, type TableProps } from './components/Table'
 export {
   ToastProvider,
@@ -159,7 +151,9 @@ export {
 } from './components/Toast'
 export {
   Tooltip,
+  TooltipProvider,
   type TooltipProps,
+  type TooltipProviderProps,
   type TooltipSide,
 } from './components/Tooltip'
 export {
@@ -213,3 +207,9 @@ export {
   type CommandPaletteProps,
   useCommandPalette,
 } from './components/CommandPalette'
+export {
+  type Appearance,
+  type ResolvedAppearance,
+  type UseAppearanceResult,
+  useAppearance,
+} from './hooks/useAppearance'

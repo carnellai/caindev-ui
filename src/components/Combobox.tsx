@@ -1,7 +1,7 @@
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox'
 import { useId } from 'react';
 import { cn } from '../lib/cn';
-import type { CSSProperties } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties } from 'react';
 
 export type ComboboxOption = {
   label: string
@@ -18,6 +18,12 @@ export type ComboboxProps = {
   onValueChange?: (value: string | null) => void
   emptyText?: string
   disabled?: boolean
+  rootProps?: Omit<
+    ComponentPropsWithoutRef<typeof BaseCombobox.Root<any>>,
+    'items' | 'value' | 'defaultValue' | 'onValueChange' | 'disabled' | 'children'
+  >
+  inputProps?: ComponentPropsWithoutRef<typeof BaseCombobox.Input>
+  listProps?: ComponentPropsWithoutRef<typeof BaseCombobox.List>
   className?: string
   style?: CSSProperties
 }
@@ -54,6 +60,9 @@ export function Combobox({
   onValueChange,
   emptyText = 'No results found.',
   disabled,
+  rootProps,
+  inputProps,
+  listProps,
   className,
   style,
 }: ComboboxProps) {
@@ -73,6 +82,7 @@ export function Combobox({
         </label>
       )}
       <BaseCombobox.Root
+        {...rootProps}
         items={options}
         value={value}
         defaultValue={defaultValue}
@@ -83,12 +93,13 @@ export function Combobox({
           Keep the trigger in a fixed-width grid column so the input text never sits under the icon.
         */}
         <BaseCombobox.InputGroup
-          className='relative h-[36px] min-w-[176px] rounded-md border border-border bg-surface-control shadow-highlight-inset transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover focus-within:border-accent focus-within:bg-surface-control focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60'
+          className='box-border relative h-[36px] min-w-[176px] rounded-md border border-border bg-surface-control shadow-highlight-inset transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover focus-within:border-accent focus-within:bg-surface-control focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60'
           style={{ display: 'grid', gridTemplateColumns: '1fr 2.25rem' }}>
           <BaseCombobox.Input
+            {...inputProps}
             id={inputId}
             placeholder={placeholder}
-            className='h-full min-w-[0] border-0 bg-transparent pl-[14px] text-sm leading-none text-foreground outline-none placeholder:text-foreground-subtle'
+            className='font-[inherit] h-full min-w-[0] border-0 bg-transparent pl-[14px] text-sm leading-none text-foreground outline-none placeholder:text-foreground-subtle'
           />
           <div className='flex items-center justify-center text-foreground-muted'>
             <BaseCombobox.Trigger
@@ -112,6 +123,7 @@ export function Combobox({
                 {emptyText}
               </BaseCombobox.Empty>
               <BaseCombobox.List
+                {...listProps}
                 className='m-0 list-none overflow-y-auto p-0 outline-none'
                 style={{ maxHeight: 'min(320px, var(--available-height))' }}>
                 {(item: ComboboxOption) => (

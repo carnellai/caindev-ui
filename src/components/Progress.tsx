@@ -10,6 +10,7 @@ export type ProgressProps = {
   min?: number
   max?: number
   label?: string
+  ariaLabel?: string
   showValue?: boolean
   size?: ProgressSize
   tone?: ProgressTone
@@ -36,19 +37,19 @@ export function Progress({
   min = 0,
   max = 100,
   label,
+  ariaLabel,
   showValue = false,
   size = 'md',
   tone = 'neutral',
   className,
   style,
 }: ProgressProps) {
-  const resolvedTone = tone;
-
   return (
     <BaseProgress.Root
       value={value}
       min={min}
       max={max}
+      aria-label={ariaLabel}
       className={cn('flex w-full flex-col gap-[8px]', className)}
       style={style}>
       {(label || showValue) && (
@@ -70,12 +71,13 @@ export function Progress({
         )}>
         <BaseProgress.Indicator
           className={cn(
-            'h-full rounded-full transition-[width] duration-500 data-[indeterminate]:cd-progress-indeterminate',
-            toneClasses[resolvedTone],
+            'h-full rounded-full transition-[width] duration-500',
+            value === null && 'cd-progress-indeterminate',
+            toneClasses[tone],
           )}
           style={
             value !== null
-              ? { width: `${((value - min) / (max - min)) * 100}%` }
+              ? { width: 'var(--progress-percent)' }
               : undefined
           }
         />

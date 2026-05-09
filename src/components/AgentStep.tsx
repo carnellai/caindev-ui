@@ -1,5 +1,5 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 export type StepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'queued' | 'cancelled' | 'skipped';
 
 export type AgentStepItem = {
@@ -10,10 +10,8 @@ export type AgentStepItem = {
   duration?: number;
 };
 
-export type AgentStepProps = {
+export type AgentStepProps = HTMLAttributes<HTMLOListElement> & {
   steps: AgentStepItem[];
-  className?: string;
-  style?: CSSProperties;
 };
 
 // Component-private palette — not part of the public token surface in v1.
@@ -92,16 +90,34 @@ function normalizeStepStatus(status: StepStatus): StepStatus {
   return status;
 }
 
-export function AgentStep({ steps, className, style }: AgentStepProps) {
+const statusA11yLabel: Record<StepStatus, string> = {
+  pending: 'Pending',
+  running: 'Running',
+  completed: 'Completed',
+  failed: 'Failed',
+  queued: 'Queued',
+  cancelled: 'Cancelled',
+  skipped: 'Skipped',
+};
+
+export function AgentStep({ steps, className, style, ...props }: AgentStepProps) {
   return (
-    <div className={cn('flex flex-col gap-[2px]', className)} style={style}>
+    <ol
+      {...props}
+      className={cn('m-0 flex list-none flex-col gap-[2px] p-0', className)}
+      style={style}
+    >
       {steps.map((step, i) => {
         const normalizedStatus = normalizeStepStatus(step.status);
         const cfg = statusConfig[normalizedStatus];
         const isLast = i === steps.length - 1;
 
         return (
-          <div key={step.id} className="flex gap-[12px]">
+          <li
+            key={step.id}
+            className="flex gap-[12px]"
+            aria-label={`${step.label} — ${statusA11yLabel[normalizedStatus]}`}
+          >
             <div className="flex shrink-0 flex-col items-center">
               <span className="z-[1] flex h-[18px] w-[18px] items-center justify-center rounded-full bg-background-elevated" style={{ color: cfg.color }}>
                 {cfg.icon}
@@ -128,6 +144,7 @@ export function AgentStep({ steps, className, style }: AgentStepProps) {
                 >
                   {step.label}
                 </span>
+                <span className="sr-only">{statusA11yLabel[normalizedStatus]}</span>
                 {step.duration !== undefined && normalizedStatus === 'completed' && (
                   <span className="font-mono text-[0.6875rem] text-foreground-subtle tabular-nums">
                     {step.duration}ms
@@ -140,9 +157,9 @@ export function AgentStep({ steps, className, style }: AgentStepProps) {
                 </p>
               )}
             </div>
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }

@@ -1,5 +1,5 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
+import type { CSSProperties, HTMLAttributes, MouseEvent, ReactNode, TableHTMLAttributes } from 'react';
 export type Column<T> = {
   key: string;
   header: string;
@@ -8,7 +8,7 @@ export type Column<T> = {
   render?: (row: T) => ReactNode;
 };
 
-export type TableProps<T extends Record<string, unknown>> = {
+export type TableProps<T extends Record<string, unknown>> = HTMLAttributes<HTMLDivElement> & {
   columns: Column<T>[];
   rows: T[];
   keyField?: string;
@@ -18,6 +18,8 @@ export type TableProps<T extends Record<string, unknown>> = {
   style?: CSSProperties;
   tableClassName?: string;
   tableStyle?: CSSProperties;
+  tableProps?: TableHTMLAttributes<HTMLTableElement>;
+  caption?: ReactNode;
 };
 
 export function Table<T extends Record<string, unknown>>({
@@ -30,13 +32,15 @@ export function Table<T extends Record<string, unknown>>({
   style,
   tableClassName,
   tableStyle,
+  tableProps,
+  caption,
+  ...props
 }: TableProps<T>) {
-  const handleRowKeyDown = (event: KeyboardEvent<HTMLTableRowElement>, row: T) => {
-    if (!onRowClick) return;
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      onRowClick(row);
-    }
+  const isInteractive = onRowClick !== undefined;
+  const { className: nativeTableClassName, style: nativeTableStyle, ...nativeTableProps } = tableProps ?? {};
+  const handleRowActionClick = (event: MouseEvent<HTMLButtonElement>, row: T) => {
+    event.stopPropagation();
+    onRowClick?.(row);
   };
 
   const renderCell = (row: T, col: Column<T>) => {
@@ -62,18 +66,26 @@ export function Table<T extends Record<string, unknown>>({
 
   return (
     <div
+      {...props}
       className={cn('w-full overflow-x-auto rounded-md border border-border-strong bg-background-elevated shadow-card', className)}
       style={style}
     >
       <table
-        className={cn('cd-table w-full border-collapse text-sm leading-[1.5] text-foreground', tableClassName)}
-        style={tableStyle}
+        {...nativeTableProps}
+        className={cn('cd-table w-full border-collapse text-sm leading-[1.5] text-foreground', tableClassName, nativeTableClassName)}
+        style={{ ...tableStyle, ...nativeTableStyle }}
       >
+        {caption ? (
+          <caption className="px-[16px] py-[10px] text-left text-xs text-foreground-subtle">
+            {caption}
+          </caption>
+        ) : null}
         <thead>
           <tr className="border-b border-border bg-background-subtle">
             {columns.map((col) => (
               <th
                 key={col.key}
+                scope="col"
                 className="px-[16px] py-[10px] text-[0.6875rem] font-semibold uppercase tracking-[0.06em] text-foreground-subtle"
                 style={{
                   textAlign: col.align ?? 'left',
@@ -101,17 +113,14 @@ export function Table<T extends Record<string, unknown>>({
             rows.map((row, i) => (
               <tr
                 key={String(row[keyField] ?? i)}
-                tabIndex={onRowClick ? 0 : undefined}
-                aria-label={onRowClick ? `Open row ${String(row[keyField] ?? i + 1)}` : undefined}
                 onClick={() => onRowClick?.(row)}
-                onKeyDown={(event) => handleRowKeyDown(event, row)}
                 className={cn(
                   'bg-background-elevated outline-none transition-[background,outline-color] duration-100',
-                  onRowClick ? 'cursor-pointer hover:bg-background-subtle focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-[-2px]' : 'cursor-default',
+                  isInteractive ? 'cursor-pointer hover:bg-background-subtle' : 'cursor-default',
                   i < rows.length - 1 ? 'border-b border-border' : undefined,
                 ) || undefined}
               >
-                {columns.map((col) => (
+                {columns.map((col, colIndex) => (
                   <td
                     key={col.key}
                     className="cd-table-cell max-w-[18rem] overflow-hidden px-[16px] py-[12px] align-middle text-foreground-muted"
@@ -119,7 +128,17 @@ export function Table<T extends Record<string, unknown>>({
                       textAlign: col.align ?? 'left',
                     }}
                   >
-                    {renderCell(row, col)}
+                    {isInteractive && colIndex === 0 ? (
+                      <button
+                        type="button"
+                        onClick={(event) => handleRowActionClick(event, row)}
+                        className="block w-full cursor-pointer border-0 bg-transparent p-0 text-left font-[inherit] text-inherit outline-none focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+                      >
+                        {renderCell(row, col)}
+                      </button>
+                    ) : (
+                      renderCell(row, col)
+                    )}
                   </td>
                 ))}
               </tr>

@@ -1,30 +1,56 @@
 import { Field } from '@base-ui/react/field';
-import { Form as BaseForm } from '@base-ui/react/form';
 import { Input } from './Input';
 import { cn } from '../lib/cn';
-import type { CSSProperties, FormEvent, ReactNode } from 'react';
+import { useId } from 'react';
+import type {
+  CSSProperties,
+  ComponentPropsWithoutRef,
+  FormHTMLAttributes,
+  InputHTMLAttributes,
+  ReactNode,
+} from 'react';
 
-export type FormProps = {
-  children: ReactNode;
-  onSubmit?: (e: FormEvent<HTMLFormElement>) => void;
-  gap?: number;
-  style?: CSSProperties;
-  className?: string;
+export type FormProps = FormHTMLAttributes<HTMLFormElement> & {
+  gap?: 'sm' | 'md' | 'lg';
 };
 
-export function Form({ children, onSubmit, gap = 16, style, className }: FormProps) {
+const formGapMap: Record<NonNullable<FormProps['gap']>, number> = {
+  sm: 12,
+  md: 16,
+  lg: 24,
+};
+
+export function Form({ children, onSubmit, gap = 'md', style, className, ...props }: FormProps) {
+  function handleSubmit(event: Parameters<NonNullable<FormProps['onSubmit']>>[0]) {
+    const hasAction = typeof props.action === 'string' && props.action.length > 0;
+    const hasMethod = typeof props.method === 'string' && props.method.length > 0;
+
+    // Keep SPA/react handler usage from triggering a same-page navigation when no native submit target exists.
+    if (onSubmit && !hasAction && !hasMethod) {
+      event.preventDefault();
+    }
+
+    onSubmit?.(event);
+  }
+
   return (
-    <BaseForm
+    <form
+      {...props}
       className={cn('flex flex-col', className)}
-      onSubmit={onSubmit}
-      style={{ gap, ...style }}
+      onSubmit={handleSubmit}
+      style={{ gap: formGapMap[gap], ...style }}
     >
       {children}
-    </BaseForm>
+    </form>
   );
 }
 
-export type FormFieldProps = {
+type FormFieldRootProps = Omit<
+  ComponentPropsWithoutRef<typeof Field.Root>,
+  'children' | 'className' | 'style' | 'name' | 'disabled' | 'invalid'
+>;
+
+export type FormFieldProps = FormFieldRootProps & {
   name: string;
   label: string;
   hint?: string;
@@ -35,6 +61,12 @@ export type FormFieldProps = {
   children: ReactNode;
   style?: CSSProperties;
   className?: string;
+  /** Optional control id for explicit label/control association. */
+  controlId?: string;
+  /** Optional description id used for aria-describedby wiring. */
+  hintId?: string;
+  /** Optional error id used for aria-describedby wiring. */
+  errorId?: string;
 };
 
 export function FormField({
@@ -48,18 +80,23 @@ export function FormField({
   children,
   style,
   className,
+  controlId,
+  hintId,
+  errorId,
+  ...props
 }: FormFieldProps) {
   const hasError = Boolean(error);
 
   return (
     <Field.Root
+      {...props}
       name={name}
       disabled={disabled}
       invalid={invalid || hasError || undefined}
       className={cn('flex flex-col gap-2', className)}
       style={style}
     >
-      <Field.Label className="flex items-center gap-1 text-[0.8125rem] font-medium text-foreground">
+      <Field.Label htmlFor={controlId} className="flex items-center gap-1 text-[0.8125rem] font-medium text-foreground">
         {label}
         {required && <span aria-hidden="true" className="text-error">*</span>}
       </Field.Label>
@@ -67,23 +104,29 @@ export function FormField({
       {children}
 
       {hint && (
-        <Field.Description className="text-xs text-foreground-subtle">
+        <Field.Description id={hintId} className="text-xs text-foreground-subtle">
           {hint}
         </Field.Description>
       )}
 
-      <Field.Error match={hasError || undefined} className="text-xs text-error">
+      <Field.Error id={errorId} match={hasError || undefined} className="text-xs text-error">
         {error}
       </Field.Error>
     </Field.Root>
   );
 }
 
-export type FormInputProps = {
+type FormInputNativeProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'name' | 'label' | 'children' | 'className' | 'style' | 'required' | 'disabled' | 'placeholder' | 'type'
+>;
+
+export type FormInputProps = FormInputNativeProps & {
   name: string;
   label: string;
   hint?: string;
   error?: string;
+  invalid?: boolean;
   required?: boolean;
   disabled?: boolean;
   placeholder?: string;
@@ -93,6 +136,11 @@ export type FormInputProps = {
   /** Forwarded to Input; targets the input control, not FormField. */
   className?: string;
 };
+
+function mergeIds(...ids: Array<string | undefined>) {
+  const validIds = ids.filter((id): id is string => Boolean(id));
+  return validIds.length > 0 ? validIds.join(' ') : undefined;
+}
 
 export function FormInput({
   name,
@@ -105,16 +153,41 @@ export function FormInput({
   type = 'text',
   style,
   className,
+  id,
+  invalid,
+  'aria-describedby': ariaDescribedBy,
+  'aria-invalid': ariaInvalid,
+  ...props
 }: FormInputProps) {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const hintId = hint ? `${inputId}-hint` : undefined;
+  const errorId = error ? `${inputId}-error` : undefined;
+  const isInvalid = invalid || Boolean(error) || ariaInvalid || undefined;
+
   return (
-    <FormField name={name} label={label} hint={hint} error={error} required={required} disabled={disabled}>
+    <FormField
+      name={name}
+      label={label}
+      hint={hint}
+      error={error}
+      required={required}
+      disabled={disabled}
+      invalid={invalid}
+      controlId={inputId}
+      hintId={hintId}
+      errorId={errorId}
+    >
       <Input
+        {...props}
+        id={inputId}
         name={name}
         placeholder={placeholder}
         type={type}
         required={required}
         disabled={disabled}
-        aria-label={label}
+        aria-describedby={mergeIds(ariaDescribedBy, hintId, errorId)}
+        aria-invalid={isInvalid}
         style={style}
         className={className}
       />

@@ -52,7 +52,7 @@ export function Button({
       disabled={isDisabled}
       className={mergeClassName(
         cn(
-          'cd-button box-border inline-flex select-none appearance-none items-center justify-center whitespace-nowrap rounded-md font-medium leading-none outline-none transition-[background,border-color,color,opacity,box-shadow] duration-[120ms]',
+          'cd-button box-border font-[inherit] inline-flex select-none appearance-none items-center justify-center whitespace-nowrap rounded-md font-medium leading-none outline-none transition-[background,border-color,color,opacity,box-shadow] duration-[120ms]',
           `cd-button-${variant}`,
           variantClasses[variant],
           sizeClasses[size],
@@ -60,7 +60,7 @@ export function Button({
         ),
         className,
       )}
-      style={typeof style === 'object' ? style : undefined}
+      style={style}
       {...props}
     >
       {loading && <span className="cd-button-spinner" aria-hidden="true" />}

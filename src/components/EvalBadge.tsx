@@ -1,15 +1,13 @@
 import { cn } from '../lib/cn';
-import type { CSSProperties } from 'react';
+import type { HTMLAttributes } from 'react';
 export type EvalVerdict = 'pass' | 'fail' | 'review' | 'insufficient';
 export type EvalBadgeSize = 'sm' | 'md';
 
-export type EvalBadgeProps = {
+export type EvalBadgeProps = HTMLAttributes<HTMLSpanElement> & {
   verdict: EvalVerdict;
   score?: number;
   label?: string;
   size?: EvalBadgeSize;
-  style?: CSSProperties;
-  className?: string;
 };
 
 const evalConfig: Record<EvalVerdict, { label: string; color: string; bg: string; border: string }> = {
@@ -19,12 +17,13 @@ const evalConfig: Record<EvalVerdict, { label: string; color: string; bg: string
   insufficient: { label: 'Insufficient', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)', border: 'var(--color-neutral-border)' },
 };
 
-export function EvalBadge({ verdict, score, label, size = 'md', style, className }: EvalBadgeProps) {
+export function EvalBadge({ verdict, score, label, size = 'md', style, className, ...props }: EvalBadgeProps) {
   const cfg = evalConfig[verdict];
   const isSmall = size === 'sm';
 
   return (
     <span
+      {...props}
       className={cn(
         'inline-flex items-center gap-[5px] whitespace-nowrap rounded-sm font-semibold tracking-[0.04em]',
         isSmall ? 'px-1.5 py-0.5 text-[0.625rem]' : 'px-[9px] py-[3px] text-[0.6875rem]',

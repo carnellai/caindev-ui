@@ -36,7 +36,7 @@ export function Menu({
     <BaseMenu.Root
       open={open}
       defaultOpen={defaultOpen}
-      onOpenChange={(nextOpen) => onOpenChange?.(nextOpen)}
+      onOpenChange={onOpenChange}
     >
       <BaseMenu.Trigger render={trigger} />
       <BaseMenu.Portal>
@@ -63,15 +63,17 @@ export function Menu({
                     className="my-[6px] h-px bg-border"
                   />
                 )}
-                {group.items.map((item) => (
+                {group.items.map((item, ii) => (
                   <BaseMenu.Item
-                    key={item.label}
+                    key={`${gi}-${ii}-${item.label}`}
                     label={item.label}
                     disabled={item.disabled}
                     onClick={item.onSelect}
                     className={cn(
-                      'flex min-h-[34px] cursor-default select-none items-center rounded-sm px-[10px] py-[8px] text-sm outline-none transition-[background,color] duration-[80ms] data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover data-[highlighted]:text-foreground',
-                      item.destructive ? 'text-destructive' : 'text-foreground-muted',
+                      'flex min-h-[34px] cursor-default select-none items-center rounded-sm px-[10px] py-[8px] text-sm outline-none transition-[background,color] duration-[80ms] data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 data-[highlighted]:bg-surface-hover',
+                      item.destructive
+                        ? 'text-destructive data-[highlighted]:text-destructive'
+                        : 'text-foreground-muted data-[highlighted]:text-foreground',
                     )}
                   >
                     {item.label}
