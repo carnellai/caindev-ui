@@ -1,10 +1,18 @@
 import { cn } from '../lib/cn';
 import type { CSSProperties, HTMLAttributes, MouseEvent, ReactNode, TableHTMLAttributes } from 'react';
 export type Column<T> = {
+  /** Row field key used as the cell value when `render` is not provided. */
   key: string;
   header: string;
   width?: string;
   align?: 'left' | 'center' | 'right';
+  /**
+   * Custom cell renderer. When omitted the cell displays `String(row[key])`.
+   * Default rendering applies automatic truncation and clamping based on
+   * content length (single-line truncation ≤ 56 chars, 2-line clamp ≤ 200
+   * chars, no clamping beyond that). Provide `render` to take full control of
+   * cell content — the returned node is rendered without any truncation wrapper.
+   */
   render?: (row: T) => ReactNode;
 };
 

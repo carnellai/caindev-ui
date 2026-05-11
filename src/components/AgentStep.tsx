@@ -1,6 +1,8 @@
 import { cn } from '../lib/cn';
+import { normalizeOperationStatus, type OperationStatus } from '../lib/operationStatus';
 import type { HTMLAttributes, ReactNode } from 'react';
-export type StepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'queued' | 'cancelled' | 'skipped';
+
+export type StepStatus = OperationStatus;
 
 export type AgentStepItem = {
   id: string;
@@ -28,7 +30,15 @@ function RunningIcon() {
   );
 }
 
-const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
+const statusConfig: Record<OperationStatus, { icon: ReactNode; color: string }> = {
+  idle: {
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" />
+      </svg>
+    ),
+    color: 'var(--color-foreground-subtle)',
+  },
   pending: {
     icon: (
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -43,18 +53,18 @@ const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
   },
   completed: {
     icon: (
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color: 'var(--color-background-elevated)' }}>
         <circle cx="7" cy="7" r="6" fill="var(--color-success)" stroke="var(--color-success)" strokeWidth="1.5" />
-        <path d="M4 7l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M4 7l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
     color: 'var(--color-success)',
   },
   failed: {
     icon: (
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color: 'var(--color-background-elevated)' }}>
         <circle cx="7" cy="7" r="6" fill="var(--color-error)" stroke="var(--color-error)" strokeWidth="1.5" />
-        <path d="M5 5l4 4M9 5l-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M5 5l4 4M9 5l-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
     color: 'var(--color-error)',
@@ -85,12 +95,8 @@ const statusConfig: Record<StepStatus, { icon: ReactNode; color: string }> = {
   },
 };
 
-function normalizeStepStatus(status: StepStatus): StepStatus {
-  if ((status as string) === 'complete') return 'completed';
-  return status;
-}
-
-const statusA11yLabel: Record<StepStatus, string> = {
+const statusA11yLabel: Record<OperationStatus, string> = {
+  idle: 'Idle',
   pending: 'Pending',
   running: 'Running',
   completed: 'Completed',
@@ -108,7 +114,7 @@ export function AgentStep({ steps, className, style, ...props }: AgentStepProps)
       style={style}
     >
       {steps.map((step, i) => {
-        const normalizedStatus = normalizeStepStatus(step.status);
+        const normalizedStatus = normalizeOperationStatus(step.status);
         const cfg = statusConfig[normalizedStatus];
         const isLast = i === steps.length - 1;
 

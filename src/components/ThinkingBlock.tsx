@@ -4,9 +4,20 @@ import { StreamingText } from './StreamingText';
 import { cn } from '../lib/cn';
 
 export type ThinkingBlockProps = {
+  /** The thinking text. Rendered verbatim; use `streaming` to enable the streaming animation. */
   content: string;
+  /**
+   * When `true` the panel is forced open and a pulsing indicator is shown.
+   * Transitioning from `true` to `false` (stream complete) leaves the panel in
+   * whatever open/closed state the user last set — it does not collapse.
+   */
   streaming?: boolean;
+  /**
+   * Initial open state. Overridden to `true` while `streaming` is active so
+   * active output stays visible regardless of this value.
+   */
   defaultOpen?: boolean;
+  /** Header label. Defaults to `'Thinking'`. */
   label?: string;
   className?: string;
   style?: CSSProperties;

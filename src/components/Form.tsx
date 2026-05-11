@@ -8,16 +8,17 @@ import type {
   FormHTMLAttributes,
   InputHTMLAttributes,
   ReactNode,
+  Ref,
 } from 'react';
 
 export type FormProps = FormHTMLAttributes<HTMLFormElement> & {
   gap?: 'sm' | 'md' | 'lg';
 };
 
-const formGapMap: Record<NonNullable<FormProps['gap']>, number> = {
-  sm: 12,
-  md: 16,
-  lg: 24,
+const formGapClass: Record<NonNullable<FormProps['gap']>, string> = {
+  sm: 'gap-3',
+  md: 'gap-4',
+  lg: 'gap-6',
 };
 
 export function Form({ children, onSubmit, gap = 'md', style, className, ...props }: FormProps) {
@@ -36,9 +37,9 @@ export function Form({ children, onSubmit, gap = 'md', style, className, ...prop
   return (
     <form
       {...props}
-      className={cn('flex flex-col', className)}
+      className={cn('flex flex-col', formGapClass[gap], className)}
       onSubmit={handleSubmit}
-      style={{ gap: formGapMap[gap], ...style }}
+      style={style}
     >
       {children}
     </form>
@@ -135,6 +136,8 @@ export type FormInputProps = FormInputNativeProps & {
   style?: CSSProperties;
   /** Forwarded to Input; targets the input control, not FormField. */
   className?: string;
+  /** Ref forwarded to the underlying input element. */
+  ref?: Ref<HTMLInputElement>;
 };
 
 function mergeIds(...ids: Array<string | undefined>) {
@@ -155,6 +158,7 @@ export function FormInput({
   className,
   id,
   invalid,
+  ref,
   'aria-describedby': ariaDescribedBy,
   'aria-invalid': ariaInvalid,
   ...props
@@ -180,6 +184,7 @@ export function FormInput({
     >
       <Input
         {...props}
+        ref={ref}
         id={inputId}
         name={name}
         placeholder={placeholder}

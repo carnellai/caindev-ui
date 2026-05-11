@@ -2,9 +2,10 @@ import { useId, useState } from 'react';
 import type { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '../lib/cn';
 import { safeJsonStringify } from '../lib/safeJsonStringify';
+import { normalizeOperationStatus, type OperationStatus } from '../lib/operationStatus';
 
 export type SpanKind = 'llm' | 'tool' | 'retrieval' | 'agent' | 'span' | 'embedding' | 'guardrail';
-export type SpanStatus = 'pending' | 'running' | 'completed' | 'failed' | 'queued' | 'cancelled' | 'skipped';
+export type SpanStatus = OperationStatus;
 
 export type SpanNode = {
   id: string;
@@ -108,7 +109,8 @@ const kindConfig: Record<SpanKind, { label: string; color: string; bg: string; i
   },
 };
 
-const statusDot: Record<SpanStatus, string> = {
+const statusDot: Record<OperationStatus, string> = {
+  idle: 'var(--color-foreground-subtle)',
   pending: 'var(--color-foreground-subtle)',
   running: 'var(--color-info)',
   completed: 'var(--color-success)',
@@ -117,12 +119,6 @@ const statusDot: Record<SpanStatus, string> = {
   cancelled: 'var(--color-neutral)',
   skipped: 'var(--color-neutral)',
 };
-
-function normalizeSpanStatus(status: SpanStatus): SpanStatus {
-  if ((status as string) === 'success') return 'completed';
-  if ((status as string) === 'error') return 'failed';
-  return status;
-}
 
 function JsonBlock({ value }: { value: unknown }) {
   const json = safeJsonStringify(value);
@@ -164,7 +160,7 @@ export function SpanCard({ span, defaultOpen = false, className, style, ...props
   const [open, setOpen] = useState(defaultOpen);
   const detailId = useId();
   const cfg = kindConfig[span.kind];
-  const normalizedStatus = normalizeSpanStatus(span.status);
+  const normalizedStatus = normalizeOperationStatus(span.status);
   const hasTokenDetails = span.inputTokens !== undefined || span.outputTokens !== undefined;
   const hasModelDetails = span.model !== undefined || hasTokenDetails || span.cost !== undefined;
   const hasDetails = span.input !== undefined || span.output !== undefined || span.model !== undefined || span.query !== undefined || hasModelDetails;

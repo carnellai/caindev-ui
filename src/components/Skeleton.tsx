@@ -56,7 +56,7 @@ export type SkeletonCardProps = {
 export function SkeletonCard({ style, className }: SkeletonCardProps = {}) {
   return (
     <div
-      className={cn('flex flex-col gap-3 rounded-md border border-border p-4', className)}
+      className={cn('flex flex-col gap-3 rounded-md border border-border p-5', className)}
       style={style}
     >
       <div className="flex items-center gap-2.5">

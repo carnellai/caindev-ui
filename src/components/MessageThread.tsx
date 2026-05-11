@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import type { CSSProperties, UIEvent } from 'react';
+import type { CSSProperties, ReactNode, UIEvent } from 'react';
 import { MessageBubble, type MessageRole } from './MessageBubble';
 import { cn } from '../lib/cn';
 
@@ -17,6 +17,8 @@ export type MessageThreadProps = {
   maxHeight?: string | number;
   className?: string;
   style?: CSSProperties;
+  /** Custom renderer for each message. When provided, replaces the default MessageBubble. */
+  renderMessage?: (message: MessageThreadMessage, index: number) => ReactNode;
 };
 
 export function MessageThread({
@@ -25,6 +27,7 @@ export function MessageThread({
   maxHeight = '480px',
   className,
   style,
+  renderMessage,
 }: MessageThreadProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isNearBottomRef = useRef(true);
@@ -81,15 +84,19 @@ export function MessageThread({
         ...style,
       }}
     >
-      {messages.map((msg) => (
-        <MessageBubble
-          key={msg.id}
-          role={msg.role}
-          content={msg.content}
-          streaming={msg.streaming}
-          timestamp={msg.timestamp}
-        />
-      ))}
+      {messages.map((msg, index) =>
+        renderMessage ? (
+          renderMessage(msg, index)
+        ) : (
+          <MessageBubble
+            key={msg.id}
+            role={msg.role}
+            content={msg.content}
+            streaming={msg.streaming}
+            timestamp={msg.timestamp}
+          />
+        ),
+      )}
     </div>
   );
 }

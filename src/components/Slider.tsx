@@ -51,8 +51,8 @@ export function Slider({
       onValueCommitted={onValueCommitted}
       name={name}
       disabled={disabled}
-      className={cn('flex w-full flex-col gap-2.5', className)}
-      style={disabled ? { opacity: 0.5, ...style } : style}
+      className={cn('flex w-full flex-col gap-2.5 data-[disabled]:opacity-50', className)}
+      style={style}
     >
       <div className="flex items-center justify-between">
         {label && (

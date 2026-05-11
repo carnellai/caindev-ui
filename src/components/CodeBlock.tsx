@@ -76,7 +76,7 @@ export function CodeBlock({
           aria-label={copied ? 'Code copied' : 'Copy code'}
           onClick={handleCopy}
           className={cn(
-            'flex cursor-pointer items-center gap-[5px] rounded-sm border border-border bg-transparent px-[8px] py-[3px] text-[0.6875rem] transition-colors duration-150',
+            'flex cursor-pointer items-center gap-[5px] rounded-sm border border-border bg-transparent px-[8px] py-[3px] text-[0.6875rem] transition-colors duration-150 hover:text-foreground',
             copied ? 'text-success' : 'text-foreground-muted',
           )}
         >

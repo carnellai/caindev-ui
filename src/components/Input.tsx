@@ -1,9 +1,10 @@
 import { Input as BaseInput } from '@base-ui/react/input';
 import { useId } from 'react';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, Ref } from 'react';
 import { cn } from '../lib/cn';
 
-export type InputProps = ComponentProps<typeof BaseInput> & {
+export type InputProps = Omit<ComponentProps<typeof BaseInput>, 'ref'> & {
+  ref?: Ref<HTMLInputElement>;
   label?: string;
   hint?: string;
   error?: string;
@@ -40,6 +41,7 @@ export function Input({
   wrapperClassName,
   disabled,
   placeholder,
+  ref,
   'aria-describedby': ariaDescribedBy,
   'aria-invalid': ariaInvalid,
   'aria-label': ariaLabel,
@@ -64,6 +66,7 @@ export function Input({
       )}
 
       <BaseInput
+        ref={ref as Ref<HTMLElement>}
         id={inputId}
         disabled={disabled}
         placeholder={placeholder}

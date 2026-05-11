@@ -2,8 +2,9 @@ import { useId, useState } from 'react';
 import type { HTMLAttributes } from 'react';
 import { cn } from '../lib/cn';
 import { safeJsonStringify } from '../lib/safeJsonStringify';
+import { normalizeOperationStatus, type OperationStatus } from '../lib/operationStatus';
 
-export type ToolStatus = 'pending' | 'running' | 'completed' | 'failed' | 'queued' | 'cancelled' | 'skipped';
+export type ToolStatus = OperationStatus;
 
 export type ToolCallCardProps = HTMLAttributes<HTMLDivElement> & {
   name: string;
@@ -14,7 +15,8 @@ export type ToolCallCardProps = HTMLAttributes<HTMLDivElement> & {
   defaultOpen?: boolean;
 };
 
-const statusConfig: Record<ToolStatus, { label: string; color: string; bg: string }> = {
+const statusConfig: Record<OperationStatus, { label: string; color: string; bg: string }> = {
+  idle: { label: 'Idle', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
   pending: { label: 'Pending', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
   running: { label: 'Running', color: 'var(--color-info)', bg: 'var(--color-info-muted)' },
   completed: { label: 'Done', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
@@ -23,12 +25,6 @@ const statusConfig: Record<ToolStatus, { label: string; color: string; bg: strin
   cancelled: { label: 'Cancelled', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
   skipped: { label: 'Skipped', color: 'var(--color-foreground-subtle)', bg: 'var(--color-background-subtle)' },
 };
-
-function normalizeToolStatus(status: ToolStatus): ToolStatus {
-  if ((status as string) === 'success') return 'completed';
-  if ((status as string) === 'error') return 'failed';
-  return status;
-}
 
 function WrenchIcon() {
   return (
@@ -86,7 +82,7 @@ export function ToolCallCard({
 }: ToolCallCardProps) {
   const [open, setOpen] = useState(defaultOpen);
   const contentId = useId();
-  const normalizedStatus = normalizeToolStatus(status);
+  const normalizedStatus = normalizeOperationStatus(status);
   const cfg = statusConfig[normalizedStatus];
   const hasContent = input !== undefined || output !== undefined;
 

@@ -3,10 +3,20 @@ import type { HTMLAttributes } from 'react';
 export type TokenCostLayout = 'row' | 'stack';
 
 export type TokenCostProps = HTMLAttributes<HTMLDivElement> & {
+  /** Prompt/input token count. Renders an `in` row when provided. */
   inputTokens?: number;
+  /** Completion/output token count. Renders an `out` row when provided. */
   outputTokens?: number;
+  /**
+   * Total token count. Renders a `total` row whenever provided, including
+   * when `inputTokens` and/or `outputTokens` are also present. No derived
+   * total is computed from `inputTokens` + `outputTokens`; pass `totalTokens`
+   * explicitly to show a total row.
+   */
   totalTokens?: number;
+  /** Cost in USD. */
   cost?: number;
+  /** Model name string displayed verbatim. */
   model?: string;
   layout?: TokenCostLayout;
 };
@@ -17,7 +27,7 @@ const formatCurrency = (value: number) => {
     ? 6
     : absolute < 1
       ? 4
-      : Number.isInteger(value)
+      : value % 1 === 0
         ? 0
         : 2;
 
@@ -40,11 +50,6 @@ export function TokenCost({
   className,
   ...props
 }: TokenCostProps) {
-  const total = totalTokens ?? (
-    inputTokens !== undefined && outputTokens !== undefined
-      ? inputTokens + outputTokens
-      : undefined
-  );
   const isRow = layout === 'row';
 
   return (
@@ -82,11 +87,11 @@ export function TokenCost({
           </span>
         </span>
       )}
-      {total !== undefined && inputTokens === undefined && outputTokens === undefined && (
+      {totalTokens !== undefined && (
         <span className="flex items-center" style={{ gap: 4 }}>
-          <span className="text-[0.6875rem] text-foreground-subtle">tokens</span>
+          <span className="text-[0.6875rem] text-foreground-subtle">total</span>
           <span className="font-mono text-[0.8125rem] text-foreground-muted tabular-nums">
-            {total.toLocaleString()}
+            {totalTokens.toLocaleString()}
           </span>
         </span>
       )}

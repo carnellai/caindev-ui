@@ -1,6 +1,8 @@
 import { cn } from '../lib/cn';
+import { normalizeOperationStatus, type OperationStatus } from '../lib/operationStatus';
 import type { HTMLAttributes } from 'react';
-export type RunStatus = 'running' | 'completed' | 'failed' | 'queued' | 'cancelled';
+
+export type RunStatus = OperationStatus;
 export type RunStatusBadgeSize = 'sm' | 'md';
 
 export type RunStatusBadgeProps = HTMLAttributes<HTMLSpanElement> & {
@@ -8,22 +10,19 @@ export type RunStatusBadgeProps = HTMLAttributes<HTMLSpanElement> & {
   size?: RunStatusBadgeSize;
 };
 
-const runConfig: Record<RunStatus, { label: string; color: string; bg: string; pulse?: boolean }> = {
+const runConfig: Record<OperationStatus, { label: string; color: string; bg: string; pulse?: boolean }> = {
+  idle: { label: 'Idle', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
+  pending: { label: 'Pending', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
   running: { label: 'Running', color: 'var(--color-info)', bg: 'var(--color-info-muted)', pulse: true },
   completed: { label: 'Completed', color: 'var(--color-success)', bg: 'var(--color-success-muted)' },
   failed: { label: 'Failed', color: 'var(--color-error)', bg: 'var(--color-error-muted)' },
   queued: { label: 'Queued', color: 'var(--color-warning)', bg: 'var(--color-warning-muted)' },
   cancelled: { label: 'Cancelled', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
+  skipped: { label: 'Skipped', color: 'var(--color-neutral)', bg: 'var(--color-neutral-muted)' },
 };
 
-function normalizeRunStatus(status: RunStatus | 'error'): RunStatus {
-  // Legacy compatibility: normalize historical "error" values to canonical "failed".
-  if (status === 'error') return 'failed';
-  return status;
-}
-
 export function RunStatusBadge({ status, size = 'md', style, className, ...props }: RunStatusBadgeProps) {
-  const cfg = runConfig[normalizeRunStatus(status)];
+  const cfg = runConfig[normalizeOperationStatus(status)];
   const isSmall = size === 'sm';
 
   return (

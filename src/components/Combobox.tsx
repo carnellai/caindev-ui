@@ -1,7 +1,7 @@
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox'
 import { useId } from 'react';
 import { cn } from '../lib/cn';
-import type { ComponentPropsWithoutRef, CSSProperties } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, Ref } from 'react';
 
 export type ComboboxOption = {
   label: string
@@ -26,6 +26,8 @@ export type ComboboxProps = {
   listProps?: ComponentPropsWithoutRef<typeof BaseCombobox.List>
   className?: string
   style?: CSSProperties
+  /** Ref forwarded to the underlying input element. */
+  ref?: Ref<HTMLInputElement>
 }
 
 function CheckIcon() {
@@ -65,6 +67,7 @@ export function Combobox({
   listProps,
   className,
   style,
+  ref,
 }: ComboboxProps) {
   const inputId = useId();
   return (
@@ -97,6 +100,7 @@ export function Combobox({
           style={{ display: 'grid', gridTemplateColumns: '1fr 2.25rem' }}>
           <BaseCombobox.Input
             {...inputProps}
+            ref={ref}
             id={inputId}
             placeholder={placeholder}
             className='font-[inherit] h-full min-w-[0] border-0 bg-transparent pl-[14px] text-sm leading-none text-foreground outline-none placeholder:text-foreground-subtle'

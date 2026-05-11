@@ -11,8 +11,19 @@ export type Tab = {
 
 export type TabsProps = {
   tabs: Tab[];
+  /**
+   * Default selected tab value for uncontrolled usage. Falls back to the first
+   * tab's value when omitted. Ignored when `value` is provided.
+   */
   defaultValue?: string;
+  /**
+   * Controlled selected tab value.
+   * - `string` — the matching tab is active.
+   * - `null`   — controlled mode with no tab active (deselected state).
+   * - `undefined` — component is uncontrolled; `defaultValue` applies.
+   */
   value?: string | null;
+  /** Called when the active tab changes. Receives `null` when a tab is deselected. */
   onValueChange?: (value: string | null) => void;
   className?: string;
   style?: CSSProperties;

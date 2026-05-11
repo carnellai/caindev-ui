@@ -1,6 +1,6 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
 import { cn } from '../lib/cn';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, Ref } from 'react';
 
 export type SelectOption = {
   label: string;
@@ -20,6 +20,8 @@ export type SelectProps = {
   className?: string;
   triggerStyle?: CSSProperties;
   triggerClassName?: string;
+  /** Ref forwarded to the trigger button element. */
+  ref?: Ref<HTMLButtonElement>;
 };
 
 function ChevronUpDownIcon() {
@@ -58,6 +60,7 @@ export function Select({
   className,
   triggerStyle,
   triggerClassName,
+  ref,
 }: SelectProps) {
   return (
     <div className={cn('flex flex-col gap-[6px]', className)} style={style}>
@@ -76,6 +79,7 @@ export function Select({
           </BaseSelect.Label>
         )}
         <BaseSelect.Trigger
+          ref={ref}
           aria-label={label ? undefined : placeholder}
           className={cn(
             'box-border font-[inherit] flex h-[36px] min-w-[176px] cursor-pointer select-none appearance-none items-center justify-between gap-[8px] rounded-md border border-border bg-surface-control pl-[14px] pr-[12px] text-sm leading-none text-foreground shadow-highlight-inset outline-none transition-[background,border-color,box-shadow] duration-150 hover:bg-surface-hover data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-control-disabled data-[disabled]:opacity-60 data-[popup-open]:border-accent focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',

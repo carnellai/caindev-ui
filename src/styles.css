@@ -3,86 +3,7 @@
 /* Safelist utilities that are part of the package contract/examples and must compile even when source scanning misses them. */
 @source inline("bg-surface bg-surface-elevated bg-surface-subtle ring-ring rounded-lg font-sans font-serif text-lg text-3xl text-4xl text-5xl");
 
-@theme {
-  --font-sans: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
-  --font-serif: 'Newsreader', ui-serif, Georgia, serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-
-  --text-xs: clamp(0.6875rem, 0.67rem + 0.08vw, 0.75rem);
-  --text-sm: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
-  --text-base: clamp(0.9375rem, 0.92rem + 0.1vw, 1rem);
-  --text-lg: clamp(1.0625rem, 1.02rem + 0.2vw, 1.125rem);
-  --text-xl: clamp(1.1875rem, 1.12rem + 0.28vw, 1.3125rem);
-  --text-2xl: clamp(1.375rem, 1.26rem + 0.48vw, 1.625rem);
-  --text-3xl: clamp(1.625rem, 1.46rem + 0.68vw, 2rem);
-  --text-4xl: clamp(1.875rem, 1.64rem + 0.96vw, 2.375rem);
-  --text-5xl: clamp(2.25rem, 1.94rem + 1.28vw, 2.875rem);
-
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-
-  --color-background: #09090b;
-  --color-background-elevated: #111113;
-  --color-background-subtle: #18181b;
-  --color-surface: var(--color-background);
-  --color-surface-elevated: var(--color-background-elevated);
-  --color-surface-subtle: var(--color-background-subtle);
-  --color-foreground: #fafafa;
-  --color-foreground-muted: #a1a1aa;
-  --color-foreground-subtle: #52525b;
-  --color-border: rgba(255, 255, 255, 0.07);
-  --color-border-strong: rgba(255, 255, 255, 0.12);
-  --color-surface-control: rgba(255, 255, 255, 0.04);
-  --color-surface-control-disabled: rgba(255, 255, 255, 0.025);
-  --color-surface-hover: rgba(255, 255, 255, 0.08);
-  --color-surface-active: rgba(255, 255, 255, 0.1);
-  --color-skeleton: rgba(255, 255, 255, 0.09);
-  --color-skeleton-highlight: rgba(255, 255, 255, 0.18);
-  --color-overlay-backdrop: rgba(0, 0, 0, 0.6);
-  --color-accent: #7c3aed;
-  --color-accent-hover: #8b5cf6;
-  --color-accent-muted: rgba(124, 58, 237, 0.15);
-  --color-accent-foreground: #fafafa;
-  --color-destructive: #ef4444;
-  --color-ring: #52525b;
-  --color-info: #a78bfa;
-  --color-info-foreground: #fafafa;
-  --color-info-muted: rgba(167, 139, 250, 0.12);
-  --color-info-border: rgba(167, 139, 250, 0.2);
-  --color-success: #34d399;
-  --color-success-foreground: #052e16;
-  --color-success-muted: rgba(52, 211, 153, 0.12);
-  --color-success-border: rgba(52, 211, 153, 0.2);
-  --color-warning: #fbbf24;
-  --color-warning-foreground: #422006;
-  --color-warning-muted: rgba(251, 191, 36, 0.12);
-  --color-warning-border: rgba(251, 191, 36, 0.2);
-  --color-error: #f87171;
-  --color-error-foreground: #450a0a;
-  --color-error-muted: rgba(248, 113, 113, 0.12);
-  --color-error-border: rgba(248, 113, 113, 0.2);
-  --color-neutral: #94a3b8;
-  --color-neutral-foreground: #0f172a;
-  --color-neutral-muted: rgba(148, 163, 184, 0.1);
-  --color-neutral-border: rgba(148, 163, 184, 0.2);
-
-}
-
-/* Keep shadow utilities bound to runtime CSS vars so data attributes can swap values dynamically. */
 @theme inline {
-  --shadow-highlight-inset: inset 0 1px 0 var(--color-highlight-inset);
-  --shadow-popover: var(--shadow-popover);
-  --shadow-dialog: var(--shadow-dialog);
-  --shadow-toast: var(--shadow-toast);
-  --shadow-card: var(--shadow-card);
-}
-
-:root {
   --font-sans: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
   --font-serif: 'Newsreader', ui-serif, Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
@@ -121,16 +42,15 @@
   --color-surface-hover: rgba(255, 255, 255, 0.08);
   --color-surface-active: rgba(255, 255, 255, 0.1);
   --color-highlight-inset: rgba(255, 255, 255, 0.08);
-  --color-overlay-backdrop: rgba(0, 0, 0, 0.6);
   --color-skeleton: rgba(255, 255, 255, 0.09);
   --color-skeleton-highlight: rgba(255, 255, 255, 0.18);
+  --color-overlay-backdrop: rgba(0, 0, 0, 0.6);
   --color-accent: #7c3aed;
   --color-accent-hover: #8b5cf6;
   --color-accent-muted: rgba(124, 58, 237, 0.15);
   --color-accent-foreground: #fafafa;
   --color-destructive: #ef4444;
   --color-ring: #52525b;
-
   --color-info: #a78bfa;
   --color-info-foreground: #fafafa;
   --color-info-muted: rgba(167, 139, 250, 0.12);
@@ -139,7 +59,7 @@
   --color-success-foreground: #052e16;
   --color-success-muted: rgba(52, 211, 153, 0.12);
   --color-success-border: rgba(52, 211, 153, 0.2);
-  --color-warning: #fbbf24;
+  --color-warning: #fcd34d;
   --color-warning-foreground: #422006;
   --color-warning-muted: rgba(251, 191, 36, 0.12);
   --color-warning-border: rgba(251, 191, 36, 0.2);
@@ -156,6 +76,42 @@
   --shadow-dialog: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-toast: 0 8px 24px rgba(0, 0, 0, 0.4);
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Keep shadow utilities bound to runtime CSS vars so data attributes can swap values dynamically. */
+@theme inline {
+  --shadow-highlight-inset: inset 0 1px 0 var(--color-highlight-inset);
+  --shadow-popover: var(--shadow-popover);
+  --shadow-dialog: var(--shadow-dialog);
+  --shadow-toast: var(--shadow-toast);
+  --shadow-card: var(--shadow-card);
+}
+
+/*
+ * Minimal baseline for clean consumer app rendering.
+ * Does not include full Tailwind Preflight. Consumers still control headings,
+ * paragraphs, links, lists, and media. Form element font-family is inherited
+ * so they match the app font without a global reset.
+ */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
 }
 
 [data-appearance='dark'] {
@@ -221,6 +177,12 @@
   --shadow-card: 0 1px 2px rgba(24, 24, 27, 0.06), 0 8px 24px rgba(24, 24, 27, 0.04);
 }
 
+[data-accent] {
+  --color-accent-hover: color-mix(in srgb, var(--color-accent) 85%, white 15%);
+  --color-accent-muted: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  --color-accent-foreground: #fafafa;
+}
+
 [data-accent='violet'] {
   --color-accent: #7c3aed;
   --color-accent-hover: #8b5cf6;
@@ -261,6 +223,10 @@
   --color-accent-hover: #f5820d;
   --color-accent-muted: rgba(234, 108, 10, 0.15);
   --color-accent-foreground: #fafafa;
+}
+
+[data-appearance='light'][data-accent] {
+  --color-accent-muted: color-mix(in srgb, var(--color-accent) 10%, transparent);
 }
 
 /* Light mode accent overrides — darken explicit theme roots where needed for contrast */
@@ -316,13 +282,13 @@
  * Drawer: defeat stray backdrop-filter / filter stacking so the sheet stays sharp.
  * With modal=true, Base UI injects a fullscreen InternalBackdrop; combined with scroll lock it can
  * composite blur across the whole viewport including the drawer. We use modal="trap-focus" plus these resets.
+ * Write only the unprefixed form; LightningCSS auto-adds -webkit-backdrop-filter for older Safari.
  */
 .cd-drawer-backdrop,
 .cd-drawer-viewport,
 .cd-drawer-popup {
   filter: none !important;
   backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
 }
 
 .cd-card-slot :where(h1, h2, h3, h4, h5, h6, p):first-child,

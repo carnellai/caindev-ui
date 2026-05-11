@@ -4,6 +4,7 @@ export {
   type AccordionProps,
   type AccordionValue,
 } from './components/Accordion'
+export { type OperationStatus } from './lib/operationStatus'
 export {
   AgentStep,
   type AgentStepItem,
@@ -171,8 +172,6 @@ export {
   type TokenCostProps,
 } from './components/TokenCost'
 export {
-  SpanCard,
-  type SpanCardProps,
   type SpanKind,
   type SpanNode,
   type SpanStatus,
@@ -208,8 +207,17 @@ export {
   useCommandPalette,
 } from './components/CommandPalette'
 export {
+  Theme,
+  type ThemeProps,
   type Appearance,
   type ResolvedAppearance,
-  type UseAppearanceResult,
-  useAppearance,
-} from './hooks/useAppearance'
+  type AccentPreset,
+  type RadiusPreset,
+  type ThemeContextValue,
+} from './components/Theme'
+export {
+  ThemeScript,
+  type ThemeScriptProps,
+  generateThemeScript,
+} from './components/ThemeScript'
+export { useTheme } from './hooks/useTheme'

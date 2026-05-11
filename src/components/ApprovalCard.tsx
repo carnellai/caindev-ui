@@ -1,5 +1,6 @@
 import { cn } from '../lib/cn';
 import type { HTMLAttributes } from 'react';
+import { Button } from './Button';
 export type ApprovalRisk = 'low' | 'medium' | 'high';
 
 export type ApprovalCardProps = HTMLAttributes<HTMLDivElement> & {
@@ -96,22 +97,22 @@ export function ApprovalCard({
         )}
 
         <div className="mt-[2px] flex gap-[8px]">
-          <button
-            type="button"
+          <Button
+            variant="solid"
             onClick={onApprove}
             disabled={loading}
-            className="flex-1 cursor-pointer rounded-md border border-transparent bg-accent px-[16px] py-[9px] text-sm font-semibold text-accent-foreground opacity-100 shadow-none outline-none transition-[background,opacity] duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="flex-1 h-auto py-[9px] font-semibold"
           >
             {loading ? 'Processing…' : 'Approve'}
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="outline"
             onClick={onReject}
             disabled={loading}
-            className="flex-1 cursor-pointer rounded-md border border-border bg-surface-control px-[16px] py-[9px] text-sm font-medium text-foreground-muted shadow-highlight-inset outline-none hover:bg-surface-hover hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="flex-1 h-auto py-[9px] text-foreground-muted hover:text-foreground"
           >
             Reject
-          </button>
+          </Button>
         </div>
       </div>
     </div>

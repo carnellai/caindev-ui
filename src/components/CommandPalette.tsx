@@ -150,36 +150,10 @@ export function CommandPalette({
     }
   }
 
-  useEffect(() => {
-    if (!actualOpen) return;
-
-    function handleGlobalNavKeyDown(event: KeyboardEvent) {
-      if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Enter') {
-        event.preventDefault();
-
-        if (event.key === 'ArrowDown') {
-          setActiveIndex((i) => {
-            if (flatFiltered.length === 0) return 0;
-            return Math.min(i + 1, flatFiltered.length - 1);
-          });
-          return;
-        }
-
-        if (event.key === 'ArrowUp') {
-          setActiveIndex((i) => {
-            if (flatFiltered.length === 0) return 0;
-            return Math.max(i - 1, 0);
-          });
-          return;
-        }
-
-        handleItemSelect(flatFiltered[activeIndex]);
-      }
-    }
-
-    window.addEventListener('keydown', handleGlobalNavKeyDown, { capture: true });
-    return () => window.removeEventListener('keydown', handleGlobalNavKeyDown, { capture: true });
-  }, [actualOpen, activeIndex, flatFiltered]);
+  // Keyboard navigation lives exclusively in the input's onKeyDown so that
+  // ArrowDown/ArrowUp/Enter never fire twice when the input is focused.
+  // The input receives focus on open and retains it throughout the session
+  // because list items are non-focusable role="option" divs.
 
   // Scroll active item into view
   useEffect(() => {
@@ -346,10 +320,12 @@ export function CommandPalette({
   );
 }
 
-export function useCommandPalette() {
+export function useCommandPalette({ enabled = true }: { enabled?: boolean } = {}) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    if (!enabled) return;
+
     function isEditableTarget(target: EventTarget | null): boolean {
       if (!(target instanceof Element)) return false;
       if (target.closest('input, textarea, select')) return true;
@@ -366,7 +342,7 @@ export function useCommandPalette() {
     }
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [enabled]);
 
   return { open, setOpen };
 }

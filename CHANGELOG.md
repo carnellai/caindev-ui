@@ -1,5 +1,115 @@
 # Changelog
 
+## 1.0.0 (pre-release API hardening)
+
+### Breaking changes
+
+- `SpanCard` and `SpanCardProps` are no longer exported from the public barrel. `SpanCard` is an internal implementation detail of `TraceTree`. Use `TraceTree` for all trace visualization. `SpanNode`, `SpanKind`, and `SpanStatus` remain public.
+
+### Status types
+
+- Added `OperationStatus` as the canonical, shared lifecycle-state type exported from `@caindev/ui`. Union: `'idle' | 'pending' | 'running' | 'completed' | 'failed' | 'queued' | 'cancelled' | 'skipped'`.
+- `StepStatus`, `ToolStatus`, `SpanStatus`, and `RunStatus` are now re-exported type aliases for `OperationStatus`. No runtime change.
+- `RunStatusBadge` extended to handle all `OperationStatus` values (`idle`, `pending`, `skipped` mapped to neutral styling).
+- Consolidated three duplicate status-normalization functions into a single shared `normalizeOperationStatus()` helper (internal). Legacy `'error'` → `'failed'` and `'success'` / `'complete'` → `'completed'` aliases preserved.
+
+### Ref support
+
+Added `ref` as a first-class prop (React 19 ref-as-prop) to components that previously had no ref target:
+
+| Component | ref target |
+|-----------|------------|
+| `Select` | `HTMLButtonElement` (trigger) |
+| `Combobox` | `HTMLInputElement` |
+| `FormInput` | `HTMLInputElement` |
+
+`Button`, `Input`, and `PromptInput` already supported refs via Base UI prop pass-through and explicit `Ref<HTMLTextAreaElement>` respectively.
+
+### MessageThread
+
+- Added optional `renderMessage` prop: `(message: MessageThreadMessage, index: number) => ReactNode`. When provided, replaces the default `MessageBubble` renderer. Auto-scroll behavior and all existing props are unchanged.
+
+### Form
+
+- `Form.gap` now uses Tailwind spacing classes (`gap-3` / `gap-4` / `gap-6`) instead of an inline `style={{ gap: <number>px }}` mapping. Rendered output is identical; removes the hardcoded pixel map.
+
+## 1.0.0
+
+### Breaking changes
+
+- `ThemeProvider` removed. Replace with `useAppearance` for runtime appearance control and `data-appearance`, `data-accent`, `data-radius` attributes for CSS-only theming.
+
+### Theming
+
+- Added `useAppearance` hook as the sole runtime appearance API. Returns `{ appearance, resolvedAppearance, setAppearance, toggle }`. Persists to `localStorage` and syncs with `prefers-color-scheme` when set to `'system'`.
+- `data-appearance='light' | 'dark'` on any element applies appearance token overrides to that subtree.
+- `data-accent='violet' | 'blue' | 'emerald' | 'crimson' | 'teal' | 'orange'` swaps accent tokens CSS-only with no JavaScript.
+- `data-radius='sm' | 'md' | 'lg'` adjusts border-radius tokens CSS-only.
+
+### Styles
+
+- Added minimal baseline to `@caindev/ui/styles.css`: global `box-sizing: border-box`, `body` margin/min-height/background/color/font-family defaults, and inherited font-family for form elements.
+- Fixed compiled CSS: `backdrop-filter: none !important` is now correctly present in `.cd-drawer-*` reset rules in both standard and `-webkit-` prefixed forms, restoring the Drawer compositing fix for Chrome and Firefox.
+
+### Package artifact
+
+- `dist/lib/cn.d.ts` and `dist/lib/safeJsonStringify.d.ts` are no longer included in the published tarball. These internal utilities are not part of the public API.
+- `sideEffects` simplified to `["**/*.css"]`.
+
+### Exports
+
+- `Appearance`, `ResolvedAppearance`, `UseAppearanceResult`, and `useAppearance` are now public exports.
+- `Separator` and `SeparatorOrientation` added to the public barrel.
+- `StreamingText`, `StreamingTextProps`, `SimulatedStreamState`, and `useSimulatedStream` added to the public barrel.
+- `MessageBubble` and `MessageBubbleProps` added to the public barrel.
+- `SpanCard`, `SpanCardProps`, `SpanKind`, `SpanNode`, `SpanStatus`, `TraceTree`, `TraceTreeProps` added to the public barrel.
+
+## 0.5.0
+
+### Breaking changes
+
+- `ThemeProvider` component removed from the package.
+
+### Components
+
+- Improved `Progress` with size and tone props, indeterminate animation, and `prefers-reduced-motion` support.
+- Added `Drawer` with `DrawerClose`, `DrawerSide`, and trap-focus modal mode.
+- Added `NumberField` with increment/decrement controls and `type="button"` enforcement.
+- Added `Combobox` with option list filtering and keyboard navigation.
+- Added `Pagination` with page range display and boundary/sibling slot control.
+- Added `CommandPalette` with `useCommandPalette` open-state hook and keyboard shortcut trigger.
+- Added `TraceTree` and `SpanCard` for AI observability trace visualization.
+
+### Styles
+
+- Added `[data-radius]` CSS-only hook for border-radius token overrides.
+- Added TraceTree component-private palette (`.cd-trace-tree`) with appearance-aware overrides.
+- Added `prefers-reduced-motion` reset for all animation classes.
+
+## 0.4.0
+
+### Components
+
+- Added `Separator` for horizontal and vertical visual dividers.
+- Added `StreamingText` with `useSimulatedStream` hook for animated token streaming.
+- Added `MessageBubble` as a standalone chat bubble component.
+- Added `EvalBadge` for evaluation verdict display.
+- Added `ApprovalCard` for human-in-the-loop approval UI.
+- Added `StructuredOutput` for displaying JSON-like structured data.
+- Added `ThinkingBlock` for collapsible extended reasoning display.
+- Added `ToolCallCard` for showing tool invocation status.
+- Added `TokenCost` for model usage cost display.
+
+### Hooks
+
+- Added `useAppearance` hook for runtime light/dark/system appearance management.
+
+### Styles
+
+- Added `[data-accent]` CSS-only hook with six accent palette options: `violet`, `blue`, `emerald`, `crimson`, `teal`, `orange`.
+- Added light-mode accent contrast overrides for `emerald`, `teal`, `orange`, `blue`, `violet`, and `crimson`.
+- Added `[data-appearance='light']` and `[data-appearance='dark']` token overrides.
+
 ## 0.3.0
 
 ### API consistency

@@ -20,6 +20,10 @@ export default defineConfig({
       insertTypesEntry: true,
       beforeWriteFile(filePath) {
         if (filePath.endsWith('/styles.d.ts')) return false;
+        if (filePath.endsWith('/fonts.d.ts')) return false;
+        // Internal utilities must not be deep-importable from the published artifact.
+        if (filePath.endsWith('/lib/cn.d.ts')) return false;
+        if (filePath.endsWith('/lib/safeJsonStringify.d.ts')) return false;
       },
     }),
     {
@@ -27,6 +31,8 @@ export default defineConfig({
       generateBundle(_options, bundle) {
         delete bundle['styles.js'];
         delete bundle['styles.js.map'];
+        delete bundle['fonts.js'];
+        delete bundle['fonts.js.map'];
       },
     },
   ],
@@ -35,6 +41,7 @@ export default defineConfig({
       entry: {
         index: 'src/index.ts',
         styles: 'src/styles.css',
+        fonts: 'src/fonts.css',
       },
       formats: ['es'],
       fileName: (_format, entryName) => `${entryName}.js`,

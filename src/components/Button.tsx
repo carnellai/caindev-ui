@@ -1,11 +1,12 @@
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cn } from '../lib/cn';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, Ref } from 'react';
 
 export type ButtonVariant = 'solid' | 'outline' | 'ghost';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
-export type ButtonProps = ComponentProps<typeof BaseButton> & {
+export type ButtonProps = Omit<ComponentProps<typeof BaseButton>, 'ref'> & {
+  ref?: Ref<HTMLButtonElement>;
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
@@ -20,7 +21,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 const variantClasses: Record<ButtonVariant, string> = {
   solid: 'border border-transparent bg-accent text-accent-foreground shadow-none',
   outline: 'border border-border bg-surface-control text-foreground shadow-highlight-inset',
-  ghost: 'border-0 bg-transparent text-foreground-muted shadow-none',
+  ghost: 'border border-transparent bg-transparent text-foreground-muted shadow-none',
 };
 
 function mergeClassName(
@@ -42,12 +43,14 @@ export function Button({
   children,
   style,
   className,
+  ref,
   ...props
 }: ButtonProps) {
   const isDisabled = disabled || loading;
 
   return (
     <BaseButton
+      ref={ref as Ref<HTMLElement>}
       aria-busy={loading || undefined}
       disabled={isDisabled}
       className={mergeClassName(
@@ -56,14 +59,14 @@ export function Button({
           `cd-button-${variant}`,
           variantClasses[variant],
           sizeClasses[size],
-          isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+          isDisabled ? cn('cursor-not-allowed', loading ? 'opacity-75' : 'opacity-50') : 'cursor-pointer',
         ),
         className,
       )}
       style={style}
       {...props}
     >
-      {loading && <span className="cd-button-spinner" aria-hidden="true" />}
+      {loading && <span className="cd-button-spinner text-current" aria-hidden="true" />}
       {children}
     </BaseButton>
   );

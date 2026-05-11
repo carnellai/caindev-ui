@@ -10,6 +10,14 @@ export type ProgressProps = {
   min?: number
   max?: number
   label?: string
+  /**
+   * Standard HTML attribute — preferred over `ariaLabel`.
+   * When both are provided, `aria-label` takes precedence.
+   */
+  'aria-label'?: string
+  /**
+   * @deprecated Use `aria-label` instead. Kept for backwards compatibility.
+   */
   ariaLabel?: string
   showValue?: boolean
   size?: ProgressSize
@@ -37,6 +45,7 @@ export function Progress({
   min = 0,
   max = 100,
   label,
+  'aria-label': ariaLabelProp,
   ariaLabel,
   showValue = false,
   size = 'md',
@@ -44,12 +53,14 @@ export function Progress({
   className,
   style,
 }: ProgressProps) {
+  const resolvedAriaLabel = ariaLabelProp ?? ariaLabel;
+
   return (
     <BaseProgress.Root
       value={value}
       min={min}
       max={max}
-      aria-label={ariaLabel}
+      aria-label={resolvedAriaLabel}
       className={cn('flex w-full flex-col gap-[8px]', className)}
       style={style}>
       {(label || showValue) && (
